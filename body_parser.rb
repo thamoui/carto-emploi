@@ -34,27 +34,26 @@ class BodyParser
   end
 
   def search_region(url)
-    url = "https://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/027FLJF"
+    #url = "https://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/027FLJF"
     doc = Nokogiri::HTML(open(url))
     region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
-  
+
     #--> renvoie
     #<Nokogiri::XML::Element:0x3faa904f8ba0 name="li" attributes=[#<Nokogiri::XML::Attr:0x3faa904f8b28 name="itemprop" value="addressRegion">] children=[#<Nokogiri::XML::Text:0x3faa904f86b4 "67 - MUNDOLSHEIM">]>]
 
     #voir http://stackoverflow.com/questions/15262997/scraping-track-data-from-html
     #page.search
-    region_adress
-
+    #region_adress
   end
 
-  def search_name(text)
-    text.split(" ").select{|mot| mot[0] =~ /[A-Z]/}.join(" ")
-  end
-
-  def post_title(url)
-    doc = Nokogiri::HTML(open(url))
-    title = doc.css(".post-title").to_s
-    puts
-  end
+  # def search_name(text)
+  #   text.split(" ").select{|mot| mot[0] =~ /[A-Z]/}.join(" ")
+  # end
+  #
+  # def post_title(url)
+  #   doc = Nokogiri::HTML(open(url))
+  #   title = doc.css(".post-title").to_s
+  #   puts
+  # end
 
 end
