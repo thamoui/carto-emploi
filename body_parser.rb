@@ -28,11 +28,6 @@ class BodyParser
   #   url = 'http://0.0.0.0/jobseeker/offre_027FLJF.html' #apache must be started
   # end
 
-  def analyse(url)
-    doc = Nokogiri::HTML(open(url))
-    doc.css(".post-entry").to_s #dépend de la source car analyse le dom
-  end
-
   def search_region(url)
     #url = "https://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/027FLJF"
     doc = Nokogiri::HTML(open(url))
@@ -44,6 +39,37 @@ class BodyParser
     #voir http://stackoverflow.com/questions/15262997/scraping-track-data-from-html
     #page.search
     #region_adress
+  end
+
+  def search_title(url)
+    doc = Nokogiri::HTML(open(url))
+    job_title = doc.css('h4[@itemprop="title"]').children.inner_text
+  end
+
+  def search_employment_type(url)
+    doc = Nokogiri::HTML(open(url))
+    employement_type = doc.css('span[@itemprop="employmentType"]').children.inner_text
+  end
+
+  def search_code_rome(url)
+    doc = Nokogiri::HTML(open(url))
+    code_rome = doc.css('p[@itemprop="occupationalCategory"]').children.inner_text
+  end
+
+  def search_publication_date(url)
+    doc = Nokogiri::HTML(open(url))
+    publication_date = doc.css('span[@itemprop="datePosted"]').children.inner_text
+  end
+
+  def search_description_offer(url)
+    doc = Nokogiri::HTML(open(url))
+    description_offer = doc.css('p[@itemprop="description"]').children.inner_text
+  end
+
+  def search_company_description(url)
+    doc = Nokogiri::HTML(open(url))
+    description_offer = doc.xpath("//div[contains(@class,'vcard')]/p/text()").inner_text
+    # description_offer.inner_text[0, 8] récupération des 8 premiers caractères
   end
 
   # def search_name(text)

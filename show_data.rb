@@ -18,10 +18,12 @@ offers = []
 conn = PGconn.connect(:hostaddr=>"127.0.0.1", :port=>5432, :dbname=>"pejoboffers", :user=>"jobadmin", :password=>'Som3ThinG')
 
 conn.exec( "SELECT * FROM joboffers" ) do |result|
-  #puts "     region_adress | ID"
-  #puts "---this is result #{result}"
+
   result.each do |offer|
   offers << offer
+
+  puts "---OFFER #{offer} -----------"
+  puts "----- -- ------------------- -- - "
   end
 end
 conn.close
