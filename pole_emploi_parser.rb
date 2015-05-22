@@ -1,31 +1,38 @@
-require 'net/http'
+require 'open-uri'
 require 'pg'
- 
-conn = PGconn.connect(:hostaddr=>"127.0.0.1", :port=>5432, :dbname=>"pole_emploi", :user=>"pole_emploi", :password=>'pole_emploi')
-query_result  = conn.exec('SELECT * FROM parse')
 
-jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
+CONN = PGconn.connect(:hostaddr=>"127.0.0.1", :port=>5432, :dbname=>"pole_emploi", :user=>"pole_emploi", :password=>'pole_emploi')
 
-# "Administrateur / Administratrice de bases de données", "Administrateur / Administratrice de la messagerie", "Administrateur / Administratrice de serveurs", "Administrateur / Administratrice de site internet", "Administrateur / Administratrice réseau informatique", "Administrateur / Administratrice réseaux - télécoms", "Administrateur / Administratrice sécurité informatique", "Administrateur / Administratrice système informatique", "Architecte de bases de données", "Architecte multimédia", "Architecte réseaux informatiques", "Architecte système d’information", "Architecte système informatique", "Auditeur / Auditrice en système d’information", "Auditeur informaticien / Auditrice informaticienne", "Expert / Experte en communication et réseaux", "Expert / Experte en sécurité des systèmes d’exploitation", "Expert / Experte en technologie Internet et multimédia", "Expert / Experte méthodes et qualité informatique", "Expert / Experte qualité informatique", "Expert / Experte réseaux et télécoms", "Expert / Experte sécurité informatique", "Expert / Experte sécurité, méthode et qualité informatique", "Expert / Experte système d’exploitation", "Expert / Experte système et réseaux", "Ingénieur / Ingénieure méthodes informatiques", "Ingénieur / Ingénieure réseau informatique", "Ingénieur / Ingénieure sécurité informatique", "Ingénieur / Ingénieure système informatique", "Ingénieur / Ingénieure système réseau informatique", "Qualiticien / Qualiticienne logiciel en informatique", "Responsable sécurité des systèmes d’information", "Responsable sécurité informatique", "Chef de projet développement logiciel",  "Chef de projet en linguistique informatique", "Chef de projet informatique", "Chef de projet internet", "Chef de projet multimédia", "Directeur / Directrice de département informatique", "Directeur / Directrice de département télécoms", "Directeur / Directrice de l’Organisation et des Systèmes d’Information -DOSI-", "Directeur / Directrice de projet en informatique", "Directeur / Directrice de projet télécoms", "Directeur / Directrice de service télécoms", "Directeur / Directrice des services informatiques -DSI-", "Directeur / Directrice des systèmes d’information", "Directeur / Directrice des systèmes d’information et télécoms", "Directeur / Directrice informatique", "Directeur / Directrice télécoms", "Responsable de département informatique", "Responsable de département télécoms", "Responsable de division informatique", "Responsable de division télécoms", "Responsable de domaine en informatique", "Responsable de domaine télécoms", "Responsable de la production informatique", "Responsable de projet architecture et intégration grands systèmes", "Responsable de projet architecture informatique", "Responsable de projet architecture télécoms", "Responsable de réseaux télécoms", "Responsable des systèmes d’information", "Responsable des systèmes informatiques", "Responsable d’exploitation informatique", "Responsable du management de la DSI", "Responsable du réseau informatique", "Responsable d’un service informatique", "Responsable d’un service télécoms", "Responsable informatique", "Responsable télécoms", "Architecte réseaux de télécoms", "Chargé / Chargée de planification réseaux de télécoms", "Chargé / Chargée d’opération réseaux de télécoms", "Chef de projet télécoms", "Concepteur réalisateur / Conceptrice réalisatrice de réseau télécoms", "Consultant / Consultante télécoms", "Ingénieur / Ingénieure déploiement télécoms", "Ingénieur / Ingénieure en architecture télécoms", "Ingénieur / Ingénieure études et support télécoms", "Ingénieur / Ingénieure radio", "Ingénieur / Ingénieure réseaux télécoms", "Ingénieur / Ingénieure télécommunication", "Ingénieur / Ingénieure télécoms", "Ingénieur / Ingénieure validation réseaux de télécoms", "Marketeur / Marketeuse réseaux de télécoms", "Négociateur / Négociatrice de sites télécoms en fibre optique", "Négociateur / Négociatrice de sites télécoms en téléphonie mobile", "Network planner", "Planificateur / Planificatrice réseaux de télécoms", "Programmeur / Programmeuse réseaux de télécoms", "Responsable de programmes réseaux de télécoms", "Technicien / Technicienne ingénierie réseaux de télécoms", "Analyste cogniticien / cogniticienne informatique", "Analyste concepteur / conceptrice informatique", "Analyste d’application", "Analyste de gestion informatique", "Analyste décisionnel", "Analyste d’étude informatique", "Analyste développeur / développeuse", "Analyste fonctionnel / fonctionnelle informatique", "Analyste organique informatique", "Analyste réseau informatique", "Analyste responsable d’application informatique", "Analyste télématique", "Analyste-programmeur / Analyste-programmeuse d’étude informatique", "Analyste-programmeur / Analyste-programmeuse en informatique industrielle", "Analyste-programmeur / Analyste-programmeuse gestion informatique", "Analyste-programmeur / Analyste-programmeuse informatique", "Analyste-programmeur / Analyste-programmeuse scientifique informatique", "Assistant / Assistante chef de projet informatique", "Chef de projet étude et développement informatique", "Chef de projet maîtrise d’oeuvre informatique", "Chef de projet TMA - Tierce Maintenance Applicative", "Concepteur / Conceptrice d’application informatique", "Concepteur / Conceptrice logiciel informatique", "Développeur / Développeuse d’application", "Développeur / Développeuse informatique", "Développeur / Développeuse multimédia", "Développeur / Développeuse web", "Didacticien / Didacticienne informatique", "Homologateur / Homologatrice logiciel", "Informaticien / Informaticienne analyste", "Informaticien / Informaticienne d’application", "Informaticien / Informaticienne de développement", "Informaticien chargé / Informaticienne chargée d’étude", "Ingénieur / Ingénieure analyste en système d’information", "Ingénieur / Ingénieure d’analyse et de programmation en informatique de gestion", "Ingénieur / Ingénieure d’application informatique", "Ingénieur / Ingénieure de conception informatique", "Ingénieur / Ingénieure de développement informatique", "Ingénieur / Ingénieure de réalisation informatique", "Ingénieur / Ingénieure d’étude en applications scientifiques informatiques", "Ingénieur / Ingénieure d’étude en informatique de gestion", "Ingénieur / Ingénieure d’étude et développement informatique", "Ingénieur / Ingénieure d’étude informatique", "Ingénieur / Ingénieure d’intégration applicative", "Ingénieur / Ingénieure informatique développement en temps réel", "Ingénieur / Ingénieure logiciel informatique", "Ingénieur analyste-programmeur / Ingénieure analyste-programmeuse", "Ingénieur informaticien / Ingénieure informaticienne", "Intégrateur / Intégratrice d’application informatique", "Paramétreur / Paramétreuse logiciel ERP", "Programmeur / Programmeuse de maintenance informatique", "Programmeur / Programmeuse d’études", "Programmeur / Programmeuse informatique", "Programmeur industriel / Programmeuse industrielle", "Responsable d’application informatique", "Responsable d’atelier de génie logiciel", "Responsable de gestion de configuration", "Responsable de projet informatique", "Responsable des développements informatiques", "Responsable d’étude informatique", "Technicien / Technicienne programmation", "Testeur / Testeuse informatique", "Webmaster développeur / développeuse"
-  
-jobs.each do |job| 
-
-	job.gsub!(/\s/,'$0020')
-
-  (1..101).each do |zipcode| 
-  
-    source = Net::HTTP.get('candidat.pole-emploi.fr', '/candidat/rechercheoffres/resultats/A_' + "#{job}" + '_DEPARTEMENT_' + "#{zipcode}" + '___P__________INDIFFERENT_________________')
-   	
-    ids = source.scan(/detailoffre\/(.*?);/).flatten
-
-    ids.each do |id|
-       conn.exec("INSERT INTO parse (id) VALUES ('#{id}')")
-
-      url = 'candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{id}"
-      conn.exec("INSERT INTO parse (id, url) VALUES ('#{id}', '#{url}')")
-    end
+def document_by_url(url)
+	begin
+    open(url).read
+  rescue
+  	false
   end
 end
 
+def urls
+	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
+	(1..101).map do |zipcode| 
+	 jobs.map {|job| "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job.gsub!(/\s/,'$0020')}_DEPARTEMENT_#{zipcode}___P__________INDIFFERENT_________________"}
+	end.flatten
+end
 
+def save_job(params)
+	 puts params
+   url = 'candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
+   CONN.exec("INSERT INTO parse (id, url) VALUES ('#{params[:id]}', '#{url}')")
+end
 
+def get_ids_by_document(document)
+	document.scan(/detailoffre\/(.*?);/).flatten
+end
+
+urls.each do |url|
+	document = document_by_url(url)
+
+	if document 
+		ids = get_ids_by_document(document)
+		ids.each {|id| save_job({:id=>id})}
+	end
+end
