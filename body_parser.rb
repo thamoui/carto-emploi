@@ -63,23 +63,13 @@ class BodyParser
 
   def search_description_offer(url)
     doc = Nokogiri::HTML(open(url))
-    description_offer = doc.css('p[@itemprop="description"]').children.inner_text
+    description_offer = doc.css('p[@itemprop="description"]').inner_html
   end
 
   def search_company_description(url)
     doc = Nokogiri::HTML(open(url))
-    description_offer = doc.xpath("//div[contains(@class,'vcard')]/p/text()").inner_text
-    # description_offer.inner_text[0, 8] récupération des 8 premiers caractères
-  end
-
-  # def search_name(text)
-  #   text.split(" ").select{|mot| mot[0] =~ /[A-Z]/}.join(" ")
-  # end
-  #
-  # def post_title(url)
-  #   doc = Nokogiri::HTML(open(url))
-  #   title = doc.css(".post-title").to_s
-  #   puts
-  # end
+    description_offer = doc.xpath("//div[contains(@class,'vcard')]/p/text()").collect {|node| node.text}
+    description_offer[0]
+    end
 
 end
