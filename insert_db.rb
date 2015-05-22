@@ -21,16 +21,14 @@ adresses = []
 
 @urls.each do |url, offer_id|
   adresses << doc.search_region(url)
-
     #------------------- GETTING LATITUDE & LONGITUDE ---------------------
     adresses.each do |adress|
       d = Geocoder.search(adress)
       ll = d[0].data["geometry"]["location"]
-      #puts "#{adress}\t#{ll['lat']}\t#{ll['lng']}"
       @latitude = ll['lat']
       @longitude = ll['lng']
     end
-
+    #------------------- USING BODY PARSER  ---------------------
   joboffer_datas << [doc.search_region(url).chop, offer_id, doc.search_title(url), doc.search_employment_type(url), doc.search_code_rome(url).gsub(/'/, "''"), doc.search_publication_date(url), doc.search_description_offer(url).gsub(/'/, "''"), doc.search_company_description(url).gsub(/'/, "''"), url, @latitude, @longitude]
   end
 
