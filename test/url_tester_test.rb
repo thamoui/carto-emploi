@@ -1,8 +1,11 @@
 require 'minitest/autorun'
-require_relative 'url_tester'
+require_relative '../parser/url_tester'
+require File.expand_path '../test_helper.rb', __FILE__
 
 
-class TestingUrlTest < Minitest::Test
+class TestingUrlTest < MiniTest::Test
+
+  include Rack::Test::Methods
 
   def url
   @newurl = ::TestingUrl.new

@@ -1,0 +1,24 @@
+development:
+  adapter: postgresql
+  username: <%= ENV['DATABASE_USER_NAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: localhost
+  database: pole_emploi
+
+test:
+  adapter: postgresql
+  username: <%= ENV['DATABASE_USER_NAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: localhost
+  database: pole_emploi_test
+
+production:
+  url: <%= ENV['DATABASE_URL'] %>
+
+#To use PostgreSQL locally with a Rails app your database.yml should contain the following configuration:
+
+# development:
+#   adapter: postgresql
+#   host: localhost
+#   username: user
+#   database: app-dev

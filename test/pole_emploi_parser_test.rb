@@ -1,5 +1,6 @@
 require "minitest/autorun"
-require "./pole_emploi_parser"
+require "../parser/pole_emploi_parser"
+require File.expand_path '../test_helper.rb', __FILE__
 
 class PoleEmploiParserTest < Minitest::Test
 
