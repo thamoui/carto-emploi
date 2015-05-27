@@ -28,26 +28,28 @@ end
   a = a - ["id"]
   a = a - ["url"]
   @b << a
+  # => puts "----------- this is b #{@b}"
   end
-@urls = @b[0..2]
+@urls = @b[0..2] #change value if you want to test with only a few urls
 
 joboffer_datas = []
 adresses = []
 
 @urls.each do |url, offer_id|
-
-  url = "http://" + url
-  adresses << doc.search_region(url)
+    adresses << doc.search_region(url)
     #------------------- GETTING LATITUDE & LONGITUDE ---------------------
     adresses.each do |adress|
+      #puts "this is d---------- #{adress}"
       d = Geocoder.search(adress)
+      #puts "this is d---------- #{d}"
       ll = d[0].data["geometry"]["location"]
       @latitude = ll['lat']
       @longitude = ll['lng']
     end
-    #------------------- USING BODY PARSER  ---------------------
-  joboffer_datas << [doc.search_region(url).chop, offer_id, doc.search_title(url).gsub(/'/, "''"), doc.search_employment_type(url), doc.search_code_rome(url).gsub(/'/, "''"), doc.search_publication_date(url), doc.search_description_offer(url).gsub(/'/, "''"), doc.search_company_description(url).gsub(/'/, "''"), url, @latitude, @longitude]
-   end#
+#------------------- USING BODY PARSER  ---------------------
+
+joboffer_datas << [doc.search_region(url), offer_id, doc.search_title(url), doc.search_employment_type(url), doc.search_code_rome(url), doc.search_publication_date(url), doc.search_description_offer(url), doc.search_company_description(url), url, @latitude, @longitude]
+   end
 
 #-------------- INSERT DATAS TO DATABASE---------------------
 #----- WATCH OUT URL MUST BE VALID : NO URL, NO DATAS -------
@@ -65,20 +67,11 @@ adresses = []
     latitude = joboffer_datas[i][9]
     longitude = joboffer_datas[i][10]
 
-    puts "------------- offre n #{i} : #{company_description}"
+    puts "------------- offre n #{i} : #{contrat_type}"
+    puts "------------- offre n #{i} : #{code_rome}"
 
     conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES ('#{region_adress}', '#{offer_id}', '#{title}', '#{contrat_type}', '#{code_rome}', '#{publication_date}', '#{offer_description}', '#{url}', '#{company_description}', '#{latitude}', '#{longitude}');")
 
-end
+  end
 
 conn.close
-
-#--------- Cleaning datas with regex - Clues for refactoring -----------------------
-
-# for datas in joboffer_datas do
-#     datas.map do |data|
-#         if data.is_a? String
-#           data.gsub(/'/, "''")
-#         end
-#     end
-# end

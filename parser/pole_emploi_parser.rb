@@ -28,18 +28,44 @@ end
 
 # --------------------- DEF URL FOR TEST - PARSE ONLY A FEW DATA ----------------------------
 def urls
-	jobs = ["Développeur", "Webmaster"]
-	(1..5).map do |zipcode|
+	jobs = ["Webmaster"]
+	# (92..93).map do |zipcode|
+	#
+	# 	if zipcode < 10
+	# 		zipzero = "0#{zipcode}"
+	# 	else
+	# 		zipzero = "#{zipcode}"
+	# 	end
 
-		if zipcode < 10
-			zipzero = "0#{zipcode}"
-		else
-			zipzero = "#{zipcode}"
-		end
+	zipzero = 94
 
 		jobs.map {|job| "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job.gsub!(/\s/,'$0020')}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
 
-	end.flatten
+#	end.flatten
+end
+
+#https://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/_webmaster_____P___________________________
+
+
+
+
+def save_job(params)
+   url = 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
+	puts "------this is url : #{url}"
+   CONN.exec("INSERT INTO parse (id, url) VALUES ('#{params[:id]}', '#{url}')")
+end
+
+def get_ids_by_document(document)
+	document.scan(/detailoffre\/(.*?);/).flatten
+end
+
+urls.each do |url|
+	document = document_by_url(url)
+
+	if document
+		ids = get_ids_by_document(document)
+		ids.each {|id| save_job({:id=>id})}
+	end
 end
 
 # def urls
@@ -56,21 +82,3 @@ end
 #
 # 	end.flatten
 # end
-
-def save_job(params)
-   url = 'candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
-   CONN.exec("INSERT INTO parse (id, url) VALUES ('#{params[:id]}', '#{url}')")
-end
-
-def get_ids_by_document(document)
-	document.scan(/detailoffre\/(.*?);/).flatten
-end
-
-urls.each do |url|
-	document = document_by_url(url)
-
-	if document
-		ids = get_ids_by_document(document)
-		ids.each {|id| save_job({:id=>id})}
-	end
-end
