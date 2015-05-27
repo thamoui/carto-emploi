@@ -1,7 +1,14 @@
 require 'open-uri'
 require 'pg'
 
-CONN = PGconn.connect(:hostaddr=>"127.0.0.1", :port=>5432, :dbname=>"pole_emploi", :user=>"pole_emploi", :password=>'pole_emploi')
+#----------------------- DB CONFIG  ------------------------
+@hostaddr = "127.0.0.1"
+@port = 5432
+@dbname = "pole_emploi"
+@user = "pole_emploi"
+@password = "pole_emploi"
+
+CONN = PGconn.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
 
 def document_by_url(url)
 	begin
@@ -19,10 +26,11 @@ def not_nil(url)
   end
 end
 
+# --------------------- DEF URL FOR TEST - PARSE ONLY A FEW DATA ----------------------------
 def urls
-	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
-	(1..101).map do |zipcode|
-		
+	jobs = ["Développeur", "Webmaster"]
+	(1..5).map do |zipcode|
+
 		if zipcode < 10
 			zipzero = "0#{zipcode}"
 		else
@@ -33,6 +41,21 @@ def urls
 
 	end.flatten
 end
+
+# def urls
+# 	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
+# 	(1..101).map do |zipcode|
+#
+# 		if zipcode < 10
+# 			zipzero = "0#{zipcode}"
+# 		else
+# 			zipzero = "#{zipcode}"
+# 		end
+#
+# 		jobs.map {|job| "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job.gsub!(/\s/,'$0020')}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
+#
+# 	end.flatten
+# end
 
 def save_job(params)
    url = 'candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
@@ -46,7 +69,7 @@ end
 urls.each do |url|
 	document = document_by_url(url)
 
-	if document 
+	if document
 		ids = get_ids_by_document(document)
 		ids.each {|id| save_job({:id=>id})}
 	end

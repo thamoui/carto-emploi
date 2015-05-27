@@ -6,15 +6,12 @@ require 'nokogiri'
 
 class BodyParser
 
-  #attr_reader :url
-
-  # def initialize(url:)
-  # @url = "https://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/027FLJF"
-  # # #   # json = File.read(dataset)
-  # # #   # @offers = JSON.parse(json, symbolize_names: true)
-  # # #   # @title = title.downcase
-  # # #   # @description = description.downcase
-  # # #   # @work_type = work_type.downcase
+  # attr_reader :url, :doc
+  #
+  #
+  # def initialize(url)
+  #   @url = url
+  #   @doc = Nokogiri::HTML(open(:url))
   # end
 
   def get_body(url)
@@ -22,6 +19,10 @@ class BodyParser
     uri = URI.parse(url)
     res = Net::HTTP.get_response(uri)
     puts res.read_body
+  end
+
+  def get_html_source(url)
+    doc = Nokogiri::HTML(open(url))
   end
 
   def search_region(url)
