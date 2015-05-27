@@ -9,6 +9,7 @@ def document_by_url(url)
   rescue
   	false
   end
+  puts url
 end
 
 def not_nil(url)
@@ -20,7 +21,7 @@ def not_nil(url)
 end
 
 def urls
-	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
+	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Developpeur", "Ingenieur informatique", "Integrateur", "Securite informatique", "Testeur", "Webmaster"]
 	(1..101).map do |zipcode|
 		
 		if zipcode < 10
@@ -29,8 +30,8 @@ def urls
 			zipzero = "#{zipcode}"
 		end
 
-		jobs.map {|job| "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job.gsub!(/\s/,'$0020')}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
-
+		jobs.map {|job| "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"; job.gsub!(/\s/,'$0020')}
+    
 	end.flatten
 end
 
