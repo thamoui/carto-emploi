@@ -55,3 +55,16 @@ WITH (
 Pour voir l’aide de Postgres : \?
 
 Pour sortir de la console PSQL et revenir à la ligne de commande du terminal Ctrl D (deux fois !).
+
+## Lancer le parser
+
+lancer le premier script qui récupère les urls et id correspondant aux offres d'emplois pour les jobs du numérique
+
+Attention : le script génère de nombreuses url !
+Ouvrir le dossier `parser` et lancer l'execution via le terminal :
+
+`ruby pole_emploi_parser.rb`
+
+Une fois que le processus est terminé, lancer le parser qui récupère le détail de chaque offre d'emploi et insère les datas dans la BDD :
+
+`ruby insert_db.rb`
