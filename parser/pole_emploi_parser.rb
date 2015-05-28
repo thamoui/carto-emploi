@@ -39,7 +39,7 @@ def urls
 
 	zipzero = 94
 
-		jobs.map {|job| "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"; job.gsub!(/\s/,'$0020')}
+		jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
 
 #	end.flatten
 end
