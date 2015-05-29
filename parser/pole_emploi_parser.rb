@@ -28,26 +28,20 @@ end
 
 # --------------------- DEF URL FOR TEST - PARSE ONLY A FEW DATA ----------------------------
 def urls
-	jobs = ["Webmaster"]
-	# (92..93).map do |zipcode|
-	#
-	# 	if zipcode < 10
-	# 		zipzero = "0#{zipcode}"
-	# 	else
-	# 		zipzero = "#{zipcode}"
-	# 	end
+	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
+	(91..95).map do |zipcode|
 
-	zipzero = 94
+		if zipcode < 10
+			zipzero = "0#{zipcode}"
+		else
+			zipzero = "#{zipcode}"
+		end
 
 		jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
 
-#	end.flatten
+
+	end.flatten
 end
-
-#https://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/_webmaster_____P___________________________
-
-
-
 
 def save_job(params)
    url = 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
@@ -67,18 +61,3 @@ urls.each do |url|
 		ids.each {|id| save_job({:id=>id})}
 	end
 end
-
-# def urls
-# 	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
-# 	(1..101).map do |zipcode|
-#
-# 		if zipcode < 10
-# 			zipzero = "0#{zipcode}"
-# 		else
-# 			zipzero = "#{zipcode}"
-# 		end
-#
-# 		jobs.map {|job| "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job.gsub!(/\s/,'$0020')}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
-#
-# 	end.flatten
-# end
