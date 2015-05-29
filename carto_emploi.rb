@@ -28,14 +28,13 @@ get '/emploi/' do
   return data.to_json
 end
 
-#get '/emploi/:id' do
-  #content_type :json
-  #data = Array.new()
-  #@conn.exec('SELECT * FROM parse').to_a.each do |row|
-    #id = { id: params[:id] }
-
-    #data << id
-  #end
+get '/emploi/:id' do
+  content_type :json
+  data = Array.new()
+  @conn.exec('SELECT * FROM parse').to_a.each do |row|
+    id = params[:id]
+    data << id
+  end
    
-  #return data.to_json
-#end
+  return data.to_json
+end
