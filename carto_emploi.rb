@@ -76,6 +76,7 @@ get '/geosearch/:lat,:lng' do
   # @lat = 48.629828
   # @lng = 2.441782
 
+<<<<<<< HEAD
   # result = @conn.exec("SELECT region_adress, ( 6371 * acos( cos( radians(51.8391) ) * cos( radians( #{lat} ) ) * cos( radians( #{lng} ) - radians(4.6265) ) + sin( radians(51.8391) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers HAVING distance < 25 ORDER BY region_adress asc;")
   result = @conn.exec("select id_key, distance from (select id_key, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) as distance from job_offers ) as dt where distance < #{@distance};")
 result.map do |result|
@@ -89,4 +90,15 @@ result.map do |result|
     end
   end
 
+=======
+get '/emploi/:id' do
+  content_type :json
+  data = Array.new()
+  @conn.exec('SELECT * FROM parse').to_a.each do |row|
+    id = params[:id]
+    data << id
+  end
+   
+  return data.to_json
+>>>>>>> 00d60da4ff8beb7843ef12e70b0065bb44a517e0
 end
