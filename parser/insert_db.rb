@@ -30,7 +30,7 @@ end
   @b << a
   # => puts "----------- this is b #{@b}"
   end
-@urls = @b[0..2] #change value if you want to test with only a few urls
+@urls = @b[0..1] #change value if you want to test with only a few urls
 
 joboffer_datas = []
 adresses = []
