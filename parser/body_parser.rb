@@ -7,8 +7,6 @@ require 'nokogiri'
 class BodyParser
 
   # attr_reader :url, :doc
-  #
-  #
   # def initialize(url)
   #   @url = url
   #   @doc = Nokogiri::HTML(open(:url))
@@ -31,7 +29,6 @@ class BodyParser
 
 
   def search_region(url)
-    #url = "https://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/027FLJF"
     doc = Nokogiri::HTML(open(url))
     region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
     if region_adress != nil
@@ -55,7 +52,8 @@ class BodyParser
     doc = Nokogiri::HTML(open(url))
     employement_type = doc.css('span[@itemprop="employmentType"]').children.inner_text
     if employement_type != nil
-      employement_type.gsub(/'/, "''")
+      employement_type.gsub!(/'/, "''")
+      employement_type.strip
     else
       employement_type =  "Information non disponible"
     end
@@ -65,7 +63,9 @@ class BodyParser
     doc = Nokogiri::HTML(open(url))
     code_rome = doc.css('p[@itemprop="occupationalCategory"]').children.inner_text
     if code_rome != nil
-      code_rome.gsub(/'/, "''")
+      code_rome.gsub!(/Métier du ROME /, "")
+      code_rome[0..4]
+      #code_rome.gsub(/'/, "''")
     else
       code_rome =  "Information non disponible"
     end

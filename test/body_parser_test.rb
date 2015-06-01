@@ -34,13 +34,15 @@ class BodyParserTest < Minitest::Test
 
   def test_2_search_employment_type
     url = "http://0.0.0.0/jobseeker/test/offre_test_027FLJF.html"
-    expect = "Contrat à durée indéterminée\n"
+    #expect = "Contrat à durée indéterminée\n"
+    expect = "Contrat à durée indéterminée"
     assert_equal expect, doc.search_employment_type(url)
   end
 
   def test_3_find_code_rome
     url = "http://0.0.0.0/jobseeker/test/offre_test_027FLJF.html"
-    expect = "Métier du ROME E1101 -\nAnimation de site multimédia"
+    #expect = "Métier du ROME E1101 -\nAnimation de site multimédia"
+    expect = "E1101"
     assert_equal expect, doc.search_code_rome(url)
   end
 
@@ -52,7 +54,7 @@ class BodyParserTest < Minitest::Test
 
   def test_5_Job_Offer_Description
     @url = "http://0.0.0.0/jobseeker/test/offre_test_027FLJF.html"
-    expect = "En premier lieu joindre des vraies  références  de site réalisés à votre  Cv <br><br>Vous devrez élaborer des stratégies digitales : audits des divers sites du groupe<br>- benchmark, identification des best-practices et rédaction des recommandations<br>Suivi opérationnel du déploiement <br>Webmastering, Community Management<br>Suivi et mesure de la performance des dispositifs mis en place<br>Serez en charge de l'optimisation SEO/SEA, comparateurs, et rédaction web (suivi et développement du référencement naturel, création et optimisation  adwords, remarketing<br>Vous aurez en charge le développement du référencement et de son optimisation.<br>Vous piloterez les données des conversions, analyserez le trafic, réaliserez des tests de type AB, et gèrerez les newsletters.<br>Vous pourrez également intervenir sur le CSS ou le design du site, et effectuer des mises à jours (fiches produits....)<br>Connaissances PHP OBjet CSS, html, et Photoshop seraient un reel plus<br>CONNAISSANCE EN DESIGN IMPERATIF"
+    expect = "En premier lieu joindre des vraies  références  de site réalisés à votre  Cv <br><br>Vous devrez élaborer des stratégies digitales : audits des divers sites du groupe<br>- benchmark, identification des best-practices et rédaction des recommandations<br>Suivi opérationnel du déploiement <br>Webmastering, Community Management<br>Suivi et mesure de la performance des dispositifs mis en place<br>Serez en charge de l''optimisation SEO/SEA, comparateurs, et rédaction web (suivi et développement du référencement naturel, création et optimisation  adwords, remarketing<br>Vous aurez en charge le développement du référencement et de son optimisation.<br>Vous piloterez les données des conversions, analyserez le trafic, réaliserez des tests de type AB, et gèrerez les newsletters.<br>Vous pourrez également intervenir sur le CSS ou le design du site, et effectuer des mises à jours (fiches produits....)<br>Connaissances PHP OBjet CSS, html, et Photoshop seraient un reel plus<br>CONNAISSANCE EN DESIGN IMPERATIF"
     assert_equal expect, doc.search_description_offer(@url)
   end
 
