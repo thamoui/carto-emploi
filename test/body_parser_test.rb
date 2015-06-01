@@ -35,6 +35,7 @@ class BodyParserTest < Minitest::Test
   def test_2_search_employment_type
     url = "http://0.0.0.0/jobseeker/test/offre_test_027FLJF.html"
     #expect = "Contrat à durée indéterminée\n"
+    #"Contrat à durée déterminée - 6 Mois"
     expect = "Contrat à durée indéterminée"
     assert_equal expect, doc.search_employment_type(url)
   end

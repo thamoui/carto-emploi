@@ -38,6 +38,8 @@ class BodyParser
     end
   end
 
+  #--------- Intitulé du poste ---------
+
   def search_title(url)
     doc = Nokogiri::HTML(open(url))
     job_title = doc.css('h4[@itemprop="title"]').children.inner_text
@@ -48,10 +50,13 @@ class BodyParser
     end
   end
 
+  #--------- Type de contrat ---------
+
   def search_employment_type(url)
     doc = Nokogiri::HTML(open(url))
     employement_type = doc.css('span[@itemprop="employmentType"]').children.inner_text
     if employement_type != nil
+      employement_type = employement_type[/[^-]+/]
       employement_type.gsub!(/'/, "''")
       employement_type.strip
     else
@@ -65,7 +70,6 @@ class BodyParser
     if code_rome != nil
       code_rome.gsub!(/Métier du ROME /, "")
       code_rome[0..4]
-      #code_rome.gsub(/'/, "''")
     else
       code_rome =  "Information non disponible"
     end
