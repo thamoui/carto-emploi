@@ -76,22 +76,24 @@ get '/emploi/:id' do
 end
 
 #--------------   /search/S : renvoi un tableau JSON avec les emplois correspondant à la recherche
-
-get '/search/:job' do
+get '/search/:text' do
   content_type :json
   offer = ''
-  offer << params[:job]
+  offer << params[:text]
   puts "---------------this is job searched #{offer}"
   @data_job = []
-  result = @conn.exec("SELECT title || '},{' || code_rome FROM job_offers WHERE to_tsvector('french', code_rome || ' ' || title) @@ to_tsquery('french', '#{offer}');")
+
+  result = @conn.exec("SELECT * FROM job_offers WHERE to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{offer}'); ")
+
     result.map do |result|
-      puts "-----this is result #{result}"
+    puts result["title"]
     @data_job << result
+
   end
   if @data_job == []
-     "Aucun emploi ne correspond à votre recherche"
+     "Aucun emploi ne correspond à votre recherche. Veuillez préciser votre recherche : Webmaster, testeur, administrateur"
   else
-        @data_job.to_json
+    @data_job.to_json
   end
 end
 
