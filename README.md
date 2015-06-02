@@ -58,7 +58,7 @@ Pour sortir de la console PSQL et revenir à la ligne de commande du terminal Ct
 
 ## Lancer le parser
 
-lancer le premier script qui récupère les urls et id correspondant aux offres d'emplois pour les jobs du numérique
+Lancer le premier script qui récupère les urls et id correspondant aux offres d'emplois pour les jobs du numérique
 
 Attention : le script génère de nombreuses url !
 Ouvrir le dossier `parser` et lancer l'execution via le terminal :

@@ -9,7 +9,9 @@ gem "puma"
 gem "rake"
 gem "sinatra-activerecord"
 gem "activerecord"
-gem 'sendgrid-ruby'
+
+gem "json"
+gem "nokogiri"
 
 group :production do
   gem "pg"
@@ -17,6 +19,7 @@ end
 
 group :development do
   gem "sinatra-reloader"
+  gem "shotgun"
 end
 
 group :test do

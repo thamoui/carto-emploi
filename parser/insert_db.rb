@@ -30,7 +30,9 @@ end
   @b << a
   # => puts "----------- this is b #{@b}"
   end
-@urls = @b[0..1] #change value if you want to test with only a few urls
+@urls = @b[86..90]
+#change value if you want to test with only a few urls
+#5 by 5 it's good
 
 joboffer_datas = []
 adresses = []
@@ -67,8 +69,8 @@ joboffer_datas << [doc.search_region(url), offer_id, doc.search_title(url), doc.
     latitude = joboffer_datas[i][9]
     longitude = joboffer_datas[i][10]
 
-    puts "------------- offre n #{i} : #{contrat_type}"
-    puts "------------- offre n #{i} : #{code_rome}"
+    puts "-------------CODE ROME de l'offre n #{i} : #{code_rome}"
+    puts "-------------CODE ROME de l' offre n #{i} : #{title}"
 
     conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES ('#{region_adress}', '#{offer_id}', '#{title}', '#{contrat_type}', '#{code_rome}', '#{publication_date}', '#{offer_description}', '#{url}', '#{company_description}', '#{latitude}', '#{longitude}');")
 
