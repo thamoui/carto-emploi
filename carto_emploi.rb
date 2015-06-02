@@ -159,6 +159,7 @@ get '/geosearch/:lat,:lng' do
 
   puts @lat
   puts @lng
+  puts "this is JOB #{job.class}"
 
   puts "---------------- NEW SEARCH -------------------------"
   puts "---------------- LIMIT GIVEN : #{limit_given} -------------------------"
@@ -195,14 +196,13 @@ get '/geosearch/:lat,:lng' do
   end
   #///////////////////////////// ENF OF PAGINATION ////////////////////////
 
+if job == nil
+  job = "webmaster"
+end
 
-
-  # result = @conn.exec("select id_key, distance from (select id_key, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) as distance from job_offers ) as dt where distance < #{@distance};")
-
-
-  result = @conn.exec("SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}') ORDER BY publication_date ASC LIMIT #{limit} OFFSET #{bg_offers} ;")
+  result = @conn.exec("SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}') ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;")
   result.map do |result|
-  puts "---- #{result["id_key"]} // #{result["offer_id"]} : #{result["title"]}"
+  puts "---- #{result["publication_date"]}  //  #{result["id_key"]} // #{result["offer_id"]} : #{result["title"]}"
   @data_job << result
 
     if @data_job == []
