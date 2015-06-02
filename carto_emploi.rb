@@ -3,6 +3,10 @@ require 'shotgun'
 require 'json'
 require 'pg'
 
+# FOR HEROKU
+# configure { set :server, :puma }
+# set :public_folder, 'public'
+
 
 configure do
   set :conn, PG.connect(:hostaddr=>"127.0.0.1", :port=>5432, :dbname=>"pole_emploi", :user=>"pole_emploi", :password=>'pole_emploi')
