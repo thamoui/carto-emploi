@@ -2,6 +2,17 @@
 Projet de cartographie des emplois du numérique en France
 
 
+# récupérer le projet
+
+`git clone https://github.com/simplonco/carto-emploi.git`
+
+Puis lancer l'installation des gem :
+
+`bundle install`
+
+Pré-requis : vous devez avoir installer Ruby sur votre machine !
+
+
 
 ## configuration de la base de données
 
@@ -68,3 +79,18 @@ Ouvrir le dossier `parser` et lancer l'execution via le terminal :
 Une fois que le processus est terminé, lancer le parser qui récupère le détail de chaque offre d'emploi et insère les datas dans la BDD :
 
 `ruby insert_db.rb`
+
+Attention aux limitations de l'Api geocoder de Google, il faudra modifier le fichier insert pour insérer 5 annonces à la fois.
+
+# Lancer l'api
+
+Dans le terminal :
+
+`shotgun carto_emploi.rb`
+
+
+Ex d'urls pour visualiser le fichier json généré :
+
+- Voir toutes les offres d'emplois disponibles : http://0.0.0.0:9393/emploi?limit=50&p=2
+- Chercher un métier parmi les offres : http://0.0.0.0:9393/search/administrateur?limit=3&p=2
+- Chercher un métier situé à une certaine distance : http://0.0.0.0:9393/geosearch/48.86833,2.66833?text=administrateur&d=50&limit=5
