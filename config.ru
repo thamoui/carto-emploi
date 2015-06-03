@@ -1,2 +1,2 @@
-require './index'
+require './carto_emploi'
 run Sinatra::Application
