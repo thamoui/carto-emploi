@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'shotgun'
+#require 'shotgun' 
 require 'json'
 require 'pg'
 require 'dotenv'
