@@ -11,6 +11,7 @@ gem "sinatra-activerecord"
 gem "activerecord"
 gem "json"
 gem "nokogiri"
+gem "dotenv"
 
 group :production do
   gem "pg"
