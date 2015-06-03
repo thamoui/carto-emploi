@@ -153,17 +153,22 @@ get '/geosearch/:lat,:lng' do
 
   @lat = params[:lat]
   @lng = params[:lng]
-  @distance = 25
+
   job = params['text']
+  @distance = params['d']
+
+  if @distance == nil
+    @distance = 50
+  end
 
   page = params['p'].to_i
   limit_given = params['limit'].to_i
 
   @data_job = []
 
-  puts @lat
-  puts @lng
-  puts "this is JOB #{job.class}"
+  # puts @lat
+  # puts @lng
+  # puts "this is DISTANCE WHEN EMPTY #{@distance.class}"
 
   puts "---------------- NEW SEARCH -------------------------"
   puts "---------------- LIMIT GIVEN : #{limit_given} -------------------------"
