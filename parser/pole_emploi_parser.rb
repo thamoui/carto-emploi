@@ -1,14 +1,26 @@
 require 'open-uri'
 require 'pg'
+require 'dotenv'
+Dotenv.load
+
+#----------------------- HEROKU DB CONFIG  ------------------------
+	db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
+	db_parts = DB.split(/\/|:|@/)
+	username = db_parts[3]
+	password = db_parts[4]
+	host = db_parts[5]
+	db = db_parts[7]
+
+	CONN = PGconn.connect(:host =>  host, :dbname => db, :user=> username, :password=> password)
 
 #----------------------- DB CONFIG  ------------------------
-@hostaddr = "127.0.0.1"
-@port = 5432
-@dbname = "pole_emploi"
-@user = "pole_emploi"
-@password = "pole_emploi"
-
-CONN = PGconn.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
+# @hostaddr = "127.0.0.1"
+# @port = 5432
+# @dbname = "pole_emploi"
+# @user = "pole_emploi"
+# @password = "pole_emploi"
+#
+# CONN = PGconn.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
 
 def document_by_url(url)
 	begin

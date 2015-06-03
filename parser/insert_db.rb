@@ -1,16 +1,29 @@
 require 'pg'
 require_relative 'body_parser'
 require 'geocoder'
+require 'dotenv'
+Dotenv.load
 
-#----------------------- DB CONFIG  ------------------------
-@hostaddr = "127.0.0.1"
-@port = 5432
-@dbname = "pole_emploi"
-@user = "pole_emploi"
-@password = "pole_emploi"
+#----------------------- HEROKU DB CONFIG  ------------------------
+  db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
+  username = db_parts[3]
+  password = db_parts[4]
+  host = db_parts[5]
+  db = db_parts[7]
 
-#----------------------- CONNECT DATABASE  ----------------------
-conn = PGconn.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
+
+  conn = PGconn.connect(:host =>  host, :dbname => db, :user=> username, :password=> password)
+
+
+# ----------------------- DB CONFIG  LOCALHOST ------------------------
+# @hostaddr = "127.0.0.1"
+# @port = 5432
+# @dbname = "pole_emploi"
+# @user = "pole_emploi"
+# @password = "pole_emploi"
+#
+# #----------------------- CONNECT DATABASE LOCALHOST ----------------------
+# conn = PGconn.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
 
 #----------------------- NEW INSTANCE ----------------------
 def doc
