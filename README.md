@@ -63,6 +63,19 @@ WITH (
 
 ```
 
+et
+
+```
+CREATE TABLE parse
+(
+  url text,
+  id text
+)
+WITH (
+  OIDS=FALSE
+);
+```
+
 Pour voir l’aide de Postgres : \?
 
 Pour sortir de la console PSQL et revenir à la ligne de commande du terminal Ctrl D (deux fois !).
@@ -81,6 +94,12 @@ Une fois que le processus est terminé, lancer le parser qui récupère le déta
 `ruby insert_db.rb`
 
 Attention aux limitations de l'Api geocoder de Google, il faudra modifier le fichier insert pour insérer 5 annonces à la fois.
+ligne 45 :
+```
+@urls = @b[51..56]
+#change value if you want to test with only a few urls
+#5 by 5 it's good
+```
 
 # Lancer l'api
 
@@ -94,3 +113,8 @@ Ex d'urls pour visualiser le fichier json généré :
 - Voir toutes les offres d'emplois disponibles : http://0.0.0.0:9393/emploi?limit=50&p=2
 - Chercher un métier parmi les offres : http://0.0.0.0:9393/search/administrateur?limit=3&p=2
 - Chercher un métier situé à une certaine distance : http://0.0.0.0:9393/geosearch/48.86833,2.66833?text=administrateur&d=50&limit=5
+
+
+# Déployement
+
+https://jobmapseeker.herokuapp.com/
