@@ -36,7 +36,7 @@ before do
 end
 
 get '/' do
-  send_file 'views/index.html'
+  send_file 'frontend/index.html'
 end
 #--------------- /emploi/ID : renvoi l'emploi via son id
 get '/emploi/:id' do
