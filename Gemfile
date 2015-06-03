@@ -9,7 +9,6 @@ gem "puma"
 gem "rake"
 gem "sinatra-activerecord"
 gem "activerecord"
-
 gem "json"
 gem "nokogiri"
 

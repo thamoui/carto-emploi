@@ -7,10 +7,34 @@ require 'pg'
 # configure { set :server, :puma }
 # set :public_folder, 'public'
 
+#----------------------- LOCALHOST DB CONFIG  ------------------------
+# @hostaddr = "127.0.0.1"
+# @port = 5432
+# @dbname = "pole_emploi"
+# @user = "pole_emploi"
+# @password = "pole_emploi"
+
+#----------------------- HEROKU DB CONFIG  ------------------------
+#@hostaddr = "http://ec2-54-83-41-183.compute-1.amazonaws.com/"
+@hostaddr = "postgres://jpuvjluaszkukx:iP3RLlqJfs16uZrfZhCG6KqLgR@ec2-54-83-41-183.compute-1.amazonaws.com:5432/d72v8jokst4gq2"
+@port = 5432
+@dbname = "d72v8jokst4gq2"
+@user = "jpuvjluaszkukx"
+@password = "iP3RLlqJfs16uZrfZhCG6KqLgR"
+
 
 configure do
-  set :conn, PG.connect(:hostaddr=>"127.0.0.1", :port=>5432, :dbname=>"pole_emploi", :user=>"pole_emploi", :password=>'pole_emploi')
+  set :conn, PG.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
 end
+
+
+
+#----------------------- CONNECT DATABASE  ----------------------
+
+# configure do
+#   set :conn, PG.connect(:hostaddr=>"127.0.0.1", :port=>5432, :dbname=>"pole_emploi", :user=>"pole_emploi", :password=>'pole_emploi')
+# end
+
 
 before do
   @conn = settings.conn
