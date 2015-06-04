@@ -152,7 +152,7 @@ get '/search/:text' do
 
   end
   if @data_job == []
-     "Aucun emploi ne correspond à votre recherche. Veuillez préciser votre recherche : Webmaster, testeur, administrateur"
+    [].to_json
   else
     @data_job.to_json
   end
@@ -161,7 +161,7 @@ end
 #--------------   /geosearch/LAT,LNG : renvoi les emplois aux alentours
 
 get '/geosearch/:lat,:lng' do
-  #geosearch/48.86833,2.66833?p=42&limit=42&text=développeur
+  #geosearch/48.86833,2.66833?p=42&limit=42&text=développeur LAGNY SUR MARNE
 
   #TESTER AVEC CES VALEURS POUR EVRY
   # @lat = 48.629828
@@ -176,7 +176,7 @@ get '/geosearch/:lat,:lng' do
   job = params['text']
   @distance = params['d']
 
-  if @distance == nil || ""
+  if @distance == nil || @distance == ""
     @distance = 50
   end
 
@@ -226,23 +226,26 @@ get '/geosearch/:lat,:lng' do
   end
   #///////////////////////////// ENF OF PAGINATION ////////////////////////
 
-if job == nil || ""
+if job == nil || job == ""
   sql = ""
 else
   sql = "AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}')"
 end
 
-  result = @conn.exec("SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;")
-  result.map do |data|
+  requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
+
+  puts "-----------------REQUETE SQL : #{requete_sql}"
+
+  result = @conn.exec(requete_sql)
+    result.map do |data|
   puts "---- #{data["publication_date"]}  //  #{data["id_key"]} // #{data["offer_id"]} : #{data["title"]}"
   @data_job << data
 
 
   end
 
-
   if @data_job == []
-     "Aucun emploi ne correspond à votre recherche"
+    [].to_json
   else
         @data_job.to_json
   end
