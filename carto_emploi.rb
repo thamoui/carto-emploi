@@ -232,14 +232,15 @@ else
 end
 
   result = @conn.exec("SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;")
-  result.map do |result|
-  puts "---- #{result["publication_date"]}  //  #{result["id_key"]} // #{result["offer_id"]} : #{result["title"]}"
-  @data_job << result
+  result.map do |data|
+  puts "---- #{data["publication_date"]}  //  #{data["id_key"]} // #{data["offer_id"]} : #{data["title"]}"
+  @data_job << data
 
-    if @data_job == []
-       "Aucun emploi ne correspond à votre recherche"
-    else
-          @data_job.to_json
-    end
+
+  end
+  if @data_job == []
+     "Aucun emploi ne correspond à votre recherche"
+  else
+        @data_job.to_json
   end
 end
