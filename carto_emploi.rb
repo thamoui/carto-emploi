@@ -176,7 +176,7 @@ get '/geosearch/:lat,:lng' do
   job = params['text']
   @distance = params['d']
 
-  if @distance == nil
+  if @distance == nil || ""
     @distance = 50
   end
 
@@ -189,7 +189,9 @@ get '/geosearch/:lat,:lng' do
   # puts @lng
   # puts "this is DISTANCE WHEN EMPTY #{@distance.class}"
 
-  puts "---------------- NEW SEARCH -------------------------"
+  puts "---------------- NEW SEARCH ------------------------- ----------------"
+  puts "---------------- TEXT = #{job} ----------------------------------------"
+  puts "---------------- D = #{@distance.class} ----------------------------------------"
   puts "---------------- LIMIT GIVEN : #{limit_given} -------------------------"
 
   #////////////////////////////// PAGINATION ///////////////////////
@@ -224,11 +226,10 @@ get '/geosearch/:lat,:lng' do
   end
   #///////////////////////////// ENF OF PAGINATION ////////////////////////
 
-if job == nil
+if job == nil || ""
   sql = ""
 else
   sql = "AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}')"
-
 end
 
   result = @conn.exec("SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;")
@@ -238,6 +239,8 @@ end
 
 
   end
+
+
   if @data_job == []
      "Aucun emploi ne correspond à votre recherche"
   else
