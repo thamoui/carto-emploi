@@ -115,7 +115,7 @@
         
           $.ajax({
             type: 'GET',
-            url: '/geosearch/'+ coordinates.lat + ',' + coordinates.lng + '?text=' + document.getElementById('search').value + '&d=50&limit=20&p=1',
+            url: '/geosearch/'+ coordinates.lat + ',' + coordinates.lng + '?text=' + document.getElementById('search').value + '&d=20&limit=20&p=1',
             crossDomain: true,
             dataType: 'json',
             contentType: "application/json",
@@ -128,7 +128,7 @@
       $(document).ready(function() {
         $.ajax({
           type: 'GET',
-          url: '/emploi?limit=20&p=1?limit=20&p=1',
+          url: '/emploi?limit=20&p=1',
           crossDomain: true,
           dataType: 'json',
           contentType: "application/json",
