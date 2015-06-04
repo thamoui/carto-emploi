@@ -69,7 +69,9 @@
           dataType: 'json',
           contentType: "application/json",
           success: function(response) {
-            console.log(response);
+            if (response.length <= 0) {
+              alert("Aucune offre d'emploi ne correspond à votre recherche");
+            }
             getMarker(response);
           }
         });
@@ -91,16 +93,16 @@
         if (document.getElementById('search').value == '') {
           alert("Attention, le champs texte est vide. Veuillez entrer un métier.");
         } else {
-          getMarkerCenter(10, 50, 1, document.getElementById('search').value);
+          getMarkerCenter(20, 50, 1, document.getElementById('search').value);
           }
       });
       
       map.on('moveend', function(move) {
-        getMarkerCenter(1, 5, 1, document.getElementById('search').value);
+        getMarkerCenter(20, 50, 1, document.getElementById('search').value);
       });
 
       $(document).ready(function() {
-        getMarkerCenter(1, 5, 1, '');  
+        getMarkerCenter(20, 50, 1, '');  
       });
     </script>
     
