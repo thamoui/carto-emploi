@@ -120,7 +120,7 @@ get '/search/:text' do
   end # cette partie peut ne pas être copié ???
 
   if limit_given == 0 #afficher, 10, 20 ou 50 annonces, bouge suivant le nbre d'offers disponibles dans la BDD
-    limit = 10 #afficher, 10, 20 ou 50 annonces, nombre fixe
+    limit = 100 #afficher, 10, 20 ou 50 annonces, nombre fixe
     bg_offers = limit_given
     page = 0
     all_pages = (@total.to_f / limit).ceil
@@ -202,7 +202,7 @@ get '/geosearch/:lat,:lng' do
   end # cette partie peut ne pas être copié ???
 
   if limit_given == 0 #afficher, 10, 20 ou 50 annonces, bouge suivant le nbre d'offers disponibles dans la BDD
-    limit = 10 #afficher, 10, 20 ou 50 annonces, nombre fixe
+    limit = 100 #afficher, 10, 20 ou 50 annonces, nombre fixe
     bg_offers = limit_given
     page = 0
     all_pages = (@total.to_f / limit).ceil
