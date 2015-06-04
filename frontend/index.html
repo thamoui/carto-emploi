@@ -59,33 +59,23 @@
         });
       }
       
-      var markerGroup = [];
-      
-      /*
-      $('#search').keyup(search);
-      
-      //debug = null;
-      
-      function search() {
-        // get the value of the search input field
-        var searchString = $('#search').val().toLowerCase();
+      function getMarkerCenter(distance, limit, page, searchtxt) {
+        var coordinates = map.getCenter();
         
-        regexp = new RegExp(document.getElementById("search").value, "i");
-        markerGroup.forEach(function(marker) {
-            console.log(marker);
-            debug = marker;
-            if(!regexp.test(marker.properties.title)) {
-                marker.clearLayers();
-            }
+        $.ajax({
+          type: 'GET',
+          url: '/geosearch/'+ coordinates.lat + ',' + coordinates.lng + '?d=' + distance + '&limit=' + limit + '&p=' + page + '&text=' + searchtxt,
+          crossDomain: true,
+          dataType: 'json',
+          contentType: "application/json",
+          success: function(response) {
+            console.log(response);
+            getMarker(response);
+          }
         });
-       
-        
-        console.log(searchString)
       }
       
-      function showJobs(feature) {
-        return feature.properties.title;
-      }*/
+      var markerGroup = [];
       
       function clearMarkers() {
         markerGroup.forEach(function(marker) {
@@ -93,49 +83,24 @@
         });
         
         markerGroup = [];
-      }
+      } 
     
       $("#button").on('click', function(event) {
         event.preventDefault();
-        $.ajax({
-          type: 'GET',
-          url: '/search/'+ document.getElementById('search').value + '?limit=20&p=1',
-          crossDomain: true,
-          dataType: 'json',
-          contentType: "application/json",
-          success : function(response) {
-            getMarker(response);
+        
+        if (document.getElementById('search').value == '') {
+          alert("Attention, le champs texte est vide. Veuillez entrer un métier.");
+        } else {
+          getMarkerCenter(10, 50, 1, document.getElementById('search').value);
           }
-        });
       });
       
       map.on('moveend', function(move) {
-        
-        var coordinates = map.getCenter();
-        
-          $.ajax({
-            type: 'GET',
-            url: '/geosearch/'+ coordinates.lat + ',' + coordinates.lng + '?text=' + document.getElementById('search').value + '&d=20&limit=20&p=1',
-            crossDomain: true,
-            dataType: 'json',
-            contentType: "application/json",
-            success : function(response) {
-              getMarker(response);
-            }
-          });
+        getMarkerCenter(1, 5, 1, document.getElementById('search').value);
       });
 
       $(document).ready(function() {
-        $.ajax({
-          type: 'GET',
-          url: '/emploi?limit=20&p=1',
-          crossDomain: true,
-          dataType: 'json',
-          contentType: "application/json",
-          success: function(response) {
-            getMarker(response);
-          }
-        });
+        getMarkerCenter(1, 5, 1, '');  
       });
     </script>
     
