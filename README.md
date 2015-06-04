@@ -112,7 +112,7 @@ Ex d'urls pour visualiser le fichier json généré :
 
 - Voir toutes les offres d'emplois disponibles : http://0.0.0.0:9393/emploi?limit=50&p=2
 - Chercher un métier parmi les offres : http://0.0.0.0:9393/search/administrateur?limit=3&p=2
-- Chercher un métier situé à une certaine distance : http://0.0.0.0:9393/geosearch/48.86833,2.66833?text=administrateur&d=50&limit=5
+- Chercher un métier situé à une certaine distance : http://0.0.0.0:9393/geosearch/48.86833,2.66833?text=administrateur&d=50&limit=5&p=1
 
 
 # Déployement

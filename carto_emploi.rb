@@ -1,5 +1,5 @@
 require 'sinatra'
-#require 'shotgun' 
+#require 'shotgun'
 require 'json'
 require 'pg'
 require 'dotenv'
@@ -67,7 +67,7 @@ get '/emploi' do
   end
 
   if limit_given == 0 #afficher, 10, 20 ou 50 annonces, nombre qui bouge suivant le nbre d'offers disponibles dans la BDD
-    limit = 10 #afficher, 10, 20 ou 50 annonces, nombre fixe
+    limit = 100 #afficher, 10, 20 ou 50 annonces, nombre fixe
     bg_offers = limit_given
     page = 0
     all_pages = (@total.to_f / limit).ceil
