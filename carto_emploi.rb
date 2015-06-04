@@ -167,8 +167,7 @@ get '/geosearch/:lat,:lng' do
   # @lat = 48.629828
   # @lng = 2.441782
 
-  content_type :json
-
+  content_type :json, 'charset' => 'utf-8'
 
   @lat = params[:lat]
   @lng = params[:lng]
@@ -247,6 +246,6 @@ end
   if @data_job == []
     [].to_json
   else
-        @data_job.to_json
+    @data_job.to_json
   end
 end
