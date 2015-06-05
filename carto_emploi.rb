@@ -20,6 +20,8 @@ Dotenv.load
 #   set :conn, PG.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
 # end
 
+puts "--------------- COUCOU ----------------------"
+
 #----------------------- HEROKU DB CONFIG  ------------------------
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
   username = db_parts[3]
@@ -54,7 +56,7 @@ end
 #------- renvoie les 10 dernières ajoutées
 get '/emploi' do
   # matches "GET /emploi?p=1&limit=10"
-  content_type :json
+  content_type :json, 'charset' => 'utf-8'
   page = params['p'].to_i
   limit_given = params['limit'].to_i
 
@@ -100,7 +102,7 @@ get '/emploi' do
 
 #--------------   /search/S : renvoi un tableau JSON avec les emplois correspondant à la recherche
 get '/search/:text' do
-  content_type :json
+  content_type :json, 'charset' => 'utf-8'
   #offer = ''
   job = params[:text]
   page = params['p'].to_i
