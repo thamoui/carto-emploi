@@ -11,53 +11,80 @@
       #map {position:absolute; top:0; bottom:0; width:100%;}
       .search-ui {position:absolute; top:47px; right:50px; z-index:1000;}
       .button {position:absolute; top:47px; right: 30px; z-index:1000;}
-      .block_text {position:absolute; background-color:white; color:#686868; padding-left:6px; border: 1px black solid; top:15px; right:15px; width:400px; box-shadow: 5px 5px 5px #888888; z-index:1000;}
+      .block_text {position:absolute; background-color:white; color:#686868; padding-left:6px; border: 1px black solid; top:15px; right:15px; width:400px; height:200px; box-shadow: 5px 5px 5px #888888; z-index:1000;}
       .text {font-size:12px; color:black;}
+      .ui-button {background:#3887BE; color:#FFF; display:block; position:absolute; top:150px; right:230px; width:50px; margin:-20px 0 0 -80px; z-index:100; text-align:center; padding:2px; border:1px solid rgba(0,0,0,0.4); border-radius:3px;}
+      .ui-button:hover {background:#3074a4; color:#fff;}
     </style>
   </head>
   <body>
     <div id='map'></div>
-    <div class='block_text'><h1>Cartemploi<h1><p class='text'>Une carte pour géolocaliser vos offres d'emploi partout en France</p><p class='text'>En partenariat avec Pole Emploi</div>
+    
+    <div class='block_text'><h1>Cartemploi<h1><p class='text'>Une carte pour géolocaliser vos offres d'emploi partout en France</p><p class='text'>En partenariat avec Pole Emploi</p><p class='text'>Géolocalisation : <a href='#' id='geolocate' class='ui-button'>OK</a></p></div>
     <input id='search' class='search-ui' placeholder='Recherche par métier' />
     <button type="button" id='button' class='button'>OK</button>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
       L.mapbox.accessToken = 'pk.eyJ1IjoiYmxhY2t5IiwiYSI6IjA4NWJjZDNiNDQ0MTg3YjVmZTNkM2NkMWQ3MmM4ZjU4In0.SDQh56AZPCbIL2rVs4eAkQ';
       var map = L.mapbox.map('map', 'mapbox.streets').setView([48.855, 2.4], 12);
+      var geolocate = document.getElementById('geolocate');
+      
+      if (!navigator.geolocation) {
+        geolocate.innerHTML = 'La géolocation n\'est pas disponible';
+      } else {
+        geolocate.onclick = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            map.locate();
+        };
+      }
+      
+      map.on('locationfound', function(e) {
+        map.fitBounds(e.bounds);
+        getMarker(response);
+        geolocate.parentNode.removeChild(geolocate);
+      });
       
       function getMarker(response) {
         clearMarkers();
-        $.each(response, function(i) {  
-          title = response[i].title;              
-          latitude = response[i].latitude;
-          longitude = response[i].longitude
           
-          markerGroup.push(L.mapbox.featureLayer({
-          
-          // this feature is in the GeoJSON format: see geojson.org
-          // for the full specification
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                // coordinates here are in longitude, latitude order because
-                // x, y is the standard for GeoJSON and many formats
-                coordinates: [
-                  longitude,
-                  latitude
-                ]
-            },
-            properties: {
-                title: title,
-                description : '',
-                // one can customize markers by adding simplestyle properties
-                // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-                'marker-size': 'large',
-                'marker-color': '#ffa500',
-                'marker-symbol': 'suitcase'
-            }
-          }).addTo(map));
-        });
+          $.each(response, function(i) {  
+            title = response[i].title;
+            contrat_type = response[i].contrat_type;
+            url = response[i].url;            
+            latitude = response[i].latitude;
+            longitude = response[i].longitude
+            
+            markerGroup.push(L.mapbox.featureLayer({
+            
+            // this feature is in the GeoJSON format: see geojson.org
+            // for the full specification
+              type: 'Feature',
+              geometry: {
+                  type: 'Point',
+                  // coordinates here are in longitude, latitude order because
+                  // x, y is the standard for GeoJSON and many formats
+                  coordinates: [
+                    longitude,
+                    latitude
+                  ]
+              },
+              properties: { 
+                  title: title,
+                  description: [contrat_type, url],  
+                  // one can customize markers by adding simplestyle properties
+                  // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+                  'marker-size': 'large',
+                  'marker-color': '#ffa500',
+                  'marker-symbol': 'suitcase'
+              }
+            }).addTo(map));
+          });
       }
+      
+      map.on('locationerror', function() {
+        geolocate.innerHTML = 'La position ne peut être trouvé';
+      });
       
       function getMarkerCenter(distance, limit, page, searchtxt) {
         var coordinates = map.getCenter();
@@ -86,7 +113,7 @@
         
         markerGroup = [];
       } 
-    
+      
       $("#button").on('click', function(event) {
         event.preventDefault();
         
