@@ -5,6 +5,14 @@ require 'pg'
 require 'dotenv'
 Dotenv.load
 
+
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
+
+
+puts "----------------YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo"
+
 # FOR HEROKU
   configure { set :server, :puma }
   set :public_folder, 'public'
@@ -20,10 +28,9 @@ Dotenv.load
 #   set :conn, PG.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
 # end
 
-puts "--------------- COUCOU ----------------------"
-
 #----------------------- HEROKU DB CONFIG  ------------------------
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
+  puts "----------------DB PART #{db_parts}"
   username = db_parts[3]
   password = db_parts[4]
   host = db_parts[5]
@@ -239,7 +246,7 @@ end
 
   result = @conn.exec(requete_sql)
     result.map do |data|
-  puts "---- #{data["publication_date"]}  //  #{data["id_key"]} // #{data["offer_id"]} : #{data["title"]}"
+  puts "---- #{data["publication_date"]}  // //  #{data["region_adress"]} //  #{data["id_key"]} // #{data["offer_id"]} : #{data["title"]}"
   @data_job << data
 
 
