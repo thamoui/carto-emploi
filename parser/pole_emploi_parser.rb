@@ -3,15 +3,14 @@ require 'pg'
 require 'dotenv'
 Dotenv.load
 
-#----------------------- HEROKU DB CONFIG  ------------------------
+# #----------------------- HEROKU DB CONFIG  ------------------------
 	db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
-	db_parts = DB.split(/\/|:|@/)
 	username = db_parts[3]
 	password = db_parts[4]
 	host = db_parts[5]
 	db = db_parts[7]
 
-	CONN = PGconn.connect(:host =>  host, :dbname => db, :user=> username, :password=> password)
+ 	CONN = PGconn.connect(:host =>  host, :dbname => db, :user=> username, :password=> password)
 
 #----------------------- DB CONFIG  ------------------------
 # @hostaddr = "127.0.0.1"
@@ -19,8 +18,8 @@ Dotenv.load
 # @dbname = "pole_emploi"
 # @user = "pole_emploi"
 # @password = "pole_emploi"
-#
-# CONN = PGconn.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
+
+#CONN = PGconn.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
 
 def document_by_url(url)
 	begin
@@ -41,18 +40,19 @@ end
 # --------------------- DEF URL FOR TEST - PARSE ONLY A FEW DATA ----------------------------
 def urls
 	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
-	(91..95).map do |zipcode|
+	# (986..989).map do |zipcode|
+	#
+	# 	if zipcode < 10
+	# 		zipzero = "0#{zipcode}"
+	# 	else
+	# 		zipzero = "#{zipcode}"
+	# 	end
 
-		if zipcode < 10
-			zipzero = "0#{zipcode}"
-		else
-			zipzero = "#{zipcode}"
-		end
-
+		zipzero = 13
 		jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
 
 
-	end.flatten
+	#end.flatten
 end
 
 def save_job(params)
@@ -73,3 +73,5 @@ urls.each do |url|
 		ids.each {|id| save_job({:id=>id})}
 	end
 end
+
+conn.close

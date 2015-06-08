@@ -1,8 +1,11 @@
 require 'pg'
 require_relative 'body_parser'
 require 'geocoder'
+require 'geokit'
 require 'dotenv'
 Dotenv.load
+
+Geokit::default_units = :kms
 
 #----------------------- HEROKU DB CONFIG  ------------------------
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
@@ -59,11 +62,11 @@ puts "---------------- Theres is #{@urls_id.length} urls in the database -------
 #(@urls_id.length - 8).step(@urls_id.length, 5) do |num|
 
 #0.step(@urls_id.length, 5) do |num|
-30.step(60, 5) do |num|
+4112.step(4153, 2) do |num|
   #le parser entre les x premières urls, avec un pas de 5
 
-    @five_urls = @urls_id[num..num+4]
-    puts "------------- 5 urls suivantes start #{num} -------------------------------"
+    @five_urls = @urls_id[num..num+1]
+    puts "------------- 2 urls suivantes start #{num} -------------------------------"
     puts @five_urls
 
   joboffer_datas = []
@@ -72,17 +75,42 @@ puts "---------------- Theres is #{@urls_id.length} urls in the database -------
   @five_urls.each do |url, offer_id|
       adresses << doc.search_region(url)
 
-  #------------------- GETTING LATITUDE & LONGITUDE ---------------------
-      adresses.each do |adress|
-        #puts "this is d---------- #{adress}"
-        d = Geocoder.search(adress)
-        #puts "this is d---------- #{d}"
-        ll = d[0].data["geometry"]["location"]
-        @latitude = ll['lat']
-        @longitude = ll['lng']
-      end
-      sleep(3)
+
+# ------------------- GETTING LATITUDE & LONGITUDE // GEOKIT ------------------------
+adresses.each do |adress|
+      if adress == ""
+        @latitude = 46.16
+        @longitude = 1.23
+      else
+a = Geokit::Geocoders::GoogleGeocoder.geocode adress
+b = a.ll.split(',', 2)
+@latitude = b[0].to_f.abs
+@longitude = b[1].to_f.abs
+puts "Latitude  ------------ #{@latitude}"
+puts "Latitude  ------------ #{@longitude}"
+end
+sleep(5)
+end
+
+
+  # #------------------- GETTING LATITUDE & LONGITUDE // GEOCODER ---------------------
+  #     adresses.each do |adress|
+  #       if adress == ""
+  #         @latitude = 46.16
+  #         @longitude = 1.23
+  #       else
+  #         puts "this is d---------- #{adress}"
+  #         d = Geocoder.search(adress)
+  #         puts "this is d---------- #{d}"
+  #         ll = d[0].data["geometry"]["location"]
+  #         @latitude = ll['lat']
+  #         @longitude = ll['lng']
+  #       end
+  #     end
+  #     sleep(8)
   #------------------- USING BODY PARSER  ---------------------
+
+
   joboffer_datas << [doc.search_region(url), offer_id, doc.search_title(url), doc.search_employment_type(url), doc.search_code_rome(url), doc.search_publication_date(url), doc.search_description_offer(url), doc.search_company_description(url), url, @latitude, @longitude]
      end
   #-------------- INSERT DATAS TO DATABASE---------------------
@@ -105,8 +133,9 @@ puts "---------------- Theres is #{@urls_id.length} urls in the database -------
       puts "-------------CODE ROME de l' offre n #{i} : #{title}"
 
       conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES ('#{region_adress}', '#{offer_id}', '#{title}', '#{contrat_type}', '#{code_rome}', '#{publication_date}', '#{offer_description}', '#{url}', '#{company_description}', '#{latitude}', '#{longitude}');")
-    end
-    sleep(5)
   end
+    sleep(5)
+    puts "--------------------------- OFFER INSERTED INTO DB ------------------ "
+end
 
 conn.close

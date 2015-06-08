@@ -4,6 +4,7 @@ require 'uri'
 require 'open-uri'
 require 'nokogiri'
 
+
 class BodyParser
 
   # attr_reader :url, :doc
@@ -27,11 +28,10 @@ class BodyParser
 #----------- PARSING METHODS -----------------------------
 #----------- THERE ARE  7 METHODS --------------------------
 
-
   def search_region(url)
     doc = Nokogiri::HTML(open(url))
     region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
-    if region_adress != nil
+    if region_adress != nil || region_adress != ""
       region_adress.gsub(/'/, "''")
     else
       region_adress =  "Information non disponible"
@@ -55,19 +55,28 @@ class BodyParser
   def search_employment_type(url)
     doc = Nokogiri::HTML(open(url))
     employement_type = doc.css('span[@itemprop="employmentType"]').children.inner_text
-    if employement_type != nil
+
+    #  if employement_type != nil
+    #  employement_type =  "Information non disponible"
+    #   end
+
+    if   employement_type != nil || employement_type != "" || employement_type.string?
+
       employement_type = employement_type[/[^-]+/]
-      employement_type.gsub!(/'/, "''")
-      employement_type.strip
+      #employement_type.gsub!(/'/, "''")
+      #employement_type.strip
     else
       employement_type =  "Information non disponible"
     end
   end
 
+  #--------- Code Rome ---------
+
+
   def search_code_rome(url)
     doc = Nokogiri::HTML(open(url))
     code_rome = doc.css('p[@itemprop="occupationalCategory"]').children.inner_text
-    if code_rome != nil
+    if code_rome != nil || code_rome != ""
       code_rome.gsub!(/Métier du ROME /, "")
       code_rome[0..4]
     else
@@ -83,7 +92,7 @@ class BodyParser
   def search_description_offer(url)
     doc = Nokogiri::HTML(open(url))
     description_offer = doc.css('p[@itemprop="description"]').inner_html
-    if description_offer != nil
+    if description_offer != nil || description_offer != ""
       description_offer.gsub(/'/, "''")
     else
       description_offer =  "Information non disponible"
@@ -94,7 +103,7 @@ class BodyParser
     doc = Nokogiri::HTML(open(url))
     company_description = doc.xpath("//div[contains(@class,'vcard')]/p/text()").collect {|node| node.text}
     company_description[0]
-    if company_description[0] != nil
+    if company_description[0] != nil #|| company_description[0] != ""
       company_description[0].gsub(/'/, "''")
     else
       company_description[0] =  "Information non disponible"
