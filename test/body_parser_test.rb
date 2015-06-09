@@ -65,4 +65,10 @@ class BodyParserTest < Minitest::Test
     assert_equal expect, doc.search_company_description(@url)
   end
 
+  def test_7_Offre_Non_Disponible
+    @url = "http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/027HXXX"
+    #@url = "http://candidat.pole-emploi.fr/candidat/rechercheoffres/offrenondisponible/027HBXX"
+    expect = "L'offre que vous souhaitez consulter n'est plus disponible."
+    assert_equal expect, doc.offer_unavailable(@url)
+  end
 end
