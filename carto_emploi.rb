@@ -6,8 +6,8 @@ require 'dotenv'
 Dotenv.load
 
 
-require 'active_record'#
-ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/pole_emploi')
+# require 'active_record'#
+# ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/pole_emploi')
 
 # FOR HEROKU
   configure { set :server, :puma }
@@ -16,11 +16,11 @@ ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://local
 if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
   configure do
-    set :conn, PG.connect(hostaddr: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
+    set :conn, PG.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
   end
 else
   configure do
-    set :conn, PG.connect(hostaddr: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
+    set :conn, PG.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
   end
 end
 
