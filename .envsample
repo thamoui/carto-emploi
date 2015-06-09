@@ -1,4 +1,5 @@
 DATABASE_PASSWORD=yourpassword
 DATABASE_USER_NAME=youusername
+DATABASE_NAME=yourdbname
 DATABASE_url=yourdatabaseurl
 RACK_ENV=development

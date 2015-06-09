@@ -6,39 +6,24 @@ require 'dotenv'
 Dotenv.load
 
 
-require 'active_record'
-
-ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
-
-
-puts "----------------YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo"
+require 'active_record'#
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/pole_emploi')
 
 # FOR HEROKU
   configure { set :server, :puma }
   set :public_folder, 'public'
-
-#----------------------- LOCALHOST DB CONFIG  ------------------------
-# @hostaddr = "127.0.0.1"
-# @port = 5432
-# @dbname = "pole_emploi"
-# @user = "pole_emploi"
-# @password = "pole_emploi"
-
-# configure do
-#   set :conn, PG.connect(:hostaddr=>@hostaddr, :port=>@port, :dbname=>@dbname, :user=>@user, :password=>@password)
-# end
-
-#----------------------- HEROKU DB CONFIG  ------------------------
+#----------------------- DB CONFIG  ------------------------
+if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
-  puts "----------------DB PART #{db_parts}"
-  username = db_parts[3]
-  password = db_parts[4]
-  host = db_parts[5]
-  db = db_parts[7]
-
   configure do
-  set :conn, PG.connect(:host =>  host, :dbname => db, :user=> username, :password=> password)
+    set :conn, PG.connect(hostaddr: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
   end
+else
+  configure do
+    set :conn, PG.connect(hostaddr: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
+  end
+end
+
 
 before do
   @conn = settings.conn
@@ -171,7 +156,6 @@ end
 
 get '/geosearch/:lat,:lng' do
   #geosearch/48.86833,2.66833?p=42&limit=42&text=développeur LAGNY SUR MARNE
-
   #TESTER AVEC CES VALEURS POUR EVRY
   # @lat = 48.629828
   # @lng = 2.441782
@@ -258,3 +242,5 @@ end
     @data_job.to_json
   end
 end
+
+#conn.close
