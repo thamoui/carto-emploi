@@ -29,28 +29,58 @@ def not_nil(url)
 end
 
 # --------------------- DEF URL FOR TEST - PARSE ONLY A FEW DATA ----------------------------
+
+
 #def urls(start, stop)
 def urls
 	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur", "Webmaster"]
-	(1..9).map do |zipcode|
-		#(start..stop).map do |zipcode|
 
-		if zipcode < 10
-			zipzero = "0#{zipcode}"
-		else
-			zipzero = "#{zipcode}"
+	puts "------------ ARGV #{ARGV[0].class}" #ARGV is an array
+
+	unless ARGV[0] == "2A" || ARGV[0] == "2B"
+		ARGV[0].to_i
+		puts ARGV[0].class
+	end
+	unless ARGV[1] == "2A" || ARGV[1] == "2B"
+		ARGV[1].to_i
+	end
+
+	puts ARGV[0].class
+
+	if ARGV[0] == []
+		puts 'Hey ! Mets un numéro de département steuplé!'
+	elsif ARGV[1] == []
+		ARGV[1] = ARGV[0]
 		end
 
-	jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
+#si arg est différent de 2A et de 2B le transformer en integer
+#transformer en integer
+#---------- si pas de deuxième argument
+	#if ARGV[0] != ARGV[1]
 
+		(ARGV[0].to_i..ARGV[1].to_i).map do |zipcode|
+			#(start..stop).map do |zipcode|
+			if zipcode < 10
+				zipzero = "0#{zipcode}"
+			else
+				zipzero = "#{zipcode}"
+			end
 
-	end.flatten
+			jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipzero}___P__________INDIFFERENT_________________"}
+		end.flatten
 end
+
 
 def save_job(params)
   url = 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
-	puts "------this is url : #{url}"
-  CONN.exec("INSERT INTO parse (id, url) VALUES ('#{params[:id]}', '#{url}')")
+	puts "------this is url parsed from search result for dpt : #{url}"
+  #CONN.exec("INSERT INTO parse (url, id) VALUES ('#{params[:id]}', '#{url}')")
+	#rajouter une exception : ne pas insérer si id déjà présent dans job offers
+
+	#CONN.exec("INSERT INTO parse (url, id) SELECT '#{url}', '#{params[:id]}' WHERE NOT EXISTS (select offer_id from job_offers WHERE offer_id = '#{params[:id]}')")
+
+	CONN.exec("INSERT INTO parse (url, id) SELECT '#{url}', '#{params[:id]}' WHERE NOT EXISTS (select id from parse WHERE id = '#{params[:id]}')")
+
 end
 
 def get_ids_by_document(document)
@@ -58,12 +88,13 @@ def get_ids_by_document(document)
 end
 
 urls.each do |url|
+	puts "this is url #{url}"
 	document = document_by_url(url)
 
 	if document
 		ids = get_ids_by_document(document)
 		ids.each {|id| save_job({:id=>id})}
+		puts "//////////// URL SAVED IN DB ////////////////////"
 	end
-
-	#conn.close
 end
+#conn.close
