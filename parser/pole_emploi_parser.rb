@@ -74,11 +74,6 @@ end
 def save_job(params)
   url = 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
 	puts "------this is url parsed from search result for dpt : #{url}"
-  #CONN.exec("INSERT INTO parse (url, id) VALUES ('#{params[:id]}', '#{url}')")
-	#rajouter une exception : ne pas insérer si id déjà présent dans job offers
-
-	#CONN.exec("INSERT INTO parse (url, id) SELECT '#{url}', '#{params[:id]}' WHERE NOT EXISTS (select offer_id from job_offers WHERE offer_id = '#{params[:id]}')")
-
 	CONN.exec("INSERT INTO parse (url, id) SELECT '#{url}', '#{params[:id]}' WHERE NOT EXISTS (select id from parse WHERE id = '#{params[:id]}')")
 
 end
