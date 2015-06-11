@@ -3,7 +3,7 @@ require_relative 'body_parser'
 require 'geocoder'
 require 'geokit'
 require 'dotenv'
-require 'colorize'
+
 Dotenv.load
 Geokit::default_units = :kms
 
@@ -15,6 +15,7 @@ if ENV['RACK_ENV'] == "production"
 else
   #----------------------- CONNECT DATABASE LOCALHOST ----------------------
   conn = PGconn.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
+  require 'colorize'
 end
 
 #----------------------- NEW INSTANCE ----------------------

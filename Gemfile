@@ -12,8 +12,8 @@ gem "activerecord"
 gem "json"
 gem "nokogiri"
 gem "dotenv"
-gem 'geocoder'
-gem 'geokit'
+gem "geocoder"
+gem "geokit"
 
 group :production do
   gem "pg"
