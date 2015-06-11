@@ -26,21 +26,15 @@ class BodyParser
 
 
 #----------- PARSING METHODS -----------------------------
-#----------- THERE ARE  7 METHODS --------------------------
+#----------- THERE ARE  8 METHODS --------------------------
 
 # ----------------L'offre n'est plus disponible
-
 def offer_unavailable(url)
   doc = Nokogiri::HTML(open(url))
   message = doc.css('p[@class="first paragraph-embed"]').children.inner_text
 end
 
-#<p class="first paragraph-embed">L'offre que vous souhaitez consulter n'est plus disponible.</p>
-
-
-
 #------------------- Adresse ------------------------------
-
   def search_region(url)
     doc = Nokogiri::HTML(open(url))
     region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
@@ -52,7 +46,6 @@ end
   end
 
   #--------- Intitulé du poste ---------
-
   def search_title(url)
     doc = Nokogiri::HTML(open(url))
     job_title = doc.css('h4[@itemprop="title"]').children.inner_text
@@ -64,22 +57,19 @@ end
   end
 
   #--------- Type de contrat ---------
-
   def search_employment_type(url)
     doc = Nokogiri::HTML(open(url))
     employement_type = doc.css('span[@itemprop="employmentType"]').children.inner_text
     if   employement_type != nil || employement_type != "" || employement_type.string?
       employement_type = employement_type[/[^-]+/]
-      employement_type.gsub!(/'/, "''")
-      employement_type.strip
+      # employement_type.gsub!(/'/, "''")
+      # employement_type.strip
     else
       employement_type =  "Information non disponible"
     end
   end
 
   #--------- Code Rome ---------
-
-
   def search_code_rome(url)
     doc = Nokogiri::HTML(open(url))
     code_rome = doc.css('p[@itemprop="occupationalCategory"]').children.inner_text
