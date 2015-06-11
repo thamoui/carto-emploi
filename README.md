@@ -40,6 +40,7 @@ Créer les colonnes de la table :
 
 puis :
 
+
 ```sql
 
 CREATE TABLE job_offers
@@ -69,12 +70,25 @@ et
 CREATE TABLE parse
 (
   url text,
-  id text
+  id text,
+  id_key serial NOT NULL
 )
 WITH (
   OIDS=FALSE
 );
 ```
+
+Créer des primary key :
+
+```
+ALTER TABLE job_offers ADD PRIMARY KEY (offer_id);
+```
+
+```
+ALTER TABLE parse ADD PRIMARY KEY (id_key);
+```
+
+
 
 Pour voir l’aide de Postgres : \?
 
