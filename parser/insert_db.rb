@@ -23,6 +23,7 @@ def doc
   ::BodyParser.new
 end
 #---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
+#only select from parse if offer is not in job_offers db
 @result = conn.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
 
 puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
@@ -50,7 +51,7 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
       @latitude, @longitude = geodata[:lat], geodata[:lng]
       #@longitude = b[1].to_f.abs
       puts "Latitude  --------- #{@latitude} // Longitude  ------------ #{@longitude}"
-      sleep(5)
+      sleep(3)
       if @latitude == nil #------- Use Geocoder Gem --------
         if adress == ""
           @latitude = 46.16
@@ -65,7 +66,7 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
         end
         #end
       end
-      sleep(5)
+      sleep(2)
     end
 
     #------------------- USING BODY PARSER  ---------------------
