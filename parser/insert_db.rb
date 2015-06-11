@@ -11,9 +11,10 @@ Geokit::default_units = :kms
 #----------------------- HEROKU DB CONFIG  ------------------------
 if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
-  CONN = PGconn.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
+  conn = PGconn.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
+else
   #----------------------- CONNECT DATABASE LOCALHOST ----------------------
-  conn = PGconn.connect(host: "127.0.0.1", port: 5432, dbname: "pole_emploi", user: "pole_emploi", password: "pole_emploi")
+  conn = PGconn.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
 end
 
 #----------------------- NEW INSTANCE ----------------------
@@ -29,7 +30,7 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
 
 #---------test avec url d'offre indisponible --------
 
-@result[0..1175].each do |item|
+@result[0..@result.length].each do |item|
   nb_offres = nb_offres-1
   puts "_______________________________ STARTING ___________________________________"
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
