@@ -20,6 +20,7 @@ end
 group :development do
   gem "sinatra-reloader"
   gem "shotgun"
+  gem "colorize"
 end
 
 group :test do
