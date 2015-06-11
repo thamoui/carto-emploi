@@ -6,7 +6,7 @@ require 'dotenv'
 Dotenv.load
 
 configure { set :server, :puma }
-  set :public_folder, 'public'
+set :public_folder, 'public'
 
 #----------------------- DB CONFIG  ------------------------
 if ENV['RACK_ENV'] == "production"
@@ -87,20 +87,20 @@ get '/geosearch/:lat,:lng' do
   end
   #///////////////////////////// ENF OF PAGINATION ////////////////////////
 
-if job == nil || job == ""
-  sql = ""
-else
-  sql = "AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}')"
-end
+  if job == nil || job == ""
+    sql = ""
+  else
+    sql = "AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}')"
+  end
 
   requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
 
   puts "-----------------REQUETE SQL : #{requete_sql}"
 
   result = @conn.exec(requete_sql)
-    result.map do |data|
-  puts "---- #{data["publication_date"]}  // //  #{data["region_adress"]} //  #{data["id_key"]} // #{data["offer_id"]} : #{data["title"]}"
-  @data_job << data
+  result.map do |data|
+    puts "---- #{data["publication_date"]}  // //  #{data["region_adress"]} //  #{data["id_key"]} // #{data["offer_id"]} : #{data["title"]}"
+    @data_job << data
   end
 
   if @data_job == [] #an empty data is analysed by index.html
