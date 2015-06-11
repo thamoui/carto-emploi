@@ -25,7 +25,7 @@ end
 #---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
 @result = conn.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
 
-puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------".red
+puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
 
 nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
 
@@ -35,7 +35,7 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
   nb_offres = nb_offres-1
   puts "_______________________________ STARTING ___________________________________"
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
-  puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------".yellow
+  puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
 
   if doc.offer_unavailable(item["url"]) != "L'offre que vous souhaitez consulter n'est plus disponible."
     adress = doc.search_region(item["url"]).gsub(/''/, "'")
@@ -81,8 +81,8 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
     puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
     puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
 
-    puts "--------------------------- OFFER INSERTED INTO DB :) ------------------------- ".green
-    puts "--- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ------".green
+    puts "--------------------------- OFFER INSERTED INTO DB :) ------------------------- "
+    puts "--- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ------"
     puts "_____________________________________________________________________________"
   end
 end
