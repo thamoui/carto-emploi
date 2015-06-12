@@ -101,19 +101,22 @@ Lancer le premier script qui récupère les urls et id correspondant aux offres 
 Attention : le script génère de nombreuses url !
 Ouvrir le dossier `parser` et lancer l'execution via le terminal :
 
-`ruby pole_emploi_parser.rb`
+`ruby pole_emploi_parser.rb 1 19` pour parser du département 1 à 19, sachant que les départements vont de 1 à 95 et que le 20 n'existe pas, c'est la Corse et est remplacé par 2A et 2B
 
 Une fois que le processus est terminé, lancer le parser qui récupère le détail de chaque offre d'emploi et insère les datas dans la BDD :
 
 `ruby insert_db.rb`
 
-Attention aux limitations de l'Api geocoder de Google, il faudra modifier le fichier insert pour insérer 5 annonces à la fois.
-ligne 45 :
+
+Pour supprimer de la base job_offers les offres qui ne sont plus disponibles :
+
+
+```bash
+parser/delete_offers.rb
 ```
-@urls = @b[51..56]
-#change value if you want to test with only a few urls
-#5 by 5 it's good
-```
+
+Pour faire la même chose en production, lancer d'abord une console :
+`heroku run bash`
 
 # Lancer l'api
 
