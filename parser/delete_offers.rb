@@ -23,17 +23,20 @@ end
 puts @result[0]
 puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
 nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
+deleted_offer = 0
 
 @result[0..@result.length].each do |item|
-  nb_offres = nb_offres-1
+  nb_offres = nb_offres - 1
+  deleted_offer + 1
   puts "_________________ STARTING PARSING ALL JOB OFFERS _____________________________"
-  puts "-------------------- OFFER ID de l' offre : #{item["id"]} -------------------- "
-  puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
+  # puts "-------------------- OFFER ID de l' offre : #{item["id"]} -------------------- "
+  # puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
   #
   if doc.offer_unavailable(item["url"]) == "L'offre que vous souhaitez consulter n'est plus disponible."
     conn.exec("DELETE FROM job_offers WHERE url = '#{item["url"]}'")
-    puts "-------- L'offre n°#{item["id"]} a été supprimé de la bdd job_offers-------- "
+    puts "-------- L'url #{item["url"]} a été supprimé de la bdd job_offers-------- "
   end
   puts "--- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ----"
-  puts "_____________________________________________________________________________"
+  puts "_________Nombre d'offre(s) supprimée(s)#{deleted_offer}__________________________________"
+
 end
