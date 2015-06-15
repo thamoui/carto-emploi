@@ -41,13 +41,14 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
   #remplacer la condition par true ou false, cf body parser
   if doc.offer_unavailable(item["url"]) != "L'offre que vous souhaitez consulter n'est plus disponible."
     adress = doc.search_region(item["url"]).gsub(/''/, "'")
-    # ------------------- GETTING LATITUDE & LONGITUDE // GEOKIT ------------------------
 
+    puts "------------ adresse brute #{adress}"
+
+    # ------------------- GETTING LATITUDE & LONGITUDE // GEOKIT ------------------------
     if adress != "" && adress == adress.upcase #si adress en majuscule c'est une ville
-      #
-      #   @latitude = 46.16
-      #   @longitude = 1.23
-      # else
+
+      # ATTENTION !!! Sauf Paris !!
+
       geodata = Geokit::Geocoders::GoogleGeocoder.geocode(adress, :bias => 'fr').to_hash
       @latitude, @longitude = geodata[:lat], geodata[:lng]
       #@longitude = b[1].to_f.abs
