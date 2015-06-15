@@ -71,13 +71,17 @@ end
 
 def save_job(params)
 	url = 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
+	puts "------this is url parsed from search result for dpt : #{url}"
 	CONN.exec("INSERT INTO parse (url, id) SELECT '#{url}', '#{params[:id]}' WHERE NOT EXISTS (select id from parse WHERE id = '#{params[:id]}')")
-
 end
 
+#----------------- Parse les urls métiers par départements pour récupérer l'id ----------
 def get_ids_by_document(document)
 	document.scan(/detailoffre\/(.*?);/).flatten
 end
+
+#########
+# MAIN #
 
 if urls != nil
 
