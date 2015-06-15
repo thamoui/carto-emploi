@@ -135,3 +135,8 @@ Ex d'urls pour visualiser le fichier json généré :
 # Déployement
 
 https://jobmapseeker.herokuapp.com/
+
+
+# Documentation utile
+
+- Gem Geokit pour la géolocalisation d'une adresse : http://www.rubydoc.info/gems/geokit/1.9.0
