@@ -54,12 +54,12 @@ class BodyParser
   def search_region(url)
     doc = Nokogiri::HTML(open(url))
     city = doc.css('li[@itemprop="addressRegion"]').children.inner_text
-    if city != nil || city != "" || city != "France"
+    if city != nil || city != "" || city != "France"
       #ça bugge s'il n'y a pas de numéro de département avec un tiret
       city.gsub!(/'/, "''")
       city.sub! /^\w+\s-\s/, ''
-      else
-      city =  "Information non disponible"
+    else
+      city = "Information non disponible"
     end
   end
 
