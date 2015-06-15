@@ -13,6 +13,8 @@ class BodyParser
   #   @doc = Nokogiri::HTML(open(:url))
   # end
 
+
+
   def get_body(url)
     url = "https://simplon2015exercices.herokuapp.com/"
     uri = URI.parse(url)
@@ -25,23 +27,39 @@ class BodyParser
   end
 
 
-#----------- PARSING METHODS -----------------------------
-#----------- THERE ARE  8 METHODS --------------------------
+  #----------- PARSING METHODS -----------------------------
+  #----------- THERE ARE  8 METHODS --------------------------
 
-# ----------------L'offre n'est plus disponible
-def offer_unavailable(url)
-  doc = Nokogiri::HTML(open(url))
-  message = doc.css('p[@class="first paragraph-embed"]').children.inner_text
-end
+  # ----------------L'offre n'est plus disponible
+  def offer_unavailable(url)
+    doc = Nokogiri::HTML(open(url))
+    message = doc.css('p[@class="first paragraph-embed"]').children.inner_text
+    #return true or false
+  end
 
-#------------------- Adresse ------------------------------
+  #------------------- Adresse ------------------------------
   def search_region(url)
     doc = Nokogiri::HTML(open(url))
     region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
     if region_adress != nil || region_adress != ""
-      region_adress.gsub(/'/, "''")
+      region_adress.gsub!(/'/, "''")
+      region_adress.sub! /^\w+\s-\s/, ''
+      # rajouter france pour que l'adresse soit mieux interprétée ?
+      # region_adress + ", France"
     else
       region_adress =  "Information non disponible"
+    end
+  end
+
+  #------------------- Département ------------------------------
+
+  def search_dept(url)
+    doc = Nokogiri::HTML(open(url))
+    dpt = doc.css('li[@itemprop="addressRegion"]').children.inner_text
+    if dpt != nil || region_adress != ""
+      dpt = dpt[/[^ -]+/]
+    else
+      dpt =  "Information non disponible"
     end
   end
 
