@@ -27,16 +27,19 @@ deleted_offer = 0
 
 @result[0..@result.length].each do |item|
   nb_offres = nb_offres - 1
-  deleted_offer + 1
+
+
   puts "_________________ STARTING PARSING ALL JOB OFFERS _____________________________"
   # puts "-------------------- OFFER ID de l' offre : #{item["id"]} -------------------- "
   # puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
   #
   if doc.offer_unavailable(item["url"]) == "L'offre que vous souhaitez consulter n'est plus disponible."
     conn.exec("DELETE FROM job_offers WHERE url = '#{item["url"]}'")
+    deleted_offer = deleted_offer + 1
+    puts deleted_offer
     puts "-------- L'url #{item["url"]} a été supprimé de la bdd job_offers-------- "
   end
-  puts "--- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ----"
+  puts "--- #{nb_offres} offre(s) encore à traiter sur #{@result.length} au départ----"
   puts "_________Nombre d'offre(s) supprimée(s)#{deleted_offer}__________________________________"
 
 end
