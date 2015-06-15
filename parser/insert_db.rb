@@ -38,54 +38,53 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
   puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
 
+  #remplacer la condition par true ou false, cf body parser
   if doc.offer_unavailable(item["url"]) != "L'offre que vous souhaitez consulter n'est plus disponible."
     adress = doc.search_region(item["url"]).gsub(/''/, "'")
     # ------------------- GETTING LATITUDE & LONGITUDE // GEOKIT ------------------------
 
-    if adress == "" #|| adress == nil
-
-      @latitude = 46.16
-      @longitude = 1.23
-    else
-      geodata = Geokit::Geocoders::GoogleGeocoder.geocode(adress).to_hash
+    if adress != "" && adress == adress.upcase #si adress en majuscule c'est une ville
+      #
+      #   @latitude = 46.16
+      #   @longitude = 1.23
+      # else
+      geodata = Geokit::Geocoders::GoogleGeocoder.geocode(adress, :bias => 'fr').to_hash
       @latitude, @longitude = geodata[:lat], geodata[:lng]
       #@longitude = b[1].to_f.abs
       puts "Latitude  --------- #{@latitude} // Longitude  ------------ #{@longitude}"
       sleep(3)
-      if @latitude == nil #------- Use Geocoder Gem --------
-        if adress == ""
-          @latitude = 46.16
-          @longitude = 1.23
-        else
-          puts "this is d---------- #{adress}"
-          d = Geocoder.search(adress)
-          puts "this is d---------- #{d}"
-          ll = d[0].data["geometry"]["location"]
-          @latitude = ll['lat']
-          @longitude = ll['lng']
-        end
-        #end
-      end
-      sleep(2)
+
+      if @latitude != nil #------- Use Geocoder Gem --------
+        #     puts "this is d---------- #{adress}"
+        #     d = Geocoder.search(adress)
+        #     puts "this is d---------- #{d}"
+        #     ll = d[0].data["geometry"]["location"]
+        #     @latitude = ll['lat']
+        #     @longitude = ll['lng']
+
+        #------------------- USING BODY PARSER  ---------------------
+        data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
+
+        values = data.map {|v| "\'#{v}\'"}.join(',').to_s
+
+        conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES (#{values});")
+
+        sleep(5)
+
+        puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
+        puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
+
+        puts "--------------------------- OFFER INSERTED INTO DB :) ---------------------- "
+        puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
+        puts "_____________________________________________________________________________"
+
+      end #fin du test latitude !=nil
+
     end
-
-    #------------------- USING BODY PARSER  ---------------------
-
-    data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
-
-    values = data.map {|v| "\'#{v}\'"}.join(',').to_s
-
-    conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES (#{values});")
-
-    sleep(5)
-
-    puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
-    puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
-
-    puts "--------------------------- OFFER INSERTED INTO DB :) ------------------------- "
-    puts "--- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ------"
-    puts "_____________________________________________________________________________"
+    sleep(2)
   end
+
 end
+
 
 conn.close
