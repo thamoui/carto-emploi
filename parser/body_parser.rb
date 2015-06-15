@@ -42,12 +42,24 @@ class BodyParser
     doc = Nokogiri::HTML(open(url))
     region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
     if region_adress != nil || region_adress != ""
-      region_adress.gsub!(/'/, "''")
-      region_adress.sub! /^\w+\s-\s/, ''
+      #region_adress.gsub!(/'/, "''")
       # rajouter france pour que l'adresse soit mieux interprétée ?
-      # region_adress + ", France"
+      region_adress + ", France"
     else
       region_adress =  "Information non disponible"
+    end
+  end
+
+  #------------------- Ville------------------------------
+  def search_region(url)
+    doc = Nokogiri::HTML(open(url))
+    city = doc.css('li[@itemprop="addressRegion"]').children.inner_text
+    if city != nil || city != "" || city != "France"
+      #ça bugge s'il n'y a pas de numéro de département avec un tiret
+      city.gsub!(/'/, "''")
+      city.sub! /^\w+\s-\s/, ''
+      else
+      city =  "Information non disponible"
     end
   end
 
