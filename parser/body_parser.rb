@@ -13,8 +13,6 @@ class BodyParser
   #   @doc = Nokogiri::HTML(open(:url))
   # end
 
-
-
   def get_body(url)
     url = "https://simplon2015exercices.herokuapp.com/"
     uri = URI.parse(url)
@@ -27,14 +25,14 @@ class BodyParser
   end
 
 
-  #----------- PARSING METHODS -----------------------------
-  #----------- THERE ARE  8 METHODS --------------------------
+  #----------- PARSING METHODS ------------------------------
 
-  # ----------------L'offre n'est plus disponible
+  # ----------------L'offre n'est plus disponible -----------
   def offer_unavailable(url)
     doc = Nokogiri::HTML(open(url))
     message = doc.css('p[@class="first paragraph-embed"]').children.inner_text
     #return true or false
+    # message == "L'offre que vous souhaitez consulter n'est plus disponible."
   end
 
   #------------------- Adresse ------------------------------
@@ -42,24 +40,29 @@ class BodyParser
     doc = Nokogiri::HTML(open(url))
     region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
     if region_adress != nil || region_adress != ""
-      #region_adress.gsub!(/'/, "''")
+      region_adress.gsub(/'/, "''")      # rajouter france pour que l'adresse soit mieux interprétée ?
+      #region_adress.sub! /^\w+\s-\s/, '' #renvoir Paris si adress est 75 - Paris
       # rajouter france pour que l'adresse soit mieux interprétée ?
-      region_adress + ", France"
+      # region_adress + ", France"
     else
-      region_adress =  "Information non disponible"
+      "Information non disponible"
     end
   end
 
   #------------------- Ville------------------------------
-  def search_region(url)
+  def search_city(url)
     doc = Nokogiri::HTML(open(url))
     city = doc.css('li[@itemprop="addressRegion"]').children.inner_text
-    if city != nil || city != "" || city != "France"
+    if  (city =~ /[0-9](.*)/) == nil
+      city
+    elsif city != nil || city != ""
+      # dpt =~ /[0-9]/
       #ça bugge s'il n'y a pas de numéro de département avec un tiret
       city.gsub!(/'/, "''")
-      city.sub! /^\w+\s-\s/, ''
+      city.sub! /^\w+\s-\s/, '' #renvoir Paris si adress est 75 - Paris
+
     else
-      city = "Information non disponible"
+      "Information non disponible"
     end
   end
 
@@ -68,6 +71,7 @@ class BodyParser
   def search_dept(url)
     doc = Nokogiri::HTML(open(url))
     dpt = doc.css('li[@itemprop="addressRegion"]').children.inner_text
+    # attention le lieu de travail ne contient pas de numéro de département parfois comme France ou Pays de la loire
     if dpt != nil || region_adress != ""
       dpt = dpt[/[^ -]+/]
     else
@@ -91,11 +95,9 @@ class BodyParser
     doc = Nokogiri::HTML(open(url))
     employement_type = doc.css('span[@itemprop="employmentType"]').children.inner_text
     if   employement_type != nil || employement_type != "" || employement_type.string?
-      employement_type = employement_type[/[^-]+/]
-      # employement_type.gsub!(/'/, "''")
-      # employement_type.strip
+      employement_type[/[^-]+/].strip
     else
-      employement_type =  "Information non disponible"
+      "Information non disponible"
     end
   end
 
@@ -111,30 +113,34 @@ class BodyParser
     end
   end
 
+  #----------- Date de publication -------
   def search_publication_date(url)
     doc = Nokogiri::HTML(open(url))
     publication_date = doc.css('span[@itemprop="datePosted"]').children.inner_text
   end
 
+  #----------- Description de l'offre -----------
   def search_description_offer(url)
     doc = Nokogiri::HTML(open(url))
     description_offer = doc.css('p[@itemprop="description"]').inner_html
+    description_offer.strip
     if description_offer != nil || description_offer != ""
       description_offer.gsub(/'/, "''")
+
     else
       description_offer =  "Information non disponible"
     end
   end
 
+  # ----------- Nom de l'entreprise -------------
   def search_company_description(url)
     doc = Nokogiri::HTML(open(url))
     company_description = doc.xpath("//div[contains(@class,'vcard')]/p/text()").collect {|node| node.text}
     company_description[0]
     if company_description[0] != nil #|| company_description[0] != ""
-      company_description[0].gsub(/'/, "''")
+      company_description[0].gsub(/'/, "''").strip
     else
       company_description[0] =  "Information non disponible"
     end
   end
-
 end

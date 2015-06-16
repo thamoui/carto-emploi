@@ -71,4 +71,10 @@ class BodyParserTest < Minitest::Test
     expect = "L'offre que vous souhaitez consulter n'est plus disponible."
     assert_equal expect, doc.offer_unavailable(@url)
   end
+
+  def test_8_Pas_de_numero_departement
+    @url = "http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/1775925"
+    expect = "Pays de la Loire"
+    assert_equal expect, doc.search_city(@url)
+  end
 end
