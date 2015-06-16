@@ -29,11 +29,12 @@ end
 puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
 
 nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
+offre_ajout = 0
 
 #---------test avec url d'offre indisponible --------
 
 @result[0..@result.length].each do |item|
-  nb_offres = nb_offres-1
+  nb_offres = nb_offres - 1
   puts "_______________________________ STARTING ___________________________________"
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
   puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
@@ -47,7 +48,7 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
     # ------------------- GETTING LATITUDE & LONGITUDE // GEOKIT ------------------------
     if adress != "" && adress == adress.upcase #si adress en majuscule c'est une ville
 
-      # ATTENTION !!! Sauf Paris !!
+      # Si code Rome n'est pas un code rome de l'informatique ne pas insérer ?
 
       geodata = Geokit::Geocoders::GoogleGeocoder.geocode(adress, :bias => 'fr').to_hash
       @latitude, @longitude = geodata[:lat], geodata[:lng]
@@ -70,6 +71,8 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
 
         conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES (#{values});")
 
+        offre_ajout = offre_ajout + 1
+
         sleep(5)
 
         puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
@@ -77,7 +80,7 @@ nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
 
         puts "--------------------------- OFFER INSERTED INTO DB :) ---------------------- "
         puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
-        puts "_____________________________________________________________________________"
+        puts "__________ Nb d'offres insérées : #{offre_ajout}_____________________________"
 
       end #fin du test latitude !=nil
 
