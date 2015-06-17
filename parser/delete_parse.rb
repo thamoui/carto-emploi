@@ -30,7 +30,7 @@ deleted_offer = 0
 
 #------------------------ DELETE FROM DB IF OFFER IS NO LONGER AVAILABLE -----------------
   puts "_________________ STARTING PARSING ALL JOB OFFERS _____________________________"
-  if doc.offer_unavailable(item["url"]) == false
+  if doc.offer_unavailable(item["url"]) == true
     conn.exec("DELETE FROM job_offers WHERE url = '#{item["url"]}'")
     deleted_offer = deleted_offer + 1
     puts deleted_offer
