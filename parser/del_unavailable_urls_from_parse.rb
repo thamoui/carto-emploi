@@ -33,7 +33,7 @@ deleted_urls = 0
   # puts "-------------------- OFFER ID de l' offre : #{item["id"]} -------------------- "
   # puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
   #
-  if doc.offer_unavailable(item["url"]) == "L'offre que vous souhaitez consulter n'est plus disponible."
+  if doc.offer_unavailable(item["url"]) == false
     conn.exec("DELETE FROM parse WHERE url = '#{item["url"]}'")
     deleted_urls = deleted_urls + 1
     puts deleted_urls

@@ -13,11 +13,11 @@ else
   require 'colorize'
 end
 
-#----------------------- NEW INSTANCE ----------------------
+#----------------------- NEW INSTANCE ---------------------------------------------------
 def doc
   ::BodyParser.new
 end
-#---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
+#---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ---------------------------------
 #only select from parse if offer is not in job_offers db
 @result = conn.exec( "SELECT url FROM job_offers").to_a
 puts @result[0]
@@ -28,12 +28,9 @@ deleted_offer = 0
 @result[0..@result.length].each do |item|
   nb_offres = nb_offres - 1
 
-
+#------------------------ DELETE FROM DB IF OFFER IS NO LONGER AVAILABLE -----------------
   puts "_________________ STARTING PARSING ALL JOB OFFERS _____________________________"
-  # puts "-------------------- OFFER ID de l' offre : #{item["id"]} -------------------- "
-  # puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
-  #
-  if doc.offer_unavailable(item["url"]) == "L'offre que vous souhaitez consulter n'est plus disponible."
+  if doc.offer_unavailable(item["url"]) == false
     conn.exec("DELETE FROM job_offers WHERE url = '#{item["url"]}'")
     deleted_offer = deleted_offer + 1
     puts deleted_offer
