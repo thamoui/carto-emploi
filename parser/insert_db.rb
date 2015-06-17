@@ -39,11 +39,14 @@ offre_ajout = 0
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
   puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
 
-  #remplacer la condition par true ou false, cf body parser
-  if doc.offer_unavailable(item["url"]) != "L'offre que vous souhaitez consulter n'est plus disponible."
+  if doc.offer_unavailable(item["url"]) == false
     adress = doc.search_region(item["url"]).gsub(/''/, "'")
 
-    puts "------------ adresse brute #{adress}"
+    puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
+
+    if adress != adress.upcase
+      puts "------------------ #{adress} n'est pas une ville ------------------------- "
+    end
 
     # ------------------- GETTING LATITUDE & LONGITUDE // GEOKIT ------------------------
     if adress != "" && adress == adress.upcase #si adress en majuscule c'est une ville
@@ -63,6 +66,9 @@ offre_ajout = 0
         #     ll = d[0].data["geometry"]["location"]
         #     @latitude = ll['lat']
         #     @longitude = ll['lng']
+
+
+
 
         #------------------- USING BODY PARSER  ---------------------
         data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
