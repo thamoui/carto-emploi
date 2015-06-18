@@ -13,30 +13,29 @@ else
   require 'colorize'
 end
 
-#----------------------- NEW INSTANCE ---------------------------------------------------
+#------------------------------ NEW INSTANCE ---------------------------
 def doc
   ::BodyParser.new
 end
-#---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ---------------------------------
-#only select from parse if offer is not in job_offers db
-@result = conn.exec( "SELECT url FROM job_offers").to_a
+#---------------- GETTING AN ARRAY OF URLS FROM TABLE PARSE ------------
+@result = conn.exec( "SELECT url FROM parse").to_a
 puts @result[0]
-puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
-nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
-deleted_offer = 0
+puts "------------------- THERE IS #{@result.length} URLS IN ARRAY ----------------------"
+nb_urls = @result.length #décompte de ce qu'il reste à insérer ^^
+deleted_urls = 0
 
 @result[0..@result.length].each do |item|
-  nb_offres = nb_offres - 1
+  nb_urls = nb_urls - 1
+  puts "_________________________________________________________________________________"
+  puts "______________________ STARTING CLEANING PARSE BASE _____________________________"
+  #L'offre est supprimée si elle n'est plus disponible sur le site de pole emploi
 
-#------------------------ DELETE FROM DB IF OFFER IS NO LONGER AVAILABLE -----------------
-  puts "_________________ STARTING PARSING ALL JOB OFFERS _____________________________"
   if doc.offer_unavailable(item["url"]) == true
-    conn.exec("DELETE FROM job_offers WHERE url = '#{item["url"]}'")
-    deleted_offer = deleted_offer + 1
-    puts deleted_offer
-    puts "-------- L'url #{item["url"]} a été supprimé de la bdd job_offers-------- "
+    conn.exec("DELETE FROM parse WHERE url = '#{item["url"]}'")
+    deleted_urls = deleted_urls + 1
+    puts deleted_urls
+    puts "-------- L'url #{item["url"]} a été supprimé de la bdd parse -------- "
   end
-  puts "--- #{nb_offres} offre(s) encore à traiter sur #{@result.length} au départ----"
-  puts "_________Nombre d'offre(s) supprimée(s)#{deleted_offer}__________________________________"
-
+  puts "-------------------- #{nb_urls} url(s) encore à traiter sur #{@result.length} au départ --------------"
+  puts "___________________ Nombre d'url(s) supprimée(s)#{deleted_urls}________________________________"
 end

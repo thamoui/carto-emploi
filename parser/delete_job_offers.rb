@@ -13,33 +13,28 @@ else
   require 'colorize'
 end
 
-#----------------------- NEW INSTANCE ----------------------
+#----------------------- NEW INSTANCE ---------------------------------------------------
 def doc
   ::BodyParser.new
 end
-#---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
-#only select from parse if offer is not in parse db
-@result = conn.exec( "SELECT url FROM parse").to_a
+#---------------- GETTING AN ARRAY OF URLS FROM TABLE JOB OFFERS ---------------------------------
+@result = conn.exec( "SELECT url FROM job_offers").to_a
 puts @result[0]
 puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
-nb_urls = @result.length #décompte de ce qu'il reste à insérer ^^
-deleted_urls = 0
+nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
+deleted_offer = 0
 
 @result[0..@result.length].each do |item|
-  nb_urls = nb_urls - 1
+  nb_offres = nb_offres - 1
 
-
-  puts "_________________ STARTING PARSING ALL JOB OFFERS _____________________________"
-  # puts "-------------------- OFFER ID de l' offre : #{item["id"]} -------------------- "
-  # puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
-  #
+  #------------------------ DELETE FROM DB IF OFFER IS NO LONGER AVAILABLE -----------------
+  puts "_________________________________________________________________________________"
+  puts "_________________ STARTING CLEANING JOB OFFERS BASE _____________________________"
   if doc.offer_unavailable(item["url"]) == true
-    conn.exec("DELETE FROM parse WHERE url = '#{item["url"]}'")
-    deleted_urls = deleted_urls + 1
-    puts deleted_urls
-    puts "-------- L'url #{item["url"]} a été supprimé de la bdd parse-------- "
+    conn.exec("DELETE FROM job_offers WHERE url = '#{item["url"]}'")
+    deleted_offer = deleted_offer + 1
+    puts "-------- L'url #{item["url"]} a été supprimé de la bdd job_offers-------- "
   end
-  puts "--- #{nb_urls} url(s) encore à traiter sur #{@result.length} au départ----"
-  puts "_________Nombre d'url(s) supprimée(s)#{deleted_urls}__________________________________"
-
+  puts "--- #{nb_offres} offre(s) encore à traiter sur #{@result.length} au départ----"
+  puts "_____________________ Nombre d'offre(s) supprimée(s)#{deleted_offer} ___________________________"
 end
