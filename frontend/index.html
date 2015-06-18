@@ -11,7 +11,7 @@
 
         <style>
             body {
-                margin:0; 
+                margin:0;
                 padding:0;
                 font-family: 'Georgia', sans-serif;
             }
@@ -26,7 +26,7 @@
                 height:250px;
                 z-index:1000;
             }
-            
+
             .logo-ango{
             	display:block;
             	position:fixed;
@@ -37,9 +37,9 @@
             	left:60px;
             	z-index:1000;
             	background-image:url(img/logo-ango.png);
-            	background-size:cover;	
+            	background-size:cover;
             }
-            
+
             .cordage-top{
 				display:block;
 				position:fixed;
@@ -49,7 +49,7 @@
 				background-image:url(img/cordage-top.png);
 				z-index:1001;
 			}
-			
+
 			.cordage-bottom{
 				display:block;
 				position:fixed;
@@ -59,13 +59,13 @@
 				background-image:url(img/cordage-bottom.png);
 				z-index:1001;
 			}
-		
+
             h1{
             	font-weight: normal !important;
             	font-size:25px;
             	margin-top:35px;
             	}
-            	
+
             .text {
                 font-size:12px;
                 color:white;
@@ -74,7 +74,7 @@
             .alert {
                 color: red;
             }
-            
+
             .bouton{
             	display:block;
             	position:absolute;
@@ -82,23 +82,23 @@
             	height:50px;
             	z-index:3000;
             }
-            
+
             .bouton.plus{
             	background-image:url(img/bouton-plus-ango.png);
             	top:60px;
             	right:50px;
             }
-            
+
             .bouton.moins{
             	background-image:url(img/bouton-moins-ango.png);
             	top:120px;
             	right:50px;
             }
-            
+
             .search-ui{
             	top:0;
-            }	
-            
+            }
+
             input.search-ui{
             	top:0px;
             	background-color: #FBF4EC;
@@ -114,11 +114,11 @@
             	color:transparent;
             	padding:0;
             }
-            
+
             .geolocalisation{
             	display:inline-block;
             }
-            
+
             button#geolocate{
 				position:relative;
 				left:10px;
@@ -128,7 +128,7 @@
 				font-family: 'Georgia', sans-serif;
 				background-color:#C4101F;
 			}
-            
+
 			button.button{
 				position:relative;
 				bottom:-13px;
@@ -151,7 +151,7 @@
 				font-style:italic;
             }
 
-            
+
         </style>
     </head>
     <body>
@@ -163,7 +163,7 @@
 		</div>
 		<div class="bouton moins">
 		</div>
-		
+
         <!-- map -->
         <div id='map'></div>
         <!-- fin map -->
@@ -172,13 +172,13 @@
         <!-- bloc text -->
         <div class='block_text titre'>
             <h1>RECHERCHER VOS OFFRES</h1>
-            <!-- Commentaire 
+            <!-- Commentaire
             <p class='text'>
                 Une carte pour géolocaliser vos offres d'emploi partout en France
             </p>
             <p class='text'>
                 En partenariat avec Pole Emploi
-            </p> --> 
+            </p> -->
             <p class='text'>
             <p class="geolocalisation">Souhaitez-vous être géolocalisé ?</p>
                 <button id='geolocate'>OK
@@ -188,7 +188,7 @@
                 <input id='search' class='search-ui' placeholder='Métier' />
                 <button type="button" id='button' class='button'>
                 </button>
-                
+
                 <input id='search' class='search-ville' placeholder='Ville' />
                 <button type="button" id='button' class='button'>
                 </button>
@@ -218,11 +218,12 @@
                     //récupération des informations
                     var title = response[i].title;
                     var contrat_type = response[i].contrat_type;
+                    var region_adress = response[i].region_adress
                     var url = response[i].url;
                     var latitude = response[i].latitude;
                     var longitude = response[i].longitude;
 
-                    var tabDescription = [contrat_type, "<a href='" + url + "' target=\"_blank\">Voir le lien de l'offre</a>"];
+                    var tabDescription = [region_adress, contrat_type, "<a href='" + url + "' target=\"_blank\">Voir le lien de l'offre</a>"];
                     var txtDescription = tabDescription.join("<br>");
 
                     //Ajout le marker au groupe
