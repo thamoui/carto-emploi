@@ -31,53 +31,48 @@ class BodyParser
   def offer_unavailable(url)
     doc = Nokogiri::HTML(open(url))
     doc.css('p[@class="first paragraph-embed"]').children.inner_text == "L'offre que vous souhaitez consulter n'est plus disponible."
-    #return true or false
+    #return true si l'offre n'est plus disponible
   end
 
   #------------------- Adresse ------------------------------
   def search_region(url)
-    doc = Nokogiri::HTML(open(url))
-    #je pourrais enlever region_adress de partout non ?
-    region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
-    if region_adress != nil || region_adress != ""
-      region_adress.gsub(/'/, "''")      # rajouter france pour que l'adresse soit mieux interprétée ?
-      #region_adress.sub! /^\w+\s-\s/, '' #renvoir Paris si adress est 75 - Paris
-      # rajouter france pour que l'adresse soit mieux interprétée ?
-      # region_adress + ", France"
-    else
-      "Information non disponible"
-    end
-    #
     # doc = Nokogiri::HTML(open(url))
     # #je pourrais enlever region_adress de partout non ?
     # region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
     # if region_adress != nil || region_adress != ""
-    #   #region_adress.gsub(/'/, "''")
-    #   #city_adress = region_adress.gsub(/['-]/, "'"=> "''", '-' => ',') + ", FRANCE"
-    #   #city_adress = region_adress.sub /^\w+\s-\s/, '' #renvoie Paris si adress est 75 - Paris
-    #   ["PARIS", "LYON", "MARSEILLE"].each do |city|
-    #     if region_adress.include? city #mais ne contient pas le mot ARRONDISSEMENT
-    #       if region_adress.include? "ARRONDISSEMENT"
-    #         region_adress
-    #       else
-    #         region_adress = region_adress + ' ARRONDISSEMENT'
-    #       end
-    #     end
-    #   end
-    #   puts "this is how city_adress is seen by geocoder #{region_adress}"
-    #   region_adress = region_adress.gsub(/['-]/, "'"=> "''", '-' => ',') + ", FRANCE"
-    #
-    #
+    #   region_adress.gsub(/'/, "''")      # rajouter france pour que l'adresse soit mieux interprétée ?
+    #   #region_adress.sub! /^\w+\s-\s/, '' #renvoir Paris si adress est 75 - Paris
+    #   # rajouter france pour que l'adresse soit mieux interprétée ?
+    #   # region_adress + ", France"
     # else
     #   "Information non disponible"
     # end
+    #
+    doc = Nokogiri::HTML(open(url))
+    #je pourrais enlever region_adress de partout non ?
+    region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
+    if region_adress != nil || region_adress != ""
+      #region_adress.gsub(/'/, "''")
+      #city_adress = region_adress.gsub(/['-]/, "'"=> "''", '-' => ',') + ", FRANCE"
+      #city_adress = region_adress.sub /^\w+\s-\s/, '' #renvoie Paris si adress est 75 - Paris
+      ["PARIS", "LYON", "MARSEILLE"].each do |city|
+        if region_adress.include? city #mais ne contient pas le mot ARRONDISSEMENT
+          if region_adress.include? "ARRONDISSEMENT"
+            region_adress
+          else
+            region_adress = region_adress + ' ARRONDISSEMENT'
+          end
+        end
+      end
+      puts "this is how city_adress is seen by geocoder #{region_adress}"
+      region_adress = region_adress.gsub(/['-]/, "'"=> "''", '-' => ',') + ", FRANCE"
 
 
+    else
+      "Information non disponible"
+    end
 
-
-
-
-  end
+end
 
   #------------------- Ville------------------------------
   def search_city(url)

@@ -26,6 +26,8 @@ end
 #only select from parse if offer is not in job_offers db
 @result = conn.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
 
+#il faudrait que les offres dont l'adresse est un département ne soit pas inclues dans @result
+
 puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
 
 nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
@@ -37,7 +39,7 @@ offre_ajout = 0
   nb_offres = nb_offres - 1
   puts "_______________________________ STARTING ___________________________________"
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
-  puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} ---------"
+  puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} (true = indisponible) ---------"
 
   if doc.offer_unavailable(item["url"]) == false
     adress = doc.search_region(item["url"]).gsub(/''/, "'")
@@ -67,9 +69,6 @@ offre_ajout = 0
         #     @latitude = ll['lat']
         #     @longitude = ll['lng']
 
-
-
-
         #------------------- USING BODY PARSER  ---------------------
         data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
 
@@ -93,7 +92,6 @@ offre_ajout = 0
     end
     sleep(2)
   end
-
 end
 
 
