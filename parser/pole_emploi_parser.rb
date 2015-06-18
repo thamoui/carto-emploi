@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'pg'
 require 'dotenv'
+require_relative 'body_parser'
 Dotenv.load
 
 #----------------------- HEROKU DB CONFIG  ------------------------
@@ -80,6 +81,10 @@ def get_ids_by_document(document)
 	document.scan(/detailoffre\/(.*?);/).flatten
 end
 
+def doc
+	::BodyParser.new
+end
+
 #########
 # MAIN #
 
@@ -89,7 +94,7 @@ if urls != nil
 		puts "------------------------------ this is url #{url} -----------------------------------"
 		document = document_by_url(url)
 
-		if document
+		if document && doc.search_region(url) == doc.search_region(url).upcase
 			ids = get_ids_by_document(document)
 			ids.each {|id| save_job({:id=>id})}
 			puts "//////////// URL SAVED IN DB ////////////////////"
