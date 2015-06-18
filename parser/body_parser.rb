@@ -53,8 +53,6 @@ class BodyParser
     region_adress = doc.css('li[@itemprop="addressRegion"]').children.inner_text
     if region_adress != nil || region_adress != ""
       #region_adress.gsub(/'/, "''")
-      #city_adress = region_adress.gsub(/['-]/, "'"=> "''", '-' => ',') + ", FRANCE"
-      #city_adress = region_adress.sub /^\w+\s-\s/, '' #renvoie Paris si adress est 75 - Paris
       ["PARIS", "LYON", "MARSEILLE"].each do |city|
         if region_adress.include? city #mais ne contient pas le mot ARRONDISSEMENT
           if region_adress.include? "ARRONDISSEMENT"
@@ -64,15 +62,13 @@ class BodyParser
           end
         end
       end
-      puts "this is how city_adress is seen by geocoder #{region_adress}"
       region_adress = region_adress.gsub(/['-]/, "'"=> "''", '-' => ',') + ", FRANCE"
-
 
     else
       "Information non disponible"
     end
 
-end
+  end
 
   #------------------- Ville------------------------------
   def search_city(url)
@@ -92,7 +88,6 @@ end
   end
 
   #------------------- Département ------------------------------
-
   def search_dept(url)
     doc = Nokogiri::HTML(open(url))
     dpt = doc.css('li[@itemprop="addressRegion"]').children.inner_text
@@ -131,13 +126,26 @@ end
     doc = Nokogiri::HTML(open(url))
     code_rome = doc.css('p[@itemprop="occupationalCategory"]').children.inner_text
     if code_rome != nil || code_rome != ""
-      code_rome.gsub!(/Métier du ROME /, "")
-      code_rome[0..4]
+      code_rome.gsub!(/Métier du ROME /, "")[0..4]
     else
-      code_rome =  "Information non disponible"
+     code_rome =  "Information non disponible"
     end
   end
 
+  #------------ Vérifie si code rome est bien dans la liste des métiers
+  def check_code_rome(url)
+    doc = Nokogiri::HTML(open(url))
+    code_rome = doc.css('p[@itemprop="occupationalCategory"]').children.inner_text
+    if code_rome != nil || code_rome != ""
+      code_rome = code_rome.gsub(/Métier du ROME /, "")[0..4]
+      puts "this is code rome value : #{code_rome} ------ "
+      code_rome_info = ["M1801", "M1802", "M1803", "M1804", "M1805", "M1806", "M1810", "I1401", "H1208", "E1101", "E1104", "E1205", "E1402"]
+      code_rome_info.include? code_rome
+    else
+      code_rome =  "Information non disponible"
+    end
+
+  end
   #----------- Date de publication -------
   def search_publication_date(url)
     doc = Nokogiri::HTML(open(url))
