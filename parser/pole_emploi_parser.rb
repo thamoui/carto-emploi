@@ -33,10 +33,6 @@ end
 # --------------------- DEF URL FOR TEST - PARSE ONLY A FEW DATA ----------------------------
 def urls
 	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur informatique", "Webmaster"]
-
-	puts ARGV[0].class
-	puts ARGV[0]
-
 	if ARGV[0] == nil or ARGV[0] == "20" or ARGV[0].to_i > 95
 		puts "Le département #{ARGV[0]} n'existe pas"
 	else

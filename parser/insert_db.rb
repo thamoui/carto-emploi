@@ -78,7 +78,7 @@ offre_ajout = 0
 
         offre_ajout = offre_ajout + 1
 
-        sleep(5)
+        sleep(3)
 
         puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
         puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
