@@ -1,0 +1,145 @@
+/*
+Style pour le frontend du projet Ango
+*/
+
+body {
+    margin:0;
+    padding:0;
+    font-family: 'Georgia', sans-serif;
+}
+
+#map {position:absolute; top:0; bottom:0; width:100%;}
+.block_text {
+    position:fixed;
+    background-color:black;
+    color:white;
+    text-align:center;
+    bottom:0px;
+    width:100%;
+    height:250px;
+    z-index:1000;
+}
+
+.logo-ango{
+    display:block;
+    position:fixed;
+    width:150px;
+    height:164px;
+    padding: 10px;
+    top:30px;
+    left:60px;
+    z-index:1000;
+    background-image:url(/img/logo-ango.png);
+    background-size:cover;
+}
+
+.cordage-top{
+    display:block;
+    position:fixed;
+    top:520px;
+    width:100%;
+    height:18px;
+    background-image:url(/img/cordage-top.png);
+    z-index:1001;
+}
+
+.cordage-bottom{
+    display:block;
+    position:fixed;
+    bottom:0px;
+    width:100%;
+    height:18px;
+    background-image:url(/img/cordage-bottom.png);
+    z-index:1001;
+}
+
+h1{
+    font-weight: normal !important;
+    font-size:25px;
+    margin-top:35px;
+}
+
+.text {
+    font-size:12px;
+    color:white;
+}
+
+.alert {
+    color: red;
+}
+
+.bouton{
+    display:block;
+    position:absolute;
+    width:50px;
+    height:50px;
+    z-index:3000;
+}
+
+.bouton.plus{
+    background-image:url(/img/bouton-plus-ango.png);
+    top:60px;
+    right:50px;
+}
+
+.bouton.moins{
+    background-image:url(/img/bouton-moins-ango.png);
+    top:120px;
+    right:50px;
+}
+
+.search-ui{
+    top:0;
+}
+
+input.search-ui{
+    top:0px;
+    background-color: #FBF4EC;
+    width:200px;
+    border: 0px;
+    padding: 10px;
+    font-family: 'Georgia', sans-serif;
+    font-size:15px;
+    font-style:italic;
+}
+button{
+    border:0px;
+    color:transparent;
+    padding:0;
+}
+
+.geolocalisation{
+    display:inline-block;
+}
+
+button#geolocate{
+    position:relative;
+    left:10px;
+    width:37px;
+    height:37px;
+    color:white;
+    font-family: 'Georgia', sans-serif;
+    background-color:#C4101F;
+}
+
+button.button{
+    position:relative;
+    bottom:-13px;
+    left:10px;
+    width:37px;
+    height:37px;
+    background-color:#C4101F;
+    background-image:url(/img/search.png);
+}
+
+input.search-ville{
+    margin-left:150px;
+    top:0px;
+    background-color: #FBF4EC;
+    width:200px;
+    border: 0px;
+    padding: 10px;
+    font-family: 'Georgia', sans-serif;
+    font-size:15px;
+    font-style:italic;
+}
