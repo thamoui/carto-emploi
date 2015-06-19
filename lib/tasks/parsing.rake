@@ -4,7 +4,6 @@ namespace :pole_emploi do
     ruby "./parser/pole_emploi_parser.rb 1 19"
   end
 
-
   desc 'insère les urls des offres disponibles en Corse'
   task :url_parse_2A_2B  do
     ruby "./parser/pole_emploi_parser.rb 2A 2B"
@@ -13,6 +12,11 @@ namespace :pole_emploi do
   desc 'insère les urls des offres des départements 21 à 95'
   task :url_parse_21_95  do
     ruby "./parser/pole_emploi_parser.rb 21 95"
+  end
+
+  desc 'parse les urls et insère le détail des offres dans la base de données'
+  task :insert_offers  do
+    ruby "./parser/insertdb.rb"
   end
 
   # desc 'insère les urls des offres pour un ou des départements au choix'
