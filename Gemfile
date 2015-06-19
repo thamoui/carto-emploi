@@ -14,15 +14,19 @@ gem "nokogiri"
 gem "dotenv"
 gem "geocoder"
 gem "geokit"
+gem "clockwork"
+gem "pg"
 
 group :production do
-  gem "pg"
 end
 
 group :development do
   gem "sinatra-reloader"
   gem "shotgun"
-  gem "colorize"
+  gem "colorize" #ne fonctionne pas sur heroku mais bien utile pour mieux visualiser les logs sur sa machine
+  gem "pry"
+  gem "redis" #à voir
+  gem "sidekiq" #à voir
 end
 
 group :test do
