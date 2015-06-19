@@ -2,6 +2,13 @@
 Projet de cartographie des emplois du numérique en France
 
 
+# pré-requis
+
+- ruby '2.1.3'
+- postgresql http://www.postgresql.org/
+- bundler http://bundler.io/
+- rbenv ou rvm pour la gestion des versions de ruby sur votre machine
+
 # récupérer le projet
 
 `git clone https://github.com/simplonco/carto-emploi.git`
@@ -12,7 +19,15 @@ Puis lancer l'installation des gem :
 
 Pré-requis : vous devez avoir installer Ruby sur votre machine !
 
+# configurer les variables d'environnement
 
+renommer les fichiers .envsample et /parser/.envsample en .env et remplacer les valeurs si nécessaire
+Ex :
+
+DATABASE_PASSWORD=pole_emploi
+DATABASE_USER_NAME="pole_emploi"
+DATABASE_URL=postgres://..... #valeur donnée par heroku ou autre
+RACK_ENV=development
 
 ## configuration de la base de données
 
@@ -34,12 +49,11 @@ Pour créer la bdd :
 
 `CREATE DATABASE pole_emploi WITH OWNER pole_emploi;`
 
-Créer les colonnes de la table :
+Se mettre dans la base pole_emploi pour créer les colonnes de la table :
 
 `psql -U pole_emploi pole_emploi`
 
 puis :
-
 
 ```sql
 
@@ -94,6 +108,10 @@ Pour voir l’aide de Postgres : \?
 
 Pour sortir de la console PSQL et revenir à la ligne de commande du terminal Ctrl D (deux fois !).
 
+Commandes utiles :
+
+`sudo -u postgres psql` pour se logguer en tant que super utilisateur
+
 ## Lancer le parser
 
 Lancer le premier script qui récupère les urls et id correspondant aux offres d'emplois pour les jobs du numérique
@@ -134,7 +152,7 @@ Ex d'urls pour visualiser le fichier json généré :
 
 # Déployement
 
-https://jobmapseeker.herokuapp.com/
+https://ango-jobs.herokuapp.com/
 
 
 # Documentation utile
