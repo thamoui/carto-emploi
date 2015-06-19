@@ -11,6 +11,7 @@ set :public_folder, 'public'
 #----------------------- DB CONFIG  ------------------------
 if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
+  puts "---------- ENV['DATABASE_URL'] : ------ #{ENV['DATABASE_URL']}--------------"
   configure do
     set :conn, PG.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
   end
