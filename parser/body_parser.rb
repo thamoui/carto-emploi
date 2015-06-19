@@ -128,7 +128,7 @@ class BodyParser
     if code_rome != nil || code_rome != ""
       code_rome.gsub!(/Métier du ROME /, "")[0..4]
     else
-     code_rome =  "Information non disponible"
+      code_rome =  "Information non disponible"
     end
   end
 
