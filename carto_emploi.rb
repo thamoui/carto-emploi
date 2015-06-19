@@ -6,7 +6,7 @@ require 'dotenv'
 Dotenv.load
 
 configure { set :server, :puma }
-set :public_folder, 'public'
+
 
 #----------------------- DB CONFIG  ------------------------
 if ENV['RACK_ENV'] == "production"
@@ -26,9 +26,11 @@ before do
   @conn = settings.conn
 end
 
+set :public_folder, 'frontend' #this is necessary to be able to access to static files
 get '/' do
-  send_file 'frontend/index.html'
+  redirect '/index.html' #The root of the project is /frontend so the absolute path to static files doesn't need /frontend in front
 end
+
 #--------------   /geosearch/LAT,LNG : renvoi les emplois aux alentours
 
 get '/geosearch/:lat,:lng' do
