@@ -178,15 +178,21 @@
                 getMarkerCenter(20, 50, 1, document.getElementById('search').value);
             }
         });
+        
+        //Event : clic sur le bouton + pour zoomer
+        $(".bouton.plus").on('click', function() {
+          map.zoomIn();
+        });
+        
+        //Event : clic sur le bouton - pour dézoomer
+        $(".bouton.moins").on('click', function() {
+          map.zoomOut();
+        });
 
         //Event : moveend
         map.on('moveend', function (move) {
             getMarkerCenter(20, 50, 1, document.getElementById('search').value);
         });
-        
-<!--        $(".bouton.plus").on('click', function() {-->
-<!--          map.getZoom += 1;-->
-<!--        });-->
 
     </script>
 
