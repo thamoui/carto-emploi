@@ -91,7 +91,7 @@
             });
 
             //Event : clic sur le bouton de recherche
-            $("#button").on('click', function (event) {
+            $("#button-search").on('click', function (event) {
                 event.preventDefault();
 
                 if (document.getElementById('search').value == '') {
@@ -110,6 +110,15 @@
             $(".bouton.moins").on('click', function () {
                 map.zoomOut();
             });
+            
+            /*var geocodingControl = L.mapbox.geocoderControl('mapbox.places')
+            
+            $("#button-city").on("click", function() {
+              if (document.getElementById("button-city").value != "") {
+                geocodingControl.on("found", function() {
+                }
+              }             
+            }*/
 
             //Event : moveend
             map.on('moveend', function (move) {
