@@ -23,10 +23,9 @@ function getMarker(response) {
         //Création du marker
         var marker = L.marker(new L.LatLng(latitude, longitude), {
             icon: L.mapbox.marker.icon({'marker-symbol': 'suitcase', 'marker-color': '#ED1450'}),
-            title: title,
-            description: txtDescription
+            title: title
         });
-        marker.bindPopup(title);
+        marker.bindPopup(title+txtDescription);
         markers.addLayer(marker);
 
         //Ajout du groupe de marker sur la map
