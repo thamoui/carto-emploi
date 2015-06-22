@@ -57,9 +57,8 @@
     <script>
         //Init de la map
         L.mapbox.accessToken = 'pk.eyJ1IjoiYmxhY2t5IiwiYSI6IjA4NWJjZDNiNDQ0MTg3YjVmZTNkM2NkMWQ3MmM4ZjU4In0.SDQh56AZPCbIL2rVs4eAkQ';
-        var map = L.mapbox.map('map', 'mapbox.pirates').setView([48.855, 2.4], 12).addControl(L.mapbox.geocoderControl('mapbox.places'));
+        var map = L.mapbox.map('map', 'mapbox.pirates', {zoomControl: false}).setView([48.855, 2.4], 12).addControl(L.mapbox.geocoderControl('mapbox.places'));
         var markerGroup = [];
-
 
         ////////////////////
         // FUNCTIONS
@@ -159,9 +158,9 @@
         }
 
         //Event : locationfound
-        map.on('locationfound', function (e) {
+        map.on('locationfound', function () {
             //déplace la carte
-            map.fitBounds(e.bounds);
+            map.setZoom(14);
         });
 
         //Event : locationerror
@@ -184,6 +183,10 @@
         map.on('moveend', function (move) {
             getMarkerCenter(20, 50, 1, document.getElementById('search').value);
         });
+        
+<!--        $(".bouton.plus").on('click', function() {-->
+<!--          map.getZoom += 1;-->
+<!--        });-->
 
     </script>
 
