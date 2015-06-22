@@ -9,183 +9,123 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <link rel='stylesheet' id='open-sans-css'  href='//fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400italic%2C600italic%2C300%2C400%2C600&#038;subset=latin%2Clatin-ext&#038;ver=4.2.2' type='text/css' media='all' />
         <link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />
+
+        <!-- gestion des clusters -->
+        <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+        <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+
+        <!-- fonctions internes -->
+        <script src="/js/functions.js"></script>
     </head>
     <body>
         <!-- logo -->
-        <div class="logo-ango">
-        </div>	<!-- fin logo -->
+        <div class="logo-ango"></div>
+        <!-- fin logo -->
 
-        <div class="bouton plus">
-        </div>
-        <div class="bouton moins">
-        </div>
+        <div class="bouton plus"></div>
+        <div class="bouton moins"></div>
 
         <!-- map -->
         <div id='map'></div>
         <!-- fin map -->
-        <div class="cordage-top">
-        </div>
+
+        <div class="cordage-top"></div>
+
         <!-- bloc text -->
         <div class='block_text titre'>
             <h1>RECHERCHER VOS OFFRES</h1>
-            <!-- Commentaire
+            <div class='text'>
+                <p class="geolocalisation">Souhaitez-vous être géolocalisé ?</p>
+                <button id='geolocate'>OK</button>
+            </div>
             <p class='text'>
-                Une carte pour géolocaliser vos offres d'emploi partout en France
+                <input id='search' class='search-ui' placeholder='Métier' />
+                <button type="button" id='button-search' class='button'></button>
+
+                <input id='search' class='search-ville' placeholder='Ville' />
+                <button type="button" id='button-city' class='button'></button>
             </p>
-            <p class='text'>
-                En partenariat avec Pole Emploi
-            </p> -->
-            <p class='text'>
-            <p class="geolocalisation">Souhaitez-vous être géolocalisé ?</p>
-            <button id='geolocate'>OK
-            </button>
-        </p>
-        <p class='text'>
-            <input id='search' class='search-ui' placeholder='Métier' />
-            <button type="button" id='button' class='button'>
-            </button>
+            <p id="msg-alert" class='text alert'></p>
+        </div>
+        <!-- fin bloc text -->
 
-            <input id='search' class='search-ville' placeholder='Ville' />
-            <button type="button" id='button' class='button'>
-            </button>
-        </p>
-        <p id="msg-alert" class='text alert'></p>
-    </div>
-    <!-- fin bloc text -->
-    <div class="cordage-bottom">
-    </div>
-    <script>
-        //Init de la map
-        L.mapbox.accessToken = 'pk.eyJ1IjoiYmxhY2t5IiwiYSI6IjA4NWJjZDNiNDQ0MTg3YjVmZTNkM2NkMWQ3MmM4ZjU4In0.SDQh56AZPCbIL2rVs4eAkQ';
-        var map = L.mapbox.map('map', 'mapbox.pirates').setView([48.855, 2.4], 12).addControl(L.mapbox.geocoderControl('mapbox.places'));
-        var markerGroup = [];
+        <div class="cordage-bottom"></div>
 
+        <script>
+            //Init de la map
+            L.mapbox.accessToken = 'pk.eyJ1IjoiYmxhY2t5IiwiYSI6IjA4NWJjZDNiNDQ0MTg3YjVmZTNkM2NkMWQ3MmM4ZjU4In0.SDQh56AZPCbIL2rVs4eAkQ';
+            var map = L.mapbox.map('map', 'mapbox.pirates', {zoomControl: false}).setView([48.855, 2.4], 12);
 
-        ////////////////////
-        // FUNCTIONS
+            //Groupe de cluster
+            //ref : https://www.mapbox.com/mapbox.js/example/v1.0.0/leaflet-markercluster/
+            var markers = new L.MarkerClusterGroup();
 
-        //Affiche les markers reçu par la requete Ajax
-        function getMarker(response) {
-            clearMarkers();
+            //////////////////
+            //Events
 
-            //Boucle sur les emplois reçus
-            $.each(response, function (i) {
-
-                //récupération des informations
-                var title = response[i].title;
-                var contrat_type = response[i].contrat_type;
-                var region_adress = response[i].region_adress
-                var url = response[i].url;
-                var latitude = response[i].latitude;
-                var longitude = response[i].longitude;
-
-                var tabDescription = [region_adress, contrat_type, "<a href='" + url + "' target=\"_blank\">Voir le lien de l'offre</a>"];
-                var txtDescription = tabDescription.join("<br>");
-
-                //Ajout le marker au groupe
-                markerGroup.push(L.mapbox.featureLayer({
-                    // this feature is in the GeoJSON format: see geojson.org
-                    // for the full specification
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [
-                            longitude,
-                            latitude
-                        ]
-                    },
-                    properties: {
-                        // https://www.mapbox.com/guides/an-open-platform/#simplestyle
-                        title: title,
-                        description: txtDescription,
-                        'marker-size': 'large',
-                        'marker-color': '#ED1450',
-                        'marker-symbol': 'suitcase'
-                    }
-                }).addTo(map));
+            //Event : document.ready (chargement initial des markers)
+            $(document).ready(function () {
+                getMarkerCenter(20, 50, 1, '');
             });
-        }
 
-        //Requete ajax pour récupérer les emplois autour du centre de la carte
-        function getMarkerCenter(distance, limit, page, searchtxt) {
-            var coordinates = map.getCenter();
+            //Bouton geolocalisation
+            var geolocate = document.getElementById('geolocate');
+            if (!navigator.geolocation) {
+                geolocate.innerHTML = 'La géolocation n\'est pas disponible';
+            } else {
+                geolocate.onclick = function (e) {
+                    map.locate();
+                };
+            }
 
-            $.ajax({
-                type: 'GET',
-                url: '/geosearch/' + coordinates.lat + ',' + coordinates.lng + '?d=' + distance + '&limit=' + limit + '&p=' + page + '&text=' + searchtxt,
-                crossDomain: true,
-                dataType: 'json',
-                contentType: "application/json",
-                success: function (response) {
-                    if (response.length <= 0) {
-                        alert_map("Aucune offre d'emploi ne correspond à votre recherche");
-                    } else {
-                        alert_map("");
-                        getMarker(response);
-                    }
+            //Event : locationfound
+            map.on('locationfound', function () {
+                //déplace la carte
+                map.setZoom(14);
+            });
+
+            //Event : locationerror
+            map.on('locationerror', function () {
+                alert_map('La position ne peut être trouvé');
+            });
+
+            //Event : clic sur le bouton de recherche
+            $("#button-search").on('click', function (event) {
+                event.preventDefault();
+
+                if (document.getElementById('search').value == '') {
+                    alert_map("Attention, le champs texte est vide. Veuillez entrer un métier.");
+                } else {
+                    getMarkerCenter(20, 50, 1, document.getElementById('search').value);
                 }
             });
-        }
 
-        //Remise à zero des markers
-        function clearMarkers() {
-            markerGroup.forEach(function (marker) {
-                marker.clearLayers();
+            //Event : clic sur le bouton + pour zoomer
+            $(".bouton.plus").on('click', function () {
+                map.zoomIn();
             });
-            markerGroup = [];
-        }
 
-        //Message d'alerte
-        function alert_map(msg) {
-            document.getElementById("msg-alert").innerHTML = msg;
-        }
+            //Event : clic sur le bouton - pour dézoomer
+            $(".bouton.moins").on('click', function () {
+                map.zoomOut();
+            });
+            
+            /*var geocodingControl = L.mapbox.geocoderControl('mapbox.places')
+            
+            $("#button-city").on("click", function() {
+              if (document.getElementById("button-city").value != "") {
+                geocodingControl.on("found", function() {
+                }
+              }             
+            }*/
 
-        // fin functions
-        /////////////////////////////
-
-        //Event : document.ready (chargement initial des markers)
-        $(document).ready(function () {
-            getMarkerCenter(20, 50, 1, '');
-        });
-
-        //Bouton geolocalisation
-        var geolocate = document.getElementById('geolocate');
-        if (!navigator.geolocation) {
-            geolocate.innerHTML = 'La géolocation n\'est pas disponible';
-        } else {
-            geolocate.onclick = function (e) {
-                map.locate();
-            };
-        }
-
-        //Event : locationfound
-        map.on('locationfound', function (e) {
-            //déplace la carte
-            map.fitBounds(e.bounds);
-        });
-
-        //Event : locationerror
-        map.on('locationerror', function () {
-            alert_map('La position ne peut être trouvé');
-        });
-
-        //Event : clic sur le bouton de recherche
-        $("#button").on('click', function (event) {
-            event.preventDefault();
-
-            if (document.getElementById('search').value == '') {
-                alert_map("Attention, le champs texte est vide. Veuillez entrer un métier.");
-            } else {
+            //Event : moveend
+            map.on('moveend', function (move) {
                 getMarkerCenter(20, 50, 1, document.getElementById('search').value);
-            }
-        });
+            });
 
-        //Event : moveend
-        map.on('moveend', function (move) {
-            getMarkerCenter(20, 50, 1, document.getElementById('search').value);
-        });
+        </script>
 
-    </script>
-
-</body>
+    </body>
 </html>
