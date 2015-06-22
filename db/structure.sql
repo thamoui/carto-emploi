@@ -32,7 +32,8 @@ CREATE TABLE job_offers (
   url text,
   latitude numeric,
   longitude numeric,
-  offer_id text
+  offer_id text,
+  publication_date text
 );
 
 CREATE TABLE parse (
