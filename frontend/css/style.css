@@ -77,14 +77,20 @@ h1{
 }
 
 .bouton.plus{
+    transform: scale(0.7, 0.7);
+    -ms-transform: scale(0.7, 0.7);
+    -webkit-transform: scale(0.7, 0.7);
     background-image:url(/img/bouton-plus-ango.png);
     top:60px;
     right:50px;
 }
 
 .bouton.moins{
+    transform: scale(0.7, 0.7);
+    -ms-transform: scale(0.7, 0.7);
+    -webkit-transform: scale(0.7, 0.7);
     background-image:url(/img/bouton-moins-ango.png);
-    top:120px;
+    top:100px;
     right:50px;
 }
 
