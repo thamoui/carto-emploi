@@ -14,10 +14,20 @@ namespace :ango do
     ruby "./parser/pole_emploi_parser.rb 21 95"
   end
 
+  desc 'insère les urls des offres de tous les départements'
+  task :a_l_abordage  do
+    ruby "./parser/pole_emploi_parser.rb 2A 2B"
+    ruby "./parser/pole_emploi_parser.rb 1 19"
+    ruby "./parser/pole_emploi_parser.rb 21 95"
+  end
+
+
   desc 'parse les urls et insère le détail des offres dans la base de données'
   task :insert_offers  do
     ruby "./parser/insert_db.rb"
   end
+
+
 
   # desc 'insère les urls des offres pour un ou des départements au choix'
   # task :url_parse do |dpt_start, dpt_last|
