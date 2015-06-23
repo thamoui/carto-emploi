@@ -55,6 +55,16 @@ function getMarkerCenter(distance, limit, page, searchtxt) {
     });
 }
 
+//Affiche la zone recherche
+function showMap(err, data) {
+    // The geocoder can return an area, like a city, or a
+    // point, like an address. Here we handle both cases,
+    // by fitting the map bounds to an area or zooming to a point.
+    if (data.latlng) {
+        map.setView([data.latlng[0], data.latlng[1]], 10);
+    }
+}
+
 //Remise à zero des markers
 function clearMarkers() {
     map.removeLayer(markers);
