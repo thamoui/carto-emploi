@@ -57,21 +57,23 @@ Pour voir l’aide de Postgres :
 Pour sortir de la console PSQL et revenir à la ligne de commande du terminal Ctrl D (deux fois !).
 
 
-# créer les tables en local
+# créer les tables en local (partie à modifier après tests)
+
+
+
+## Via active record
+Pb : les données de database.yml ne sont pas prises en compte car la base n'a pas l'utilisateur pole_emploi comme owner :
+
+`rake db:create RACK_ENV='development'`
+
+(essayer bundle exec rake db:create RACK_ENV='development')
+
+puis `rake db:structure:load` qui va charger la structure de la bdd
+
+## Via un script maison
 
 Lancer la tâche `rake ango:create_tables`
-
-`rake db:create RACK_ENV='development'` est censé remplacer la commande du dessus
-
-essaye bundle exec rake db:create RACK_ENV='development'
-
-rake db:structure:load
-
-ou
-`rake db:create`
-puis
-
-`rake db:structure:load` qui va charger via active record la structure de la bdd
+Ce script crée les tables dans la base pole_emploi avec comme owner pole_emploi. Voir si on peut ajouter les variables d'environnement
 
 
 # créer les tables sur heroku
@@ -79,6 +81,7 @@ puis
 Dans le terminal :
 
 `heroku pg:psql -a ango-jobs <db/structure.sql`
+
 
 ( heroku pg:psql -a your-app-name <db/structure.sql )
 
