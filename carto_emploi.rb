@@ -30,7 +30,21 @@ get '/' do
   redirect '/index.html' #The root of the project is /frontend so the absolute path to static files doesn't need /frontend in front
 end
 
-#--------------   /geosearch/LAT,LNG : renvoi les emplois aux alentours
+
+
+#----------------- /metiers : renvoie la liste des métiers
+
+get '/metiers' do
+  content_type :json, 'charset' => 'utf-8'
+  @data_job = []
+  @conn.exec("SELECT * FROM job_list").map do |result|
+  @data_job << result
+  end
+  @data_job.to_json
+end
+
+
+#--------------   /geosearch/LAT,LNG : renvoie les emplois aux alentours
 
 get '/geosearch/:lat,:lng' do
   #geosearch/48.86833,2.66833?p=42&limit=42&text=développeur LAGNY SUR MARNE
