@@ -1,13 +1,17 @@
-# carto-emploi
-Projet de cartographie des emplois du numérique en France
+# ANGO
+
+Projet de cartographie des emplois du numérique en France :  https://ango-jobs.herokuapp.com/
 
 
 # pré-requis
 
-- ruby '2.1.3'
+- ruby '2.1.3' avec rbenv ou un autre gestionnaire de versions
 - postgresql http://www.postgresql.org/
+`sudo apt-get install postgresql`
+
 - bundler http://bundler.io/
-- rbenv ou rvm pour la gestion des versions de ruby sur votre machine
+`gem install bundler`
+
 
 # récupérer le projet
 
@@ -17,126 +21,106 @@ Puis lancer l'installation des gem :
 
 `bundle install`
 
-Pré-requis : vous devez avoir installer Ruby sur votre machine !
 
 # configurer les variables d'environnement
 
 renommer les fichiers .envsample et /parser/.envsample en .env et remplacer les valeurs si nécessaire
 Ex :
 
+```
 DATABASE_PASSWORD=pole_emploi
 DATABASE_USER_NAME="pole_emploi"
 DATABASE_URL=postgres://..... #valeur donnée par heroku ou autre
 RACK_ENV=development
+```
 
-## configuration de la base de données
 
+# configuration de la base de données
+
+lancer le terminal de postgres
 `sudo su postgres`
-
 puis
-
 `psql`
 
+ou `sudo -u postgres psql`
 puis
 
 `create role pole_emploi with createdb login password 'pole_emploi';`
 
-Pour vérifier que le changement est OK :
+Pour vérifier que le changement est OK et voir la liste des utilisateurs  :
 
 `\dgh`
 
-Pour créer la bdd :
-
-`CREATE DATABASE pole_emploi WITH OWNER pole_emploi;`
-
-Se mettre dans la base pole_emploi pour créer les colonnes de la table :
-
-`psql -U pole_emploi pole_emploi`
-
-puis :
-
-```sql
-
-CREATE TABLE job_offers
-(
-  region_adress text,
-  id_key serial NOT NULL,
-  title text,
-  contrat_type text,
-  code_rome text,
-  offer_description text,
-  company_description text,
-  url text,
-  latitude numeric,
-  longitude numeric,
-  offer_id text,
-  publication_date text
-)
-WITH (
-  OIDS=FALSE
-);
-
-```
-
-et
-
-```
-CREATE TABLE parse
-(
-  url text,
-  id text,
-  id_key serial NOT NULL
-)
-WITH (
-  OIDS=FALSE
-);
-```
-
-Créer des primary key :
-
-```
-ALTER TABLE job_offers ADD PRIMARY KEY (offer_id);
-```
-
-```
-ALTER TABLE parse ADD PRIMARY KEY (id_key);
-```
-
-
-
-Pour voir l’aide de Postgres : \?
-
+* utile :
+Pour voir l’aide de Postgres :
+`\?`
 Pour sortir de la console PSQL et revenir à la ligne de commande du terminal Ctrl D (deux fois !).
 
-Commandes utiles :
 
-`sudo -u postgres psql` pour se logguer en tant que super utilisateur
+# créer les tables en local
 
-## Lancer le parser
+Lancer la tâche `rake ango:create_tables`
+
+`rake db:create RACK_ENV='development'` est censé remplacer la commande du dessus
+
+essaye bundle exec rake db:create RACK_ENV='development'
+
+rake db:structure:load
+
+ou
+`rake db:create`
+puis
+
+`rake db:structure:load` qui va charger via active record la structure de la bdd
+
+
+# créer les tables sur heroku
+
+Dans le terminal :
+
+`heroku pg:psql -a ango-jobs <db/structure.sql`
+
+( heroku pg:psql -a your-app-name <db/structure.sql )
+
+
+# Lancer le parser
+
+Voir la liste des tâches disponibles ` rake -T`
+
+ 1. Récupération des urls
 
 Lancer le premier script qui récupère les urls et id correspondant aux offres d'emplois pour les jobs du numérique
 
 Attention : le script génère de nombreuses url !
-Ouvrir le dossier `parser` et lancer l'execution via le terminal :
+Sachant que les départements vont de 1 à 95 et que le 20 n'existe pas, c'est la Corse et est remplacé par 2A et 2B
+`rake parser:url_parse_1_19`   # insère les urls des offres des départements 1 à 19
+`rake parser:url_parse_21_95`  # insère les urls des offres des départements 21 à 95
+`rake parser:url_parse_2A_2B`  # insère les urls des offres disponibles en Corse
 
-`ruby pole_emploi_parser.rb 1 19` pour parser du département 1 à 19, sachant que les départements vont de 1 à 95 et que le 20 n'existe pas, c'est la Corse et est remplacé par 2A et 2B
+ 2. Insertion des données des offres d'emplois
 
-Une fois que le processus est terminé, lancer le parser qui récupère le détail de chaque offre d'emploi et insère les datas dans la BDD :
+`rake parser:insert_offers`    # parse les urls et insère le détail des offres dans la base de données
 
-`ruby insert_db.rb`
-
+ 3. Nettoyage de la base de données
 
 Pour supprimer de la base job_offers les offres qui ne sont plus disponibles :
 
 
-```bash
-parser/delete_offers.rb
+```rake clean_db:delete_offers```
+supprime les offres invalides de la table des offres (job_offers)
+
+```rake clean_db:delete_urls
 ```
+  supprime les urls invalides de la table des urls (parse)
 
-Pour faire la même chose en production, lancer d'abord une console :
-`heroku run bash`
 
-# Lancer l'api
+# Pour faire la même chose en production
+
+Depuis votre terminal, ajouter `heroku run` avant la listes des tâches rake mentionnées au paragraphe précédant.
+Exemple :  `heroku run rake -T`
+
+
+# Lancer l'api sur un serveur
 
 Dans le terminal :
 
@@ -148,11 +132,6 @@ Ex d'urls pour visualiser le fichier json généré :
 - Voir toutes les offres d'emplois disponibles : http://0.0.0.0:9393/emploi?limit=50&p=2
 - Chercher un métier parmi les offres : http://0.0.0.0:9393/search/administrateur?limit=3&p=2
 - Chercher un métier situé à une certaine distance : http://0.0.0.0:9393/geosearch/48.86833,2.66833?text=administrateur&d=50&limit=5&p=1
-
-
-# Déployement
-
-https://ango-jobs.herokuapp.com/
 
 
 # Documentation utile
