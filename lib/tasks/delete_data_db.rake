@@ -9,6 +9,4 @@ namespace :clean_db do
   task :delete_offers  do
     ruby "./parser/delete_job_offers.rb"
   end
-
-
-  end
+end
