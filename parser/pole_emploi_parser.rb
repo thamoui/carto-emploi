@@ -97,4 +97,6 @@ if urls != nil
 		end
 	end
 end
-#conn.close
+
+
+CONN.close
