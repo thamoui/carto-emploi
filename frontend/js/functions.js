@@ -21,8 +21,10 @@ function getMarker(response) {
         var txtDescription = tabDescription.join("<br>");
 
         //Création du marker
+        var myIcon = L.icon({iconUrl: "/img/curseur-ango-1_360.png", "iconSize": [50, 50], "iconAnchor": [25, 25]});
+        
         var marker = L.marker(new L.LatLng(latitude, longitude), {
-            icon: L.mapbox.marker.icon({'marker-symbol': 'suitcase', 'marker-color': '#ED1450'}),
+            icon: myIcon,
             title: title
         });
         marker.bindPopup(title+txtDescription);
@@ -53,6 +55,16 @@ function getMarkerCenter(distance, limit, page, searchtxt) {
             }
         }
     });
+}
+
+//Affiche la zone recherche
+function showMap(err, data) {
+    // The geocoder can return an area, like a city, or a
+    // point, like an address. Here we handle both cases,
+    // by fitting the map bounds to an area or zooming to a point.
+    if (data.latlng) {
+        map.setView([data.latlng[0], data.latlng[1]], 10);
+    }
 }
 
 //Remise à zero des markers

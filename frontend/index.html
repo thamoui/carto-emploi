@@ -40,10 +40,10 @@
                 <button id='geolocate'>OK</button>
             </div>
             <p class='text'>
-                <input id='search' class='search-ui' placeholder='Métier' />
+                <input id='search-ui' class='search-ui' placeholder='Métier' />
                 <button type="button" id='button-search' class='button'></button>
 
-                <input id='search' class='search-ville' placeholder='Ville' />
+                <input id='search-city' oninput='geocodeThis' class='search-ville' placeholder='Ville' />
                 <button type="button" id='button-city' class='button'></button>
             </p>
             <p id="msg-alert" class='text alert'></p>
@@ -60,6 +60,28 @@
             //Groupe de cluster
             //ref : https://www.mapbox.com/mapbox.js/example/v1.0.0/leaflet-markercluster/
             var markers = new L.MarkerClusterGroup();
+            
+            //Geocoder
+            var geocoder = L.mapbox.geocoder('mapbox.places');
+            
+            /*var geoJson = [{
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-75.00, 40]
+                },
+                "properties": {
+                    "title": "Red Cross",
+                    "icon": {
+                        "iconUrl": "/img/",
+                        "iconSize": [50, 50], // size of the icon
+                        "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+                        "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+                        "className": "dot"
+                    }
+                }
+            }
+            }];*/
 
             //////////////////
             //Events
@@ -111,18 +133,17 @@
                 map.zoomOut();
             });
             
-            /*var geocodingControl = L.mapbox.geocoderControl('mapbox.places')
-            
-            $("#button-city").on("click", function() {
-              if (document.getElementById("button-city").value != "") {
-                geocodingControl.on("found", function() {
+            //Event : clic sur le bouton pour lancer une recherche par ville
+            $("#button-city").on("click", function(geocodeThis) {
+                var text = document.getElementById('search-city').value;
+                if (text.length >= 1) {
+                    geocoder.query(text, showMap);
                 }
-              }             
-            }*/
-
+            });
+            
             //Event : moveend
             map.on('moveend', function (move) {
-                getMarkerCenter(20, 50, 1, document.getElementById('search').value);
+                getMarkerCenter(20, 50, 1, document.getElementById('search-ui').value);
             });
 
         </script>
