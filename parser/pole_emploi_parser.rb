@@ -34,7 +34,7 @@ end
 def urls
 	jobs = ["Administrateur", "Administrateur base de données", "Chef de projet web", "Développeur", "Ingénieur informatique", "Intégrateur", "Sécurité informatique", "Testeur informatique", "Webmaster", "informatique", "Informaticien", "Architecte", "Responsable informatique"]
 	if ARGV[0] == nil or ARGV[0] == "20" or ARGV[0].to_i > 95
-		puts "Le département #{ARGV[0]} n'existe pas, veuillez tapez un numéro de département valide svp : de 1 à 19, 2A, 2B, de 21 à 95"
+		puts "Le département #{ARGV[0]} n'existe pas, veuillez tapez un ou deux numéros de département valide svp : de 1 à 19, 2A, 2B, de 21 à 95"
 	else
 
 		if  ARGV[0] == "2A" || ARGV[0] == "2B"

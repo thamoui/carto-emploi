@@ -25,8 +25,6 @@ group :development do
   gem "shotgun"
   gem "colorize" #ne fonctionne pas sur heroku mais bien utile pour mieux visualiser les logs sur sa machine
   gem "pry"
-  gem "redis" #à voir
-  gem "sidekiq" #à voir
 end
 
 group :test do
