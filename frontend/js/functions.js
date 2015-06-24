@@ -57,6 +57,26 @@ function getMarkerCenter(distance, limit, page, searchtxt) {
     });
 }
 
+//Requete ajax pour récupérer les labels des emplois
+function getJobs() {
+    $.ajax({
+        type: 'GET',
+        url: '/metiers', 
+        crossDomain: true,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(response) {
+            $.each(response, function(i) {
+                var label = response[i].label;
+                $("#jobs").append("<option value='" +label+ "'>" + label + "</option>");
+            });
+        }
+    });
+}
+
+//Appel de la fonction getJobs
+getJobs();
+
 //Affiche la zone recherche
 function showMap(err, data) {
     // The geocoder can return an area, like a city, or a

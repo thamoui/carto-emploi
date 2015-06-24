@@ -98,7 +98,7 @@ h1{
     top:0;
 }
 
-input.search-ui{
+/*input.search-ui{
     top:0px;
     background-color: #FBF4EC;
     width:200px;
@@ -107,7 +107,8 @@ input.search-ui{
     font-family: 'Georgia', sans-serif;
     font-size:15px;
     font-style:italic;
-}
+}*/
+
 button{
     border:0px;
     color:transparent;
@@ -139,6 +140,18 @@ button.button{
 }
 
 input.search-ville{
+    margin-left:150px;
+    top:0px;
+    background-color: #FBF4EC;
+    width:200px;
+    border: 0px;
+    padding: 10px;
+    font-family: 'Georgia', sans-serif;
+    font-size:15px;
+    font-style:italic;
+}
+
+select {
     margin-left:150px;
     top:0px;
     background-color: #FBF4EC;

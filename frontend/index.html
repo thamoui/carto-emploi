@@ -40,7 +40,8 @@
                 <button id='geolocate'>OK</button>
             </div>
             <p class='text'>
-                <input id='search-ui' class='search-ui' placeholder='Métier' />
+                <!-- <input id='search' class='search-ui' placeholder='Métier' /> -->
+                <select id='jobs'></select>
                 <button type="button" id='button-search' class='button'></button>
 
                 <input id='search-city' oninput='geocodeThis' class='search-ville' placeholder='Ville' />
@@ -97,13 +98,13 @@
             $("#button-search").on('click', function (event) {
                 event.preventDefault();
 
-                if (document.getElementById('search').value == '') {
+                if (document.getElementById('jobs').value == '') {
                     alert_map("Attention, le champs texte est vide. Veuillez entrer un métier.");
                 } else {
-                    getMarkerCenter(20, 50, 1, document.getElementById('search').value);
+                    getMarkerCenter(20, 50, 1, document.getElementById('jobs').value);
                 }
             });
-
+            
             //Event : clic sur le bouton + pour zoomer
             $(".bouton.plus").on('click', function () {
                 map.zoomIn();
@@ -124,7 +125,7 @@
             
             //Event : moveend
             map.on('moveend', function (move) {
-                getMarkerCenter(20, 50, 1, document.getElementById('search-ui').value);
+                getMarkerCenter(20, 50, 1, document.getElementById('search').value);
             });
 
         </script>
