@@ -27,7 +27,7 @@ function getMarker(response) {
             icon: myIcon,
             title: title
         });
-        marker.bindPopup(title+txtDescription);
+        marker.bindPopup(title+"<br>"+txtDescription);
         markers.addLayer(marker);
 
         //Ajout du groupe de marker sur la map
