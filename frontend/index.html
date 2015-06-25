@@ -19,7 +19,10 @@
         <script src="/js/functions.js"></script>
     </head>
     <body>
-        <div id="popup_band" class="popup_top"></div>
+        <div id="popup_band" class="popup_top">
+            <div id="popup_button" class="popup_button"></div>
+            <div class="popup_logo"></div>
+        </div>
         <div id="popup_cordage" class="popup_cordage"></div>
         <div id="popup_text" class="popup_bottom">
             <div class="popup_text">
@@ -85,7 +88,7 @@
                 getMarkerCenter(20, 50, 1, '');
                 popupIn();
                 
-                $("#popup_band").on('click', function() {
+                $("#popup_button").on('click', function() {
                     popupOut();
                 });
             });
