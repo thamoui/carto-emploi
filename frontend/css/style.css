@@ -83,6 +83,7 @@ h1{
     background-image:url(/img/bouton-plus-ango.png);
     top:60px;
     right:50px;
+    z-index:1000;
 }
 
 .bouton.moins{
@@ -92,6 +93,7 @@ h1{
     background-image:url(/img/bouton-moins-ango.png);
     top:100px;
     right:50px;
+    z-index:1000;
 }
 
 .search-ui{
@@ -154,27 +156,23 @@ input.search-ville{
 select {
     margin-left:0px;
     top:0px;
-    background-color: #FBF4EC;
+    background-color:#FBF4EC;
     width:200px;
-    border: 0px;
-    padding: 10px;
-    font-family: 'Georgia', sans-serif;
+    border:0px;
+    padding:10px;
+    font-family:'Georgia', sans-serif;
     font-size:15px;
     font-style:italic;
 }
 
-/*.popup_band {
-    display: none;
-    position: absolute;
-    margin-bottom:75%;
+.popup_top {
+    position:absolute;
+    background-image:url(/img/fond-parchemin-pop-up_1024.png);
     width:100%;
     height:25%;
-    padding:16px;
-    background-color:yellow;
-    color:white;
+    top:0px;
     z-index:1001;
-    overflow: auto;
-}*/
+}
 
 .popup_bottom {
     display:none;
@@ -187,7 +185,7 @@ select {
     color:white;
     font-size:20px;
     z-index:1002;
-    overflow: auto;
+    overflow:auto;
 }
 
 .popup_text {
@@ -200,7 +198,7 @@ select {
     text-align:center;
 }
 
-.cordage-top-popup{
+.popup_cordage{
     display:block;
     position:fixed;
     top:25%;
