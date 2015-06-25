@@ -176,7 +176,7 @@ select {
     overflow: auto;
 }*/
 
-.popup_text {
+.popup_bottom {
     display:none;
     position:absolute;
     top:25%;
@@ -188,6 +188,16 @@ select {
     font-size:20px;
     z-index:1002;
     overflow: auto;
+}
+
+.popup_text {
+    margin-left:22%;
+    margin-right:22%;
+    padding:5px;
+}
+
+.popup_text_center {
+    text-align:center;
 }
 
 .cordage-top-popup{
