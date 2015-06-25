@@ -102,10 +102,12 @@ function alert_map(msg) {
 function popupIn() {
     //document.getElementById("popup_band").style.display='block';
     document.getElementById("popup_text").style.display='block';
+    document.getElementById("popup_cordage").style.display='block';
 }
 
 //Popup fermante
 function popupOut() {
     //document.getElementById("popup_band").style.display='none';
     document.getElementById("popup_text").style.display='none';
+    document.getElementById("popup_cordage").style.display='none';
 }
