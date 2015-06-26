@@ -177,6 +177,10 @@ select {
     font-style:italic;
 }
 
+#popup {
+    display:none;
+}
+
 .popup_top {
     position:absolute;
     background-image:url(/img/fond-parchemin-pop-up_1024.png);
@@ -187,7 +191,6 @@ select {
 }
 
 .popup_bottom {
-    display:none;
     position:absolute;
     top:25%;
     width:100%;
