@@ -1,9 +1,18 @@
 development:
   adapter: postgresql
-  username: <%= ENV['DATABASE_USER_NAME'] %>
+  #username: <%= ENV['DATABASE_USER_NAME'] %>
+  username: pole_emploi
   password: <%= ENV['DATABASE_PASSWORD'] %>
   host: localhost
   database: pole_emploi
+
+test:
+  adapter: postgresql
+  #username: <%= ENV['DATABASE_USER_NAME'] %>
+  username: pole_emploi
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: localhost
+  database: pole_emploi_test
 
 production:
   url: <%= ENV['DATABASE_URL'] %>

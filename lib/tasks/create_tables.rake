@@ -1,13 +1,31 @@
+require 'dotenv'
+Dotenv.load
+
+
 namespace :ango do
-  desc "Creation des bases de données / SQL"
-  task :create_tables  do
+  desc "Creation des bases de donnees / SQL"
+  task :create_tables do
+
+    puts "Current env is #{ENV["RACK_ENV"]} --------------"
+
+    puts "db name ----- #{ENV["DATABASE_NAME"]}"
+    puts "user name ------#{ENV["DATABASE_USER_NAME"]}"
 
     #exec 'psql -U pole_emploi pole_emploi'
     #sh 'psql -U pole_emploi pole_emploi'
     #sql = File.open("./db/create_db.sql").read
     #test = File.open("test.rb").read
 
-    sh "psql -h '127.0.0.1' -p 5432 -d pole_emploi -U pole_emploi -f ./db/structure.sql"
+    #sh "psql CREATE DATABASE #{ENV["DATABASE_NAME"]} WITH OWNER #{ENV["DATABASE_USER_NAME"]};"
+    #sh "psql -U #{ENV["DATABASE_USER_NAME"]}"
+    #sh "RUN_ON_MYDB <<SQL"
+    # sh "sudo su postgres psql"
+    # sh "CREATE DATABASE pole_emploi WITH OWNER pole_emploi;"
+
+    #sh "psql create database 'pole_emploi' with owner 'pole_emploi';"
+
+
+    sh "psql -h '127.0.0.1' -p 5432 -d #{ENV["DATABASE_NAME"]} -U #{ENV["DATABASE_USER_NAME"]} -f ./db/structure.sql"
   end
 
 end
@@ -22,16 +40,8 @@ end
 # psql -d databaseName < db/structure.sql
 # On Heroku where rake db:setup doesn't work as you can't create a database like that you can do this:
 #
-# heroku pg:psql < db/structure.sql
 
 
-#psql -h host -p port -d dbname -U username -f create_db.sql
-
-#psql -h 127.0.0.1 -p 5432 -d pole_emploi -U pole_emploi -f create_db.sql
-
-#----------------------- CONNECT DATABASE LOCALHOST ----------------------
-# conn = PGconn.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
-# require 'colorize'
 
 #
 # https://gist.github.com/KevM/1705486

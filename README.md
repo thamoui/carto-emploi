@@ -64,11 +64,15 @@ Pour sortir de la console PSQL et revenir à la ligne de commande du terminal Ct
 ## Via active record
 Pb : les données de database.yml ne sont pas prises en compte car la base n'a pas l'utilisateur pole_emploi comme owner :
 
+`rake dotenv`
+
+
 `rake db:create RACK_ENV='development'`
 
 (essayer bundle exec rake db:create RACK_ENV='development')
 
 puis `rake db:structure:load` qui va charger la structure de la bdd
+ou `rake ango:create_tables` qui prend en compte l'environnement.
 
 ## Via un script maison
 
