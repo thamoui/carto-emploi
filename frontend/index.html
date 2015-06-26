@@ -20,18 +20,20 @@
     </head>
     <body>
         <!-- popup -->
-        <div id="popup_band" class="popup_top">
-            <div id="popupOut_button" class="popup_button"></div>
-            <div class="popup_logo"></div>
-        </div>
-        <div id="popup_cordage" class="popup_cordage"></div>
-        <div id="popup_text" class="popup_bottom">
-            <div class="popup_text">
-                <p class="popup_text_center">BIENVENUE SUR ANGO</p>
-                <p class="popup_text_center">LA CARTE INTERACTIVE DES OFFRES D'EMPLOI DANS LE NUMERIQUE !</p>
-                <p>Ango a été pensé comme une boussole pour permettre de localiser les offres qui vous correspondent en un coup d'oeil et de naviguer dans la bonne direction<p>
-                <p>Ce projet a été réalisé pour Pôle emploi par l'équipe de SimplonProd, le pôle web solidaire de Simplon.co</p>
-                <p>Simplon.co est une entreprise sociale agréée solidaire qui offre des formations intensives et gratuites à la programmation informatique. Avec SimplonProd, Simplon.co structure son activité de production numérique et renforce son action en faveur de l'insertion, en permettant à des développeurs juniors d'acquérir une première expérience professionnelle.</p>
+        <div id="popup">
+            <div id="popup_band" class="popup_top">
+                <div id="popupOut_button" class="popup_button"></div>
+                <div class="popup_logo"></div>
+            </div>
+            <div id="popup_cordage" class="popup_cordage"></div>
+            <div id="popup_text" class="popup_bottom">
+                <div class="popup_text">
+                    <p class="popup_text_center">BIENVENUE SUR ANGO</p>
+                    <p class="popup_text_center">LA CARTE INTERACTIVE DES OFFRES D'EMPLOI DANS LE NUMERIQUE !</p>
+                    <p>Ango a été pensé comme une boussole pour permettre de localiser les offres qui vous correspondent en un coup d'oeil et de naviguer dans la bonne direction<p>
+                    <p>Ce projet a été réalisé pour Pôle emploi par l'équipe de SimplonProd, le pôle web solidaire de Simplon.co</p>
+                    <p>Simplon.co est une entreprise sociale agréée solidaire qui offre des formations intensives et gratuites à la programmation informatique. Avec SimplonProd, Simplon.co structure son activité de production numérique et renforce son action en faveur de l'insertion, en permettant à des développeurs juniors d'acquérir une première expérience professionnelle.</p>
+                </div>
             </div>
         </div>
         <!-- fin popup -->
@@ -90,8 +92,6 @@
             $(document).ready(function () {
                 getMarkerCenter(20, 50, 1, '');
                 
-                window.onload = popupOut;
-                
                 $("#popupIn_button").on('click', function() {
                     popupIn();
                 });
@@ -107,14 +107,16 @@
                 geolocate.innerHTML = 'La géolocation n\'est pas disponible';
             } else {
                 geolocate.onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     map.locate();
                 };
             }
-
+            
             //Event : locationfound
-            map.on('locationfound', function () {
+            map.on('locationfound', function (e) {
                 //déplace la carte
-                map.setZoom(14);
+                map.fitBounds(e.bounds).setZoom(14);
             });
 
             //Event : locationerror
