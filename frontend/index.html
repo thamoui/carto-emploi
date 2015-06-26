@@ -107,14 +107,16 @@
                 geolocate.innerHTML = 'La géolocation n\'est pas disponible';
             } else {
                 geolocate.onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     map.locate();
                 };
             }
-
+            var myLayer = L.mapbox.featureLayer().addTo(map);
             //Event : locationfound
-            map.on('locationfound', function () {
+            map.on('locationfound', function (e) {
                 //déplace la carte
-                map.setZoom(14);
+                map.fitBounds(e.bounds).setZoom(14);
             });
 
             //Event : locationerror
