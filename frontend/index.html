@@ -19,8 +19,9 @@
         <script src="/js/functions.js"></script>
     </head>
     <body>
+        <!-- popup -->
         <div id="popup_band" class="popup_top">
-            <div id="popup_button" class="popup_button"></div>
+            <div id="popupOut_button" class="popup_button"></div>
             <div class="popup_logo"></div>
         </div>
         <div id="popup_cordage" class="popup_cordage"></div>
@@ -33,6 +34,7 @@
                 <p>Simplon.co est une entreprise sociale agréée solidaire qui offre des formations intensives et gratuites à la programmation informatique. Avec SimplonProd, Simplon.co structure son activité de production numérique et renforce son action en faveur de l'insertion, en permettant à des développeurs juniors d'acquérir une première expérience professionnelle.</p>
             </div>
         </div>
+        <!-- fin popup -->
         
         <!-- logo -->
         <div class="logo-ango"></div>
@@ -40,6 +42,7 @@
 
         <div class="bouton plus"></div>
         <div class="bouton moins"></div>
+        <div id="popupIn_button" class="bouton popup"></div>
 
         <!-- map -->
         <div id='map'></div>
@@ -86,9 +89,14 @@
             //Event : document.ready (chargement initial des markers)
             $(document).ready(function () {
                 getMarkerCenter(20, 50, 1, '');
-                popupIn();
                 
-                $("#popup_button").on('click', function() {
+                window.onload = popupOut;
+                
+                $("#popupIn_button").on('click', function() {
+                    popupIn();
+                });
+                
+                $("#popupOut_button").on('click', function() {
                     popupOut();
                 });
             });
