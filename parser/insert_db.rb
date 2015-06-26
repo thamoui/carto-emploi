@@ -41,6 +41,10 @@ offre_ajout = 0
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
   puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} (true = indisponible) ---------"
 
+  if doc.check_code_rome(item["url"]) == false
+    puts "---------- Code Rome Invalide  ---------- "
+  end
+
   if doc.offer_unavailable(item["url"]) == false && doc.check_code_rome(item["url"]) == true
     adress = doc.search_region(item["url"]).gsub(/''/, "'")
 

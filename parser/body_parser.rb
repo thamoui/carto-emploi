@@ -138,7 +138,6 @@ class BodyParser
     code_rome = doc.css('p[@itemprop="occupationalCategory"]').children.inner_text
     if code_rome != nil || code_rome != ""
       code_rome = code_rome.gsub(/Métier du ROME /, "")[0..4]
-      puts "this is code rome value : #{code_rome} ------ "
       code_rome_info = ["M1801", "M1802", "M1803", "M1804", "M1805", "M1806", "M1810", "I1401", "H1208", "E1101", "E1104", "E1205", "E1402"]
       code_rome_info.include? code_rome
     else
