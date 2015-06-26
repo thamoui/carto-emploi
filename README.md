@@ -113,7 +113,7 @@ Sachant que les départements vont de 1 à 95 et que le 20 n'existe pas, c'est l
 Pour supprimer de la base job_offers les offres qui ne sont plus disponibles :
 
 
-```rake clean_db:delete_offers```
+`rake clean_db:delete_offers`
 supprime les offres invalides de la table des offres (job_offers)
 
 ```rake clean_db:delete_urls
