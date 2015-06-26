@@ -203,12 +203,14 @@ select {
 }
 
 .popup_text {
+    margin-top:4%;
     margin-left:22%;
     margin-right:22%;
     padding:5px;
 }
 
 .popup_text_center {
+    margin-top:4%;
     text-align:center;
 }
 
