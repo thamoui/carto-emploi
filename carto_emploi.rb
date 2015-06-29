@@ -2,10 +2,17 @@ require 'sinatra'
 require 'json'
 require 'pg'
 require 'dotenv'
+require 'active_support/all'
+require 'active_record'
+
 Dotenv.load
 
 configure { set :server, :puma }
-config.time_zone = 'Europe/Paris'
+
+
+Time.zone = "UTC"
+ActiveRecord::Base.default_timezone = :utc
+#config.time_zone = 'Europe/Paris'
 
 
 #----------------------- DB CONFIG  ------------------------

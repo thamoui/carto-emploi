@@ -16,6 +16,8 @@ gem "geocoder"
 gem "geokit"
 gem "clockwork"
 gem "pg"
+gem "sidekiq"
+gem "activesupport"
 
 group :production do
 end
