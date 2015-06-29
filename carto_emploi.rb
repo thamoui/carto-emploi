@@ -4,10 +4,15 @@ require 'pg'
 require 'dotenv'
 require 'active_support/all'
 require 'active_record'
-
 Dotenv.load
 
 configure { set :server, :puma }
+
+
+#add new relic in addons for Software Analytics, Application Performance Mangement
+configure :production do
+  require 'newrelic_rpm'
+end
 
 
 Time.zone = "UTC"

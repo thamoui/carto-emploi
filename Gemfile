@@ -18,6 +18,7 @@ gem "clockwork"
 gem "pg"
 gem "sidekiq"
 gem "activesupport"
+gem "newrelic_rpm"
 
 group :production do
 end
