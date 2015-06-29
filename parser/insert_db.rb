@@ -66,42 +66,40 @@ offre_ajout = 0
       puts "Latitude AFTER  --------- #{@latitude} // Longitude  ------------ #{@longitude}"
       sleep(3)
 
-      #------- Use Geocoder Gem --------
-      if latitude == nil
-      d = Geocoder.search(adress)
-      puts "this is d---------- #{d}"
-      ll = d[0].data["geometry"]["location"]
-      @latitude, @longitude  = ll['lat'], ll['lng']
-      @latitude += rand(0.0007..0.0019)
-      @longitude += rand(0.0004..0.0019)
+      # #------- Use Geocoder Gem --------
+      # if latitude == nil
+      # d = Geocoder.search(adress)
+      # puts "this is d---------- #{d}"
+      # ll = d[0].data["geometry"]["location"]
+      # @latitude, @longitude  = ll['lat'], ll['lng']
+      # @latitude += rand(0.0007..0.0019)
+      # @longitude += rand(0.0004..0.0019)
 
-    elsif @latitude != nil
+      if @latitude != nil
 
+        #------------------- USING BODY PARSER  ---------------------
+        data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
 
+        values = data.map {|v| "\'#{v}\'"}.join(',').to_s
 
-      #------------------- USING BODY PARSER  ---------------------
-      data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
+        conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES (#{values});")
 
-      values = data.map {|v| "\'#{v}\'"}.join(',').to_s
+        offre_ajout = offre_ajout + 1
 
-      conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES (#{values});")
+        sleep(3)
 
-      offre_ajout = offre_ajout + 1
+        puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
+        puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
 
-      sleep(3)
+        puts "--------------------------- OFFER INSERTED INTO DB :) ---------------------- "
+        puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
+        puts "__________ Nb d'offres insérées : #{offre_ajout}_____________________________"
 
-      puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
-      puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
+      end #fin du test latitude !=nil
 
-      puts "--------------------------- OFFER INSERTED INTO DB :) ---------------------- "
-      puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
-      puts "__________ Nb d'offres insérées : #{offre_ajout}_____________________________"
-
-    end #fin du test latitude !=nil
-
+    end
+    sleep(2)
   end
-  sleep(2)
-end
 end
 
 
