@@ -1,11 +1,11 @@
 require 'sinatra'
-
 require 'json'
 require 'pg'
 require 'dotenv'
 Dotenv.load
 
 configure { set :server, :puma }
+config.time_zone = 'Europe/Paris'
 
 
 #----------------------- DB CONFIG  ------------------------
