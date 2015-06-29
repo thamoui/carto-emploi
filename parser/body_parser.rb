@@ -62,6 +62,11 @@ class BodyParser
           end
         end
       end
+
+      if region_adress == "75 - Paris (Dept.)"
+        region_adress.gsub!("(Dept.)", "").upcase!
+      end
+
       region_adress = region_adress.gsub(/['-]/, "'"=> "''", '-' => ',') + ", FRANCE"
 
     else
