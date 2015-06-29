@@ -73,7 +73,7 @@ class BodyParserTest < Minitest::Test
     assert_equal true, doc.offer_unavailable(@url)
   end
 
-  def test_9_Paris_dep_devient_ville
+  def test_8_Paris_dep_devient_ville
     @url = "http://0.0.0.0:8000/test/offre_test_paris_dpt.html"
     expect = "75 , PARIS , FRANCE"
     assert_equal expect, doc.search_region(@url)
