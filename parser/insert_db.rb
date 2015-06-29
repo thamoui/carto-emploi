@@ -23,10 +23,8 @@ def doc
   ::BodyParser.new
 end
 #---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
-#only select from parse if offer is not in job_offers db
+# only select from parse if offer is not in job_offers db
 @result = conn.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
-
-#il faudrait que les offres dont l'adresse est un département ne soit pas inclues dans @result
 
 puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
 
@@ -57,45 +55,53 @@ offre_ajout = 0
     # ------------------- GETTING LATITUDE & LONGITUDE // GEOKIT ------------------------
     if adress != "" && adress == adress.upcase #si adress en majuscule c'est une ville
 
-      # Si code Rome n'est pas un code rome de l'informatique ne pas insérer ?
-
       geodata = Geokit::Geocoders::GoogleGeocoder.geocode(adress, :bias => 'fr').to_hash
       @latitude, @longitude = geodata[:lat], geodata[:lng]
-      #@longitude = b[1].to_f.abs
-      puts "Latitude  --------- #{@latitude} // Longitude  ------------ #{@longitude}"
+      puts "Latitude BEFORE --------- #{@latitude} // Longitude  ------------ #{@longitude}"
+
+      #change a little bit data to see offers in the map when we zoom
+      @latitude += rand(0.0007..0.0019)
+      @longitude += rand(0.0004..0.0019)
+
+      puts "Latitude AFTER  --------- #{@latitude} // Longitude  ------------ #{@longitude}"
       sleep(3)
 
-      if @latitude != nil #------- Use Geocoder Gem --------
-        #     puts "this is d---------- #{adress}"
-        #     d = Geocoder.search(adress)
-        #     puts "this is d---------- #{d}"
-        #     ll = d[0].data["geometry"]["location"]
-        #     @latitude = ll['lat']
-        #     @longitude = ll['lng']
+      #------- Use Geocoder Gem --------
+      if latitude == nil
+      d = Geocoder.search(adress)
+      puts "this is d---------- #{d}"
+      ll = d[0].data["geometry"]["location"]
+      @latitude, @longitude  = ll['lat'], ll['lng']
+      @latitude += rand(0.0007..0.0019)
+      @longitude += rand(0.0004..0.0019)
 
-        #------------------- USING BODY PARSER  ---------------------
-        data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
+    elsif @latitude != nil
 
-        values = data.map {|v| "\'#{v}\'"}.join(',').to_s
 
-        conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES (#{values});")
 
-        offre_ajout = offre_ajout + 1
+      #------------------- USING BODY PARSER  ---------------------
+      data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
 
-        sleep(3)
+      values = data.map {|v| "\'#{v}\'"}.join(',').to_s
 
-        puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
-        puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
+      conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES (#{values});")
 
-        puts "--------------------------- OFFER INSERTED INTO DB :) ---------------------- "
-        puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
-        puts "__________ Nb d'offres insérées : #{offre_ajout}_____________________________"
+      offre_ajout = offre_ajout + 1
 
-      end #fin du test latitude !=nil
+      sleep(3)
 
-    end
-    sleep(2)
+      puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
+      puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
+
+      puts "--------------------------- OFFER INSERTED INTO DB :) ---------------------- "
+      puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
+      puts "__________ Nb d'offres insérées : #{offre_ajout}_____________________________"
+
+    end #fin du test latitude !=nil
+
   end
+  sleep(2)
+end
 end
 
 
