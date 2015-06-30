@@ -285,7 +285,7 @@ select {
 	.bouton.moins, .bouton.plus, .bouton.popup{right:3%;}
 	.block_text {height: 32%;}
 	h1 { font-size: 18px;margin-top: 8px;}
-	button#geolocate {width: 25px; height: 25px; margin-left: 20px;}
+	button#geolocate {width: 25px; height: 25px; margin-left: 32px;}
 	.geolocalisation{margin-top:1%;}
 	select {width: 200px;height: 25px;}
 	button.button {bottom: -8px; width: 25px; height: 25px; background-size:100% }
