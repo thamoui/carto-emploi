@@ -45,8 +45,8 @@ body {
 
 .cordage-bottom{
     display:block;
-    position:relative;
-    bottom:-13px;
+    position:absolute;
+    bottom:0px;
     width:100%;
     height:18px;
     background-image:url(/img/cordage-bottom.png);
@@ -70,7 +70,7 @@ h1{
   	width: 500px;
   	left: 50%;
   	margin-left: -250px;
-  	bottom:2%;
+  	bottom:2.7%;
     -webkit-margin-before: 0.1em;
     -webkit-margin-after: 0.1em;
 }
@@ -142,7 +142,7 @@ button{
 
 button#geolocate{
     position:relative;
-    left:10px;
+    left:7px;
     width:37px;
     height:37px;
     color:white;
