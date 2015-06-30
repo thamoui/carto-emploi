@@ -27,13 +27,16 @@ deleted_urls = 0
 @result[0..@result.length].each do |item|
   nb_urls = nb_urls - 1
   puts "_________________________________________________________________________________"
-  puts "______________________ STARTING CLEANING PARSE BASE _____________________________"
-  #L'offre est supprimée si elle n'est plus disponible sur le site de pole emploi
+  puts "______________________ STARTING CLEANING UNAVAILABLE OFFERS FROM PARSE BASE  _____________________________"
 
-  if doc.offer_unavailable(item["url"]) == true
+  # L'offre est supprimée si elle n'est plus disponible sur le site de pole emploi
+  # Ou si le code rome n'est pas dans le secteur de l'informatique
+  # Ou si adress n'est pas une ville
+
+  if doc.offer_unavailable(item["url"]) == true || doc.check_code_rome(item["url"]) == false ||  doc.search_region(item["url"]) != doc.search_region(item["url"]).upcase
+    puts "------------------ #{doc.search_region(item["url"])} n'est pas une ville ------------------------- "
     conn.exec("DELETE FROM parse WHERE url = '#{item["url"]}'")
     deleted_urls = deleted_urls + 1
-    puts deleted_urls
     puts "-------- L'url #{item["url"]} a été supprimé de la bdd parse -------- "
   end
   puts "-------------------- #{nb_urls} url(s) encore à traiter sur #{@result.length} au départ --------------"

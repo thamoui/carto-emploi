@@ -34,6 +34,7 @@ DATABASE_URL=postgres://..... #valeur donnée par heroku ou autre
 RACK_ENV=development
 ```
 
+puis modifier le ficher '/config/database.yml' si besoin est
 
 # configuration de la base de données
 
@@ -72,13 +73,14 @@ Pb : les données de database.yml ne sont pas prises en compte car la base n'a p
 (essayer bundle exec rake db:create RACK_ENV='development')
 
 puis `rake db:structure:load` qui va charger la structure de la bdd
-ou `rake ango:create_tables` qui prend en compte l'environnement.
+
+ou `rake ango:create_tables` un script sql qui prend en compte l'environnement.
 
 ## Via un script maison
 
 Lancer la tâche `rake ango:create_tables`
-Ce script crée les tables dans la base pole_emploi avec comme owner pole_emploi. Voir si on peut ajouter les variables d'environnement
-
+Ce script crée les tables dans la base pole_emploi avec comme owner pole_emploi.
+Penser à modifier le fichier `database.yml` si vous souhaitez modifier les paramètres.
 
 # créer les tables sur heroku
 
@@ -104,22 +106,37 @@ Sachant que les départements vont de 1 à 95 et que le 20 n'existe pas, c'est l
 `rake parser:url_parse_21_95`  # insère les urls des offres des départements 21 à 95
 `rake parser:url_parse_2A_2B`  # insère les urls des offres disponibles en Corse
 
- 2. Insertion des données des offres d'emplois
+ou
+
+`rake ango:a_l_abordage` # insère les urls des offres de tous les départements
+
+2. Nettoyage de la base d'url :
+
+Ce script enlève de la bdd les url dont :
+- code rome invalides
+- adresse invalide
+- offre déjà présente dans la bdd des offres d'emplois
+- offre indisponible sur le site de pôle emploi
+
+`rake clean_db:delete_duplicate_parse` Script rapide pour supprimer les doublons
+puis
+
+`rake clean_db:delete_urls` Script plus long qui nécessite l'analyse du contenu des offres.
+
+
+3. Insertion des données des offres d'emplois
+
+Une fois que la base d'url est propre on peut passer à l'étape suivant, l'insertion des données des offres d'emploi (titre du métier, code rome, etc.)
 
 `rake parser:insert_offers`    # parse les urls et insère le détail des offres dans la base de données
 
- 3. Nettoyage de la base de données
+Attention, c'est long quand la base est vide !!
 
-Pour supprimer de la base job_offers les offres qui ne sont plus disponibles :
+4. Nettoyage de la base de données
 
+On peut revenir à l'étape 2 sinon pour pour supprimer de la base de données d'offres (job_offers), celles qui ne sont plus disponibles :
 
 `rake clean_db:delete_offers`
-supprime les offres invalides de la table des offres (job_offers)
-
-```rake clean_db:delete_urls
-```
-  supprime les urls invalides de la table des urls (parse)
-
 
 # Pour faire la même chose en production
 

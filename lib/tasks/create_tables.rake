@@ -1,10 +1,11 @@
 require 'dotenv'
+require 'dotenv/tasks'
 Dotenv.load
 
 
 namespace :ango do
   desc "Creation des bases de donnees / SQL"
-  task :create_tables do
+  task :create_tables => :dotenv do
 
     puts "Current env is #{ENV["RACK_ENV"]} --------------"
 
