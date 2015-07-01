@@ -62,7 +62,7 @@
             </div>
             <p class='block-recherche'>
                 <!-- <input id='search' class='search-ui' placeholder='Métier' /> -->
-                <select id='jobs'></select>
+                <select id='jobs'><option value="">Tous les métiers</option></select>
                 <button type="button" id='button-search' class='button'></button>
 
                 <input id='search-city' oninput='geocodeThis' class='search-ville' placeholder='Ville' />
@@ -128,13 +128,8 @@
 
             //Event : clic sur le bouton de recherche
             $("#button-search").on('click', function (event) {
-                event.preventDefault();
-
-                if (document.getElementById('jobs').value == '') {
-                    alert_map("Attention, le champs texte est vide. Veuillez entrer un métier.");
-                } else {
-                    getMarkerCenter(20, 50, 1, document.getElementById('jobs').value);
-                }
+                event.preventDefault();                      
+                getMarkerCenter(20, 50, 1, document.getElementById('jobs').value);
             });
             
             //Event : clic sur le bouton + pour zoomer

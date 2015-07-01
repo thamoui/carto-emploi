@@ -68,7 +68,7 @@ function getJobs() {
         success: function(response) {
             $.each(response, function(i) {
                 var label = response[i].label;
-                $("#jobs").append("<option value='" +label+ "'>" + label + "</option>");
+                $("#jobs").append("<option value='" + label + "'>" + label + "</option>");  
             });
         }
     });
