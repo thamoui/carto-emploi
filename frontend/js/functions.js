@@ -107,3 +107,17 @@ function popupIn() {
 function popupOut() {
     document.getElementById("popup").style.display='none';
 }
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+    e = e || window.event;
+    
+    if (e.shiftKey && e.keyCode == '80') {
+        $("#style").append("<link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />");
+        console.log(e.keyCode);
+    }
+    else if (e.shiftKey && e.keyCode == '69') {
+        $("#style").append("<link rel='stylesheet' href='/css/style-normal.css' type='text/css' media='all' />");
+    }
+}
