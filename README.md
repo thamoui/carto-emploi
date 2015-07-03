@@ -118,7 +118,9 @@ Ce script enlève de la bdd les url dont :
 - offre déjà présente dans la bdd des offres d'emplois
 - offre indisponible sur le site de pôle emploi
 
-`rake clean_db:delete_duplicate_parse` Script rapide pour supprimer les doublons
+`rake clean_db:delete_duplicate_parse` Script rapide pour supprimer les doublons 
+
+
 puis
 
 `rake clean_db:delete_urls` Script plus long qui nécessite l'analyse du contenu des offres.

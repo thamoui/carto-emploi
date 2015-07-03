@@ -6,21 +6,21 @@ require 'active_support/all'
 require 'active_record'
 Dotenv.load
 
-configure { set :server, :puma }
+# ----------------- CONFIGURATION DATAS ----------------------
 
+configure { set :server, :puma }
+set :public_folder, 'public'
 
 #add new relic in addons for Software Analytics, Application Performance Mangement
 configure :production do
   require 'newrelic_rpm'
 end
 
-
+#------------------------ config.time_zone = 'Europe/Paris'-----
 Time.zone = "UTC"
 ActiveRecord::Base.default_timezone = :utc
-#config.time_zone = 'Europe/Paris'
 
-
-#----------------------- DB CONFIG  ------------------------
+#----------------------- DB CONFIG  ---------------------------
 if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
   configure do
@@ -40,6 +40,17 @@ end
 set :public_folder, 'frontend' #this is necessary to be able to access to static files
 get '/' do
   redirect '/index.html' #The root of the project is /frontend so the absolute path to static files doesn't need /frontend in front
+end
+
+# --------------- gestion des données en mode objet grâce à active records
+class Job_list < ActiveRecord::Base
+end
+# !!!!!!!!!!!!!!!!! Voir si faut pas que j'importe le dossier models !!!!!!!!!!!
+
+# --------------- /admin : interface d'administration
+
+get '/admin' do
+  erb :admin
 end
 
 
