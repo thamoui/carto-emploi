@@ -7,6 +7,7 @@ require 'nokogiri'
 
 class BodyParser
 
+  #A quoi sert la fonction ci-dessous ? C'était pour vérifier que le fichier html/url existe bien
   def get_body(url)
     url = "https://simplon2015exercices.herokuapp.com/"
     uri = URI.parse(url)
@@ -28,7 +29,6 @@ class BodyParser
 
   #------------------- Adresse ------------------------------
   def search_region(url)
-    #je pourrais enlever region_adress de partout non ?
     region_adress = get_source(url).css('li[@itemprop="addressRegion"]').children.inner_text
     if region_adress != nil || region_adress != ""
       #region_adress.gsub(/'/, "''")

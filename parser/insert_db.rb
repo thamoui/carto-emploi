@@ -39,6 +39,8 @@ offre_ajout = 0
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
   puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} (true = indisponible) ---------"
 
+ #-------- Message d'alerte pour vérifier que l'url n'est pas ajouté si le code rome n'est pas bon
+
   if doc.check_code_rome(item["url"]) == false
     puts "---------- Code Rome Invalide  ---------- "
   end
