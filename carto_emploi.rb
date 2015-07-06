@@ -47,13 +47,10 @@ class Job_list < ActiveRecord::Base
 end
 # !!!!!!!!!!!!!!!!! Voir si faut pas que j'importe le dossier models !!!!!!!!!!!
 
-# --------------- /admin : interface d'administration
-
+# --------------- /admin : interface d'administration de l'api
 get '/admin' do
   erb :admin
 end
-
-
 
 #----------------- /metiers : renvoie la liste des métiers
 
