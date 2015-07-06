@@ -108,6 +108,7 @@ function popupOut() {
     document.getElementById("popup").style.display='none';
 }
 
+//Switch mode pour le style css et le style de la map
 document.onkeydown = checkKey;
 
 function checkKey(e) {
@@ -115,9 +116,22 @@ function checkKey(e) {
     
     if (e.shiftKey && e.keyCode == '80') {
         $("#style").append("<link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />");
-        console.log(e.keyCode);
+        addLayer(L.mapbox.tileLayer('mapbox.pirates'));
     }
     else if (e.shiftKey && e.keyCode == '69') {
         $("#style").append("<link rel='stylesheet' href='/css/style-normal.css' type='text/css' media='all' />");
+        addLayer(L.mapbox.tileLayer('mapbox.streets'));
+    }
+    
+    if (map.hasLayer(layer)) {
+        map.removeLayer(layer);  
+    } 
+    else {
+        map.addLayer(layer);
     }
 }
+
+//Ajout d'une carte
+function addLayer(layer) {
+    layer.addTo(map);
+};
