@@ -1,5 +1,8 @@
 DATABASE_PASSWORD=your_password
-DATABASE_USER_NAME=your_sername
+DATABASE_USER_NAME=your_username
 DATABASE_NAME=your_dbname
 DATABASE_url=your_databaseurl
 RACK_ENV=development
+
+SIDEKIQ_PASSWORD=your_password
+SIDEKIQ_USER_NAME=your_username
