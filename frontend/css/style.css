@@ -160,6 +160,15 @@ input.search-ville{
     font-style:italic;
 }
 
+input::-webkit-input-placeholder {
+    color:black;
+}
+ 
+input:-moz-placeholder {
+    color:black;
+}
+
+
 select {
     margin-left:0px;
     top:0px;
