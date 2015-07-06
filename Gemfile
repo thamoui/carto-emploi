@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.1.3'
 
 gem "rack"
-gem "sinatra", git: 'https://github.com/sinatra/sinatra.git'
+gem "sinatra" #, git: 'https://github.com/sinatra/sinatra.git'
 gem "activesupport"
 gem "puma"
 gem "rake"
@@ -17,8 +17,9 @@ gem "geokit"
 gem "clockwork"
 gem "pg"
 gem "sidekiq"
-gem "activesupport"
 gem "newrelic_rpm"
+gem "newrelic_plugin"
+gem "newrelic_postgres_plugin"
 
 group :production do
 end
