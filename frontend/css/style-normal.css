@@ -28,15 +28,19 @@ body {
 }
 
 .logo-ango{
+    transform: scale(0.7, 0.7);
+    -ms-transform: scale(0.7, 0.7);
+    -webkit-transform: scale(0.7, 0.7);
     display:block;
     position:fixed;
-    width:150px;
-    height:35px;
-    top:80px;
-    left:50px;
+    width:240px;
+    height:55px;
+    top:50px;
+    left:20px;
     z-index:1000;
     background-image:url(/img/logo-ango-normal.png);
-    background-size:cover;
+    background-size:240px;
+    background-repeat:no-repeat;
 }
 
 .cordage-top{
@@ -122,10 +126,13 @@ h1{
 }
 
 .bouton.popup{
-    transform: scale(0.7, 0.7);
-    -ms-transform: scale(0.7, 0.7);
-    -webkit-transform: scale(0.7, 0.7);
+    transform: scale(1, 1);
+    -ms-transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
     background-image:url(/img/bouton-popup-normal.png);
+    background-size:35px;
+    background-repeat:no-repeat;
+    background-position: center;
     top:150px;
     right:50px;
     z-index:1000;
