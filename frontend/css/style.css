@@ -179,7 +179,7 @@ input.search-ville{
 input::-webkit-input-placeholder {
     color:black;
 }
- 
+
 input:-moz-placeholder {
     color:black;
 }
@@ -248,7 +248,7 @@ select {
     left:50%;
     margin-left:-60px;
     background-image:url(/img/logo-ango.png);
-    background-size:cover; 
+    background-size:cover;
     z-index:1002;
 }
 
@@ -280,12 +280,12 @@ select {
 
 
 @media only screen and (max-width: 768px) {
-	
-	
+
+
 					/*/////////////////////
 					/// RESPONSIVE HOME ///
 					/////////////////////*/
-					
+
 
 	.logo-ango{ width:150px; top:3%; left:50%; margin-left:-75px;}
 	.bouton.moins, .bouton.plus, .bouton.popup{right:2%;}
@@ -304,12 +304,12 @@ select {
 	.bouton.popup{  background-size: 31.5px;width:45px;height:45px;  top: 145px;}
 	.cordage-top {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;}
 	.cordage-bottom {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;}
-	
+
 					/*///////////////////////
 					/// RESPONSIVE POP-UP ///
 					///////////////////////*/
-					
-					
+
+
 	.popup_logo{width:120px; height:100%; margin:0 auto; padding:0px;top:0px;left:0;background-repeat:no-repeat; background-size:90px;background-position:center; }
 	.popup_button { width:30px; height:30px; top: 36%; right: 3%; background-size: 30px;}
 	.popup_text_center { margin-top: 5%; font-size: 15px;}
