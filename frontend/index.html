@@ -17,6 +17,17 @@
 
         <!-- fonctions internes -->
         <script src="/js/functions.js"></script>
+        <!-- tracking code Google Analytics -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-64804755-1', 'auto');
+          ga('send', 'pageview');
+        </script>
+
     </head>
     <body>
         <!-- popup -->
@@ -37,7 +48,7 @@
             </div>
         </div>
         <!-- fin popup -->
-        
+
         <!-- logo -->
         <div class="logo-ango"></div>
         <!-- fin logo -->
@@ -50,7 +61,7 @@
         <div id='map'></div>
         <!-- fin map -->
 
-        
+
 
         <!-- bloc text -->
         <div class='block_text titre'>
@@ -73,7 +84,7 @@
         </div>
         <!-- fin bloc text -->
 
-        
+
 
         <script>
             //Init de la map
@@ -83,7 +94,7 @@
             //Groupe de cluster
             //ref : https://www.mapbox.com/mapbox.js/example/v1.0.0/leaflet-markercluster/
             var markers = new L.MarkerClusterGroup();
-            
+
             //Geocoder
             var geocoder = L.mapbox.geocoder('mapbox.places');
 
@@ -93,16 +104,16 @@
             //Event : document.ready (chargement initial des markers)
             $(document).ready(function () {
                 getMarkerCenter(20, 50, 1, '');
-                
+
                 $("#popupIn_button").on('click', function() {
                     popupIn();
                 });
-                
+
                 $("#popupOut_button").on('click', function() {
                     popupOut();
                 });
             });
-            
+
             //Bouton geolocalisation
             var geolocate = document.getElementById('geolocate');
             if (!navigator.geolocation) {
@@ -114,7 +125,7 @@
                     map.locate();
                 };
             }
-            
+
             //Event : locationfound
             map.on('locationfound', function (e) {
                 //déplace la carte
@@ -128,10 +139,10 @@
 
             //Event : clic sur le bouton de recherche
             $("#button-search").on('click', function (event) {
-                event.preventDefault();                      
+                event.preventDefault();
                 getMarkerCenter(20, 50, 1, document.getElementById('jobs').value);
             });
-            
+
             //Event : clic sur le bouton + pour zoomer
             $(".bouton.plus").on('click', function () {
                 map.zoomIn();
@@ -141,7 +152,7 @@
             $(".bouton.moins").on('click', function () {
                 map.zoomOut();
             });
-            
+
             //Event : clic sur le bouton pour lancer une recherche par ville
             $("#button-city").on("click", function(geocodeThis) {
                 var text = document.getElementById('search-city').value;
@@ -149,7 +160,7 @@
                     geocoder.query(text, showMap);
                 }
             });
-            
+
             //Event : moveend
             map.on('moveend', function (move) {
                 getMarkerCenter(20, 50, 1, document.getElementById('jobs').value);
