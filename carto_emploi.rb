@@ -4,6 +4,8 @@ require 'pg'
 require 'dotenv'
 require 'active_support/all'
 require 'active_record'
+require 'sinatra/activerecord'
+
 Dotenv.load
 
 # ----------------- CONFIGURATION DATAS ----------------------
@@ -52,6 +54,7 @@ end
 
 # --------------- /admin : interface d'administration de l'api
 get '/admin' do
+  @jobs_list = Job_list.all()
   erb :admin
 end
 

@@ -13,7 +13,30 @@
 
 <body>
 
-  <h1> Welcome !</h1>
+  <h1>ADMIN BACKOFFICE</h1>
 
+<table class="table">
+   <caption>Liste des métiers</caption>
+      <thead>
+
+         <tr>
+            <th>Id Key</th>
+            <th>Slug</th>
+            <th>Label</th>
+            <th>Code Rome<th>
+         </tr>
+      </thead>
+   <tbody>
+      <% @jobs_list.each do |job| %>
+      <tr>
+        <th><%= job.id_key %></th>
+         <th><%= job.slug %></th>
+         <th><%= job.label %></th>
+         <th><%= job.code_rome %></th>
+         <th>mettre un comment et/ou bouton supprimer</th>
+      </tr>
+      <% end %>
+   </tbody>
+</table>
 </body>
 </html>
