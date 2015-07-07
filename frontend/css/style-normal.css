@@ -90,12 +90,11 @@ h1{
     color: #E00E1A;
     position: fixed;
   	width: 500px;
-  	bottom: 1%;
+  	bottom: 0.5%;
   	left: 50%;
   	margin-left: -250px;
     -webkit-margin-before: 0.1em;
-    -webkit-margin-after: 0.1em;
-    
+    -webkit-margin-after: 0.1em;   
 }
 
 .bouton{
@@ -104,6 +103,7 @@ h1{
     width:50px;
     height:50px;
     z-index:3000;
+    cursor:pointer;
     
 }
 
@@ -152,6 +152,7 @@ button{
     border:0px;
     color:transparent;
     padding:0;
+    cursor:pointer;
 }
 
 .geolocalisation{
@@ -167,6 +168,7 @@ button#geolocate{
     font-family: 'Ubuntu', sans-serif;
     background-color:#E00E1A;
     border-radius:5px;
+    cursor:pointer;
 }
 
 button.button{
@@ -216,6 +218,7 @@ select {
     font-style:italic;
     border-radius: 5px;
     -moz-border-radius: 5px;
+    cursor:pointer;
 }
 
 #popup {
@@ -306,20 +309,20 @@ select {
 					/////////////////////*/
 					
 
-	.logo-ango { width:150px; top:3%; left:50%; margin-left:-75px;background-size: 150px;}
+	.logo-ango { width:150px; top:3%; left:50%; margin-left:-75px; background-size: 150px;}
 	.bouton.moins, .bouton.plus, .bouton.popup { right:3%;}
 	.block_text {height: 32%;}
-	h1 { font-size: 18px;margin-top: 8px;}
-	button#geolocate {width: 25px; height: 25px;   margin-left: 7px; margin-right: 24px;;cursor:pointer;}
+	h1 { font-size: 18px; margin-top: 8px;}
+	button#geolocate { width: 25px; height: 25px; margin-left: 7px; margin-right: 24px; cursor:pointer;}
 	.geolocalisation { margin-top:1%;  margin-left: 50px;}
-	button.button { bottom: -8px; width: 25px; height: 25px; background-size:100% }
+	button.button { bottom: -8px; width: 25px; height: 25px; background-size:100%;}
 	input.search-ville { margin-left: 0px; margin-top: 10px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;pointer:cursor;}
 	.alert { bottom: 1%; font-size: 10px;}
 	.block-recherche{margin-top:-2px;}
-	.button.ville{ margin-top:10px;}
-	.button.search{ margin-top:-1px;}
-	.bouton{cursor:pointer;}
-	select { width: 200px;height: 25px;cursor:pointer;}
+	.button.ville { margin-top:10px;}
+	.button.search { margin-top:-1px;}
+	.bouton { cursor:pointer;}
+	select { width: 200px; height: 25px; cursor:pointer;}
 	
 					/*///////////////////////
 					/// RESPONSIVE POP-UP ///
