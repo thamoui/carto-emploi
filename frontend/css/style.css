@@ -16,7 +16,7 @@ body {
     text-align:center;
     bottom:0px;
     width:100%;
-    height:240px;
+    height:210px;
     z-index:1000;
 }
 
@@ -56,7 +56,7 @@ body {
 h1{
     font-weight: normal !important;
     font-size:25px;
-    margin-top:25px;
+    margin-top:8px;
 }
 
 .text {
@@ -67,12 +67,23 @@ h1{
 .alert {
     color: red;
     position: fixed;
-  	width: 500px;
-  	left: 50%;
-  	margin-left: -250px;
-  	bottom:2.7%;
+    width: 500px;
+    left: 50%;
+    margin-left: -250px;
+    bottom:2.7%;
     -webkit-margin-before: 0.1em;
     -webkit-margin-after: 0.1em;
+}
+
+.copyright{
+  display:block;
+  position:fixed;
+  bottom:3%;
+  width:100%;
+  height:15px;
+  text-align:center;
+  font-size: 12px;
+  color:white;
 }
 
 .bouton{
@@ -282,40 +293,43 @@ select {
 @media only screen and (max-width: 768px) {
 
 
-					/*/////////////////////
-					/// RESPONSIVE HOME ///
-					/////////////////////*/
+          /*/////////////////////
+          /// RESPONSIVE HOME ///
+          /////////////////////*/
 
 
-	.logo-ango{ width:150px; top:3%; left:50%; margin-left:-75px;}
-	.bouton.moins, .bouton.plus, .bouton.popup{right:2%;}
-	.block_text {height: 35%;}
-	h1 { font-size: 18px;margin-top: 8px;}
-	button#geolocate {width: 25px; height: 25px;    margin-left: 7px; margin-right: 24px;;cursor:pointer;}
-	.geolocalisation{margin-top:1%;}
-	select {width: 200px;height: 25px;cursor:pointer;}
-	button.button {bottom: -8px; width: 25px; height: 25px; background-size:100% }
-	input.search-ville {margin-left: 0px; margin-top: 10px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;}
-	.alert { bottom: 2.5%; font-size: 10px;}
-	.block-recherche{margin-top:-2px;}
-	.logo-ango { width: 100px; height: 95px; padding: 0; top: -5px; left: 50%; margin-left: -50px; background-size: 90%; background-position: center; background-repeat: no-repeat;}
-	.bouton.moins, .bouton.plus {background-size: 45px;background-position:center; background-repeat:no-repeat;}
-	.bouton{width:45px;height:45px; cursor:pointer;}
-	.bouton.popup{  background-size: 31.5px;width:45px;height:45px;  top: 145px;}
-	.cordage-top {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;}
-	.cordage-bottom {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;}
+  .logo-ango{ width:150px; top:3%; left:50%; margin-left:-75px;}
+  .bouton.moins, .bouton.plus, .bouton.popup{right:2%;}
+  .block_text {height: 37%;}
+  h1 { font-size: 18px;margin-top: 0px;}
+  button#geolocate { width: 25px; height: 25px; margin-left: 7px; margin-right: 24px; cursor:pointer;}
+  .geolocalisation{margin-top:1%;}
+  select {width: 200px;height: 25px;cursor:pointer;}
+  button.button {bottom: -8px; width: 25px; height: 25px; background-size:100% }
+  input.search-ville {margin-left: 0px; margin-top: 2px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;}
+  .alert { bottom: 2.5%; font-size: 10px;}
+  .block-recherche{margin-top:-10px;}
+  .logo-ango { width: 100px; height: 95px; padding: 0; top: -5px; left: 50%; margin-left: -50px; background-size: 90%; background-position: center; background-repeat: no-repeat;}
+  .bouton.moins, .bouton.plus {background-size: 45px;background-position:center; background-repeat:no-repeat;}
+  .bouton{width:45px;height:45px; cursor:pointer;}
+  .button.ville { margin-top:1px;}
+  .button.search { margin-top:-1px;}
+  .bouton.popup{  background-size: 31.5px;width:45px;height:45px;  top: 145px;}
+  .cordage-top {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;}
+  .cordage-bottom {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;}
+  .copyright{font-size:11px;bottom:2.4%;}
 
-					/*///////////////////////
-					/// RESPONSIVE POP-UP ///
-					///////////////////////*/
+          /*///////////////////////
+          /// RESPONSIVE POP-UP ///
+          ///////////////////////*/
 
 
-	.popup_logo{width:120px; height:100%; margin:0 auto; padding:0px;top:0px;left:0;background-repeat:no-repeat; background-size:90px;background-position:center; }
-	.popup_button { width:30px; height:30px; top: 36%; right: 3%; background-size: 30px;}
-	.popup_text_center { margin-top: 5%; font-size: 15px;}
-	.popup_text { margin-top: 2%; margin-left: 5%; margin-right: 5%; padding: 5px;}
-	.popup_top { height: 20%;}
-	.popup_bottom {font-size: 13px;height: 79.8%;top:20%;}
-	.popup_cordage {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;top:20%;}
+  .popup_logo{width:120px; height:100%; margin:0 auto; padding:0px;top:0px;left:0;background-repeat:no-repeat; background-size:90px;background-position:center; }
+  .popup_button { width:30px; height:30px; top: 36%; right: 3%; background-size: 30px;}
+  .popup_text_center { margin-top: 5%; font-size: 15px;}
+  .popup_text { margin-top: 2%; margin-left: 5%; margin-right: 5%; padding: 5px;}
+  .popup_top { height: 20%;}
+  .popup_bottom {font-size: 13px;height: 79.8%;top:20%;}
+  .popup_cordage {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;top:20%;}
 
 }

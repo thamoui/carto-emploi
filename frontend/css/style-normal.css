@@ -326,7 +326,7 @@ select {
 
 	.logo-ango { width:150px; top:3%; left:50%; margin-left:-75px; background-size: 150px;}
 	.bouton.moins, .bouton.plus, .bouton.popup { right:3%;}
-	.block_text {height: 33%;}
+	.block_text {height: 32%;}
 	h1 { font-size: 16px; margin-top: 8px;}
 	button#geolocate { width: 25px; height: 25px; margin-left: 7px; margin-right: 24px; cursor:pointer;}
 	.geolocalisation { margin-top:1%;  margin-left: 50px;}
@@ -334,11 +334,11 @@ select {
 	input.search-ville { margin-left: 0px; margin-top: 3px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;pointer:cursor;}
 	.alert { bottom: 1%; font-size: 10px;}
 	.block-recherche{margin-top:-10px;}
-	.button.ville { margin-top:2px;}
+	.button.ville { margin-top:3px;}
 	.button.search { margin-top:-1px;}
 	.bouton { cursor:pointer;}
 	select { width: 200px; height: 25px; cursor:pointer;}
-	.copyright{font-size:11px;bottom:0.2%;}
+	.copyright{font-size:11px;}
 	
 					/*///////////////////////
 					/// RESPONSIVE POP-UP ///
