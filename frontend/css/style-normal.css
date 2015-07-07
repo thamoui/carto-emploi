@@ -22,7 +22,7 @@ body {
     text-align:center;
     bottom:0px;
     width:100%;
-    height:165px;
+    height:180px;
     z-index:1000;
     box-shadow: 0 -14px 30px 0 rgba(50, 50, 50, 0.2);
 }
@@ -90,12 +90,22 @@ h1{
     color: #E00E1A;
     position: fixed;
   	width: 500px;
-  	bottom: 0.5%;
+  	bottom: 1.5%;
   	left: 50%;
   	margin-left: -250px;
     -webkit-margin-before: 0.1em;
     -webkit-margin-after: 0.1em;   
 }
+
+.copyright{
+	display:block;
+	position:fixed;
+	bottom:0.5%;
+	width:100%;
+	height:15px;
+	text-align:center;	
+	font-size: 12px;
+}	
 
 .bouton{
     display:block;
@@ -131,7 +141,7 @@ h1{
     transform: scale(1, 1);
     -ms-transform: scale(1, 1);
     -webkit-transform: scale(1, 1);
-    background-image:url(/img/bouton-popup-normal.png);
+    background-image:url(/img/bouton-popup-normal-info.png);
     background-size:35px;
     background-repeat:no-repeat;
     background-position: center;
@@ -225,6 +235,11 @@ select {
     display:none;
 }
 
+.lien-site{
+	color:#E00E1A;
+	text-decoration:none;
+}
+
 .popup_top {
     position:absolute;
     background-color:white;
@@ -281,7 +296,7 @@ select {
     height:50px;
     top:35%;
     right:5%;
-    background-image:url(/img/bouton-popup-normal.png);
+    background-image:url(/img/bouton-popup-normal-info.png);
     background-size:cover;
     z-index:1002;
 }
@@ -311,18 +326,19 @@ select {
 
 	.logo-ango { width:150px; top:3%; left:50%; margin-left:-75px; background-size: 150px;}
 	.bouton.moins, .bouton.plus, .bouton.popup { right:3%;}
-	.block_text {height: 32%;}
-	h1 { font-size: 18px; margin-top: 8px;}
+	.block_text {height: 33%;}
+	h1 { font-size: 16px; margin-top: 8px;}
 	button#geolocate { width: 25px; height: 25px; margin-left: 7px; margin-right: 24px; cursor:pointer;}
 	.geolocalisation { margin-top:1%;  margin-left: 50px;}
 	button.button { bottom: -8px; width: 25px; height: 25px; background-size:100%;}
-	input.search-ville { margin-left: 0px; margin-top: 10px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;pointer:cursor;}
+	input.search-ville { margin-left: 0px; margin-top: 3px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;pointer:cursor;}
 	.alert { bottom: 1%; font-size: 10px;}
-	.block-recherche{margin-top:-2px;}
-	.button.ville { margin-top:10px;}
+	.block-recherche{margin-top:-10px;}
+	.button.ville { margin-top:2px;}
 	.button.search { margin-top:-1px;}
 	.bouton { cursor:pointer;}
 	select { width: 200px; height: 25px; cursor:pointer;}
+	.copyright{font-size:11px;bottom:0.2%;}
 	
 					/*///////////////////////
 					/// RESPONSIVE POP-UP ///
