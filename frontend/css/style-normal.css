@@ -334,7 +334,7 @@ select {
 	input.search-ville { margin-left: 0px; margin-top: 3px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;pointer:cursor;}
 	.alert { bottom: 1%; font-size: 10px;}
 	.block-recherche{margin-top:-10px;}
-	.button.ville { margin-top:3px;}
+	.button.ville { margin-top:2px;}
 	.button.search { margin-top:-1px;}
 	.bouton { cursor:pointer;}
 	select { width: 200px; height: 25px; cursor:pointer;}
