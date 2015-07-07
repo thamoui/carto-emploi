@@ -3,6 +3,7 @@ require_relative 'body_parser'
 require 'geocoder'
 require 'geokit'
 require 'dotenv'
+require 'time'
 
 Dotenv.load
 Geokit::default_units = :kms
@@ -22,6 +23,7 @@ end
 def doc
   ::BodyParser.new
 end
+
 #---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
 # only select from parse if offer is not in job_offers db
 @result = conn.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
@@ -39,7 +41,7 @@ offre_ajout = 0
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
   puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} (true = indisponible) ---------"
 
- #-------- Message d'alerte pour vérifier que l'url n'est pas ajouté si le code rome n'est pas bon
+  #-------- Message d'alerte pour vérifier que l'url n'est pas ajouté si le code rome n'est pas bon
 
   if doc.check_code_rome(item["url"]) == false
     puts "---------- Code Rome Invalide  ---------- "
@@ -79,12 +81,14 @@ offre_ajout = 0
 
       if @latitude != nil
 
-        #------------------- USING BODY PARSER  ---------------------
-        data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude]
+        #  ------------------- USING BODY PARSER  ---------------------
+
+        time = Time.now
+        data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude, time]
 
         values = data.map {|v| "\'#{v}\'"}.join(',').to_s
 
-        conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude) VALUES (#{values});")
+        conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude, created_at) VALUES (#{values});")
 
         offre_ajout = offre_ajout + 1
 

@@ -34,7 +34,8 @@ CREATE TABLE job_offers (
   latitude numeric,
   longitude numeric,
   offer_id text,
-  publication_date text
+  publication_date text,
+  created_at timestamp with time zone
 );
 
 CREATE TABLE parse (
