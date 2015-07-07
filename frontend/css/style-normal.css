@@ -22,7 +22,7 @@ body {
     text-align:center;
     bottom:0px;
     width:100%;
-    height:210px;
+    height:165px;
     z-index:1000;
     box-shadow: 0 -14px 30px 0 rgba(50, 50, 50, 0.2);
 }
@@ -66,10 +66,12 @@ body {
 h1{
     font-weight: normal !important;
     font-size:25px;
-    margin-top:25px;
+    margin-top:15px;
+    -webkit-margin-after: 0;
 }
 
 .text {
+	margin-top:5px;
     font-size:12px;
     color:#003A78;
 }
@@ -296,7 +298,6 @@ select {
 //////////////// RESPONSIVE EXTRA SMALL DEVICE PHONE ////////////////
 ///////////////////////////////////////////////////////////////////*/
 
-
 @media only screen and (max-width: 768px) {
 	
 	
@@ -305,32 +306,34 @@ select {
 					/////////////////////*/
 					
 
-	.logo-ango{ width:150px; top:3%; left:50%; margin-left:-75px;background-size: 150px;}
-	.bouton.moins, .bouton.plus, .bouton.popup{right:3%;}
+	.logo-ango { width:150px; top:3%; left:50%; margin-left:-75px;background-size: 150px;}
+	.bouton.moins, .bouton.plus, .bouton.popup { right:3%;}
 	.block_text {height: 32%;}
 	h1 { font-size: 18px;margin-top: 8px;}
-	button#geolocate {width: 25px; height: 25px; margin-left: 32px;cursor:pointer;}}
-	.geolocalisation{margin-top:1%;}
-	select {width: 200px;height: 25px;}
-	button.button {bottom: -8px; width: 25px; height: 25px; background-size:100% }
-	input.search-ville {margin-left: 0px; margin-top: 10px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;pointer:cursor;}
+	button#geolocate {width: 25px; height: 25px;   margin-left: 7px; margin-right: 24px;;cursor:pointer;}
+	.geolocalisation { margin-top:1%;  margin-left: 50px;}
+	button.button { bottom: -8px; width: 25px; height: 25px; background-size:100% }
+	input.search-ville { margin-left: 0px; margin-top: 10px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;pointer:cursor;}
 	.alert { bottom: 1%; font-size: 10px;}
 	.block-recherche{margin-top:-2px;}
-	.button.ville{margin-top:10px;}
-	.button.search{margin-top:-1px;}
+	.button.ville{ margin-top:10px;}
+	.button.search{ margin-top:-1px;}
 	.button{cursor:pointer;}
-	select{cursor:pointer;}
 	.bouton{cursor:pointer;}
+	select { width: 200px;height: 25px;cursor:pointer;}
 	
 					/*///////////////////////
 					/// RESPONSIVE POP-UP ///
 					///////////////////////*/
 					
 					
-	.popup_logo{width:200px; height:50px; margin-top:-22px; margin-left:-100px; background-repeat:no-repeat; background-size:200px; }
+	.popup_logo { width:200px; height:50px; margin-top:-22px; margin-left:-100px; background-repeat:no-repeat; background-size:200px; }
 	.popup_button { width:30px; height:30px; top: 36%; right: 3%; background-size: 30px;}
 	.popup_text_center { margin-top: 2%; font-size: 15px;}
 	.popup_text { margin-top: 2%; margin-left: 5%; margin-right: 5%; padding: 5px;}
 	.popup_top { height: 20%;}
-	.popup_bottom {font-size: 14px;height: 79.4%;top:20%;}
+	.popup_bottom { font-size: 14px;height: 79.4%;top:20%;}
+	
 }
+
+
