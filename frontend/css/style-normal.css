@@ -318,7 +318,6 @@ select {
 	.block-recherche{margin-top:-2px;}
 	.button.ville{ margin-top:10px;}
 	.button.search{ margin-top:-1px;}
-	.button{cursor:pointer;}
 	.bouton{cursor:pointer;}
 	select { width: 200px;height: 25px;cursor:pointer;}
 	

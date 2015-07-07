@@ -244,7 +244,7 @@ select {
     width:120px;
     height:134px;
     padding: 10px;
-    top:20px;
+    top: 55px;
     left:50%;
     margin-left:-60px;
     background-image:url(/img/logo-ango.png);
@@ -291,16 +291,16 @@ select {
 	.bouton.moins, .bouton.plus, .bouton.popup{right:2%;}
 	.block_text {height: 35%;}
 	h1 { font-size: 18px;margin-top: 8px;}
-	button#geolocate {width: 25px; height: 25px; margin-left: 32px;}
+	button#geolocate {width: 25px; height: 25px;    margin-left: 7px; margin-right: 24px;;cursor:pointer;}
 	.geolocalisation{margin-top:1%;}
-	select {width: 200px;height: 25px;}
+	select {width: 200px;height: 25px;cursor:pointer;}
 	button.button {bottom: -8px; width: 25px; height: 25px; background-size:100% }
 	input.search-ville {margin-left: 0px; margin-top: 10px; width: 180px; height:5px; font-family: 'Ubuntu', sans-serif; font-size: 13px; font-style: italic; color:white !important;}
 	.alert { bottom: 2.5%; font-size: 10px;}
 	.block-recherche{margin-top:-2px;}
-	.logo-ango { width: 80px; height: 75px; padding: 0; top: 15px; left: 50%; margin-left: -40px; background-size: 90%; background-position: center; background-repeat: no-repeat;}
+	.logo-ango { width: 100px; height: 95px; padding: 0; top: -5px; left: 50%; margin-left: -50px; background-size: 90%; background-position: center; background-repeat: no-repeat;}
 	.bouton.moins, .bouton.plus {background-size: 45px;background-position:center; background-repeat:no-repeat;}
-	.bouton{width:45px;height:45px;}
+	.bouton{width:45px;height:45px; cursor:pointer;}
 	.bouton.popup{  background-size: 31.5px;width:45px;height:45px;  top: 145px;}
 	.cordage-top {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;}
 	.cordage-bottom {height: 10px; background-image: url(/img/cordage-top.png); background-size: 280%; background-repeat: no-repeat;}
