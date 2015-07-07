@@ -136,7 +136,7 @@ Attention, c'est long quand la base est vide !!
 
 4. Nettoyage de la base de données
 
-On peut revenir à l'étape 2 sinon pour pour supprimer de la base de données d'offres (job_offers), celles qui ne sont plus disponibles :
+On peut revenir à l'étape 2 sinon pour pour supprimer de la base de données d'offres (job_offer), celles qui ne sont plus disponibles :
 
 `rake clean_db:delete_offers`
 

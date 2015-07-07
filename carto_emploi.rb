@@ -45,6 +45,9 @@ end
 # --------------- gestion des données en mode objet grâce à active records
 class Job_list < ActiveRecord::Base
 end
+
+class Job_offer < ActiveRecord::Base
+end
 # !!!!!!!!!!!!!!!!! Voir si faut pas que j'importe le dossier models !!!!!!!!!!!
 
 # --------------- /admin : interface d'administration de l'api
@@ -58,7 +61,7 @@ get '/metiers' do
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
   @conn.exec("SELECT * FROM job_list").map do |result|
-  @data_job << result
+    @data_job << result
   end
   @data_job.to_json
 end
@@ -95,7 +98,7 @@ get '/geosearch/:lat,:lng' do
 
 
   #----------- Counting number of all offers in database -----------------------
-  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offers").map do |total_offers|
+  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offer").map do |total_offers|
     @total = total_offers["count"].to_i
     puts "---------------> number of offers in db #{@total}"
   end # cette partie peut ne pas être copié ???
@@ -129,7 +132,7 @@ get '/geosearch/:lat,:lng' do
     sql = "AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}')"
   end
 
-  requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
+  requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offer ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
 
   puts "-----------------REQUETE SQL : #{requete_sql}"
 

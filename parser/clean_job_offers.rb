@@ -18,7 +18,7 @@ def doc
   ::BodyParser.new
 end
 #---------------- GETTING AN ARRAY OF URLS FROM TABLE JOB OFFERS ---------------------------------
-@result = conn.exec( "SELECT url FROM job_offers").to_a
+@result = conn.exec( "SELECT url FROM job_offer").to_a
 puts @result[0]
 puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
 nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
@@ -31,9 +31,9 @@ deleted_offer = 0
   puts "_________________________________________________________________________________"
   puts "_________________ STARTING CLEANING JOB OFFERS BASE _____________________________"
   if doc.offer_unavailable(item["url"]) == true
-    conn.exec("DELETE FROM job_offers WHERE url = '#{item["url"]}'")
+    conn.exec("DELETE FROM job_offer WHERE url = '#{item["url"]}'")
     deleted_offer = deleted_offer + 1
-    puts "-------- L'url #{item["url"]} a été supprimé de la bdd job_offers-------- "
+    puts "-------- L'url #{item["url"]} a été supprimé de la bdd job_offer-------- "
   end
   puts "--- #{nb_offres} offre(s) encore à traiter sur #{@result.length} au départ----"
   puts "_____________________ Nombre d'offre(s) supprimée(s)#{deleted_offer} ___________________________"

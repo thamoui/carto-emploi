@@ -22,7 +22,7 @@ CREATE TABLE job_list (
   (14, 'Testeur informatique', 'Testeur informatique', 'M1805')
   ;
 
-CREATE TABLE job_offers (
+CREATE TABLE job_offer (
   region_adress text,
   id_key serial primary key NOT NULL,
   title text,
