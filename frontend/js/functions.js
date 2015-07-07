@@ -83,7 +83,7 @@ function showMap(err, data) {
     // point, like an address. Here we handle both cases,
     // by fitting the map bounds to an area or zooming to a point.
     if (data.latlng) {
-        map.setView([data.latlng[0], data.latlng[1]], 10);
+        map.setView([data.latlng[0], data.latlng[1]], 14);
     }
 }
 
