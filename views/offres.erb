@@ -1,0 +1,43 @@
+<h2> LES DERNIERES OFFRES AJOUTEES</h2>
+<table class="table">
+
+  <thead>
+
+    <tr>
+      <th>Id Key</th>
+      <th>Ville</th>
+      <th>Titre</th>
+      <th>Type de contrat<th>
+      <th>Code Rome</th>
+      <th>Description de l'offre</th>
+      <th>Entreprise</th>
+      <th>Url<th>
+      <th>Lat</th>
+      <th>Long</th>
+      <th>Id</th>
+      <th>Date publication<th>
+      <th>Date insertion<th>
+      <th>-------<th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @job_offers.each do |offer| %>
+    <tr>
+      <th><%= offer.id_key %></th>
+      <th><%= offer.region_adress %></th>
+      <th><%= offer.title %></th>
+      <th><%= offer.contrat_type %></th>
+      <th><%= offer.code_rome %></th>
+      <th><%= offer.offer_description %></th>
+      <th><%= offer.company_description %></th>
+      <th><%= offer.url %></th>
+      <th><%= offer.latitude %></th>
+      <th><%= offer.longitude %></th>
+      <th><%= offer.offer_id %></th>
+      <th><%= offer.publication_date %></th>
+      <th><%= offer.created_at %></th>
+      <th>mettre un comment et/ou bouton supprimer</th>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

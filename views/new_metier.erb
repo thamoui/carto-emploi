@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>Ajouter un nouveau métier</h1>
+
+    <form action='/admin/new_metier' method="post">
+    <label placeholder="Title">Titre de l'job_list</label><br>
+    <input type="number" id="id_key" name="job_list[id_key]"> <br>
+
+    <label placeholder="Administrateur">Slug</label><br>
+    <input type="text" id="slug" name="job_list[slug]"> <br>
+
+
+    <label placeholder="Administrateur de base de données">Label</label><br>
+    <input type="text" id="label" name="job_list[label]"> <br>
+
+    <label placeholder="M1801, etc...">Code Rome</label><br>
+    <input type="text" id="code_rome" name="job_list[code_rome]"> <br>
+
+    <input type="submit" value="Envoyer">
+  </form>
+<div>

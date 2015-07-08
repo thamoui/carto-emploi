@@ -5,6 +5,7 @@ require 'dotenv'
 require 'active_support/all'
 require 'active_record'
 require 'sinatra/activerecord'
+require './admin'
 
 Dotenv.load
 
@@ -44,25 +45,6 @@ end
 set :public_folder, 'frontend' #this is necessary to be able to access to static files
 get '/' do
   redirect '/index.html' #The root of the project is /frontend so the absolute path to static files doesn't need /frontend in front
-end
-
-# --------------- gestion des donn�es en mode objet gr�ce � active records
-class Job_list < ActiveRecord::Base
-end
-
-class Job_offer < ActiveRecord::Base
-end
-
-
-# --------------- /admin : interface d'administration de l'api
-get '/admin' do
-  @jobs_list = Job_list.all()
-  erb :admin
-end
-
-get '/admin/offers' do
-  @job_offers = Job_offer.all()
-  erb :admin
 end
 
 #----------------- /metiers : renvoie la liste des m�tiers
