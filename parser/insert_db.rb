@@ -109,4 +109,4 @@ offre_ajout = 0
 end
 
 
-conn.close
+
