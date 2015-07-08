@@ -22,6 +22,8 @@ end
 Time.zone = "UTC"
 ActiveRecord::Base.default_timezone = :utc
 
+
+
 #----------------------- DB CONFIG  ---------------------------
 if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
@@ -48,13 +50,18 @@ end
 class Job_list < ActiveRecord::Base
 end
 
-class job_offer < ActiveRecord::Base
+class Job_offer < ActiveRecord::Base
 end
-# !!!!!!!!!!!!!!!!! Voir si faut pas que j'importe le dossier models !!!!!!!!!!!
+
 
 # --------------- /admin : interface d'administration de l'api
 get '/admin' do
   @jobs_list = Job_list.all()
+  erb :admin
+end
+
+get '/admin/offers' do
+  @job_offers = Job_offer.all()
   erb :admin
 end
 
@@ -151,5 +158,3 @@ get '/geosearch/:lat,:lng' do
     @data_job.to_json
   end
 end
-
-#
