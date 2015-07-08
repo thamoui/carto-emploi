@@ -8,7 +8,7 @@ class BodyParserTest < Minitest::Test
 
   #Aller voir ce github pour voir comment refactorer ses tests : https://github.com/seattlerb/minitest
 
-  print "Start a server with $ruby -run -e httpd . -p 8000"
+  print ">>>> HEY !!!!!! Start a server with $ruby -run -e httpd . -p 8000 --------------"
 
   def doc
     ::BodyParser.new
@@ -70,4 +70,10 @@ class BodyParserTest < Minitest::Test
     expect = "75 , PARIS , FRANCE"
     assert_equal expect, doc.search_region(url)
   end
+
+  def test_9_Est_bien_une_ville
+    url = "http://0.0.0.0:8000/test/offre_test_027FLJF.html"
+    assert_equal true, doc.check_is_a_city(url)
+  end
+
 end

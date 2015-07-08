@@ -54,6 +54,18 @@ class BodyParser
 
   end
 
+
+  # ------------------- Vérifie si on a bien une ville --------------------
+  # --- Les villes sont en majuscule --------------------------------------
+
+
+  def check_is_a_city(url)
+    city = get_source(url).css('li[@itemprop="addressRegion"]').children.inner_text
+    city == city.upcase
+
+    #retourne true
+  end
+
   #------------------- Ville------------------------------
   def search_city(url)
     city = get_source(url).css('li[@itemprop="addressRegion"]').children.inner_text

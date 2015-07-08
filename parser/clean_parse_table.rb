@@ -33,8 +33,10 @@ deleted_urls = 0
   # Ou si le code rome n'est pas dans le secteur de l'informatique
   # Ou si adress n'est pas une ville
 
-  if doc.offer_unavailable(item["url"]) == true || doc.check_code_rome(item["url"]) == false ||  doc.search_region(item["url"]) != doc.search_region(item["url"]).upcase
-    puts "------------------ #{doc.search_region(item["url"])} n'est pas une ville ------------------------- "
+  if doc.offer_unavailable(item["url"]) == true || doc.check_code_rome(item["url"]) == false || doc.check_is_a_city(item["url"]) == false
+
+    # doc.search_region(item["url"]) != doc.search_region(item["url"]).upcase
+    puts 'Url effacée si code rome ou ville incorrecte ou offre non disponible sur pole emploi '
     conn.exec("DELETE FROM parse WHERE url = '#{item["url"]}'")
     deleted_urls = deleted_urls + 1
     puts "-------- L'url #{item["url"]} a été supprimé de la bdd parse -------- "
