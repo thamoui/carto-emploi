@@ -44,11 +44,11 @@ get '/' do
   redirect '/index.html' #The root of the project is /frontend so the absolute path to static files doesn't need /frontend in front
 end
 
-# --------------- gestion des données en mode objet grâce à active records
+# --------------- gestion des donn�es en mode objet gr�ce � active records
 class Job_list < ActiveRecord::Base
 end
 
-class Job_offer < ActiveRecord::Base
+class job_offer < ActiveRecord::Base
 end
 # !!!!!!!!!!!!!!!!! Voir si faut pas que j'importe le dossier models !!!!!!!!!!!
 
@@ -58,12 +58,12 @@ get '/admin' do
   erb :admin
 end
 
-#----------------- /metiers : renvoie la liste des métiers
+#----------------- /metiers : renvoie la liste des m�tiers
 
 get '/metiers' do
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
-  @conn.exec("SELECT * FROM job_list").map do |result|
+  @conn.exec("SELECT * FROM job_lists").map do |result|
     @data_job << result
   end
   @data_job.to_json
@@ -73,7 +73,7 @@ end
 #--------------   /geosearch/LAT,LNG : renvoie les emplois aux alentours
 
 get '/geosearch/:lat,:lng' do
-  #geosearch/48.86833,2.66833?p=42&limit=42&text=développeur LAGNY SUR MARNE
+  #geosearch/48.86833,2.66833?p=42&limit=42&text=d�veloppeur LAGNY SUR MARNE
   #TESTER AVEC CES VALEURS POUR EVRY
   # @lat = 48.629828
   # @lng = 2.441782
@@ -101,10 +101,10 @@ get '/geosearch/:lat,:lng' do
 
 
   #----------- Counting number of all offers in database -----------------------
-  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offer").map do |total_offers|
+  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offers").map do |total_offers|
     @total = total_offers["count"].to_i
     puts "---------------> number of offers in db #{@total}"
-  end # cette partie peut ne pas être copié ???
+  end # cette partie peut ne pas �tre copi� ???
 
   if limit_given == 0 #afficher, 10, 20 ou 50 annonces, bouge suivant le nbre d'offers disponibles dans la BDD
     limit = 100 #afficher, 10, 20 ou 50 annonces, nombre fixe
@@ -120,11 +120,11 @@ get '/geosearch/:lat,:lng' do
     puts "------------------BG_OFFER #{bg_offers}"
     if page >= 1 && page <= all_pages
       bg_offers = limit_given * (page - 1)
-      puts "---------------> page: offers for page n° :  #{page}"
+      puts "---------------> page: offers for page n� :  #{page}"
 
       puts "---------------> limit: nb of offers per pages, 10, 20, 50, 100 :  #{limit_given}"
 
-      puts "---------------> bg_offers : offers offsert startint at row n° :  #{bg_offers}"
+      puts "---------------> bg_offers : offers offsert startint at row n� :  #{bg_offers}"
     end
   end
   #///////////////////////////// ENF OF PAGINATION ////////////////////////
@@ -135,7 +135,7 @@ get '/geosearch/:lat,:lng' do
     sql = "AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}')"
   end
 
-  requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offer ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
+  requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
 
   puts "-----------------REQUETE SQL : #{requete_sql}"
 

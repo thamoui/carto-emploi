@@ -48,7 +48,7 @@ class BodyParserTest < Minitest::Test
     assert_equal expect, doc.search_publication_date(url)
   end
 
-  def test_5_Job_Offer_Description
+  def test_5_job_offers_Description
     url = "http://0.0.0.0:8000/test/offre_test_027FLJF.html"
     expect = "En premier lieu joindre des vraies  références  de site réalisés à votre  Cv <br><br>Vous devrez élaborer des stratégies digitales : audits des divers sites du groupe<br>- benchmark, identification des best-practices et rédaction des recommandations<br>Suivi opérationnel du déploiement <br>Webmastering, Community Management<br>Suivi et mesure de la performance des dispositifs mis en place<br>Serez en charge de l''optimisation SEO/SEA, comparateurs, et rédaction web (suivi et développement du référencement naturel, création et optimisation  adwords, remarketing<br>Vous aurez en charge le développement du référencement et de son optimisation.<br>Vous piloterez les données des conversions, analyserez le trafic, réaliserez des tests de type AB, et gèrerez les newsletters.<br>Vous pourrez également intervenir sur le CSS ou le design du site, et effectuer des mises à jours (fiches produits....)<br>Connaissances PHP OBjet CSS, html, et Photoshop seraient un reel plus<br>CONNAISSANCE EN DESIGN IMPERATIF"
     assert_equal expect, doc.search_description_offer(url)
