@@ -5,7 +5,7 @@ get '/emploi/:id' do
   id = ''
   id << params[:id]
   @data_job = []
-  @conn.exec("SELECT * FROM job_offer WHERE offer_id='#{id}' ").map do |result|
+  @conn.exec("SELECT * FROM job_offers WHERE offer_id='#{id}' ").map do |result|
   @data_job << result
   end
   @data_job.to_json
@@ -23,7 +23,7 @@ get '/emploi' do
 
   #////////////////////////////// PAGINATION ///////////////////////
   #----------- Counting number of all offers in database -----------------------
-  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offer").map do |total_offers|
+  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offers").map do |total_offers|
     @total = total_offers["count"].to_i
     puts "---------------> number of offers in db #{@total}"
   end
@@ -52,7 +52,7 @@ get '/emploi' do
 
 #------------ ORDER BY ASC : renvoie les premiers enregistrements de la base par id_key, choisir plutôt la date de parution ou autre
   @data_job = []
-  @conn.exec("SELECT * FROM job_offer ORDER BY id_key ASC LIMIT #{limit} OFFSET #{bg_offers}").map do |result|
+  @conn.exec("SELECT * FROM job_offers ORDER BY id_key ASC LIMIT #{limit} OFFSET #{bg_offers}").map do |result|
     puts result["id_key"]
     @data_job << result
     end
@@ -76,7 +76,7 @@ get '/search/:text' do
 
 
   #----------- Counting number of all offers in database -----------------------
-  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offer").map do |total_offers|
+  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offers").map do |total_offers|
     @total = total_offers["count"].to_i
     puts "---------------> number of offers in db #{@total}"
   end # cette partie peut ne pas être copié ???
@@ -106,7 +106,7 @@ get '/search/:text' do
 
   @data_job = [] #faut-il définir ça au début du fichier ? Est commun à chaque méthode
 
-  result = @conn.exec("SELECT * FROM job_offer WHERE to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}') ORDER BY id_key ASC LIMIT #{limit} OFFSET #{bg_offers}; ")
+  result = @conn.exec("SELECT * FROM job_offers WHERE to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}') ORDER BY id_key ASC LIMIT #{limit} OFFSET #{bg_offers}; ")
 
     result.map do |result|
     puts "---- #{result["id_key"]} // #{result["offer_id"]} : #{result["title"]}"

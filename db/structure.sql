@@ -1,11 +1,11 @@
-CREATE TABLE job_list (
+CREATE TABLE job_lists (
   id_key serial primary key NOT NULL,
   slug text,
   label text,
   code_rome text
   );
 
-  INSERT INTO job_list (id_key, slug, label, code_rome) VALUES
+  INSERT INTO job_lists (id_key, slug, label, code_rome) VALUES
   (1, '', 'Tous métiers informatique', ''),
   (2, 'Administrateur', 'Administrateur', 'M1801'),
   (3, 'Administrateur de base de données', 'Administrateur de base de données', 'M1801'),
@@ -22,7 +22,7 @@ CREATE TABLE job_list (
   (14, 'Testeur informatique', 'Testeur informatique', 'M1805')
   ;
 
-CREATE TABLE job_offer (
+CREATE TABLE job_offers (
   region_adress text,
   id_key serial primary key NOT NULL,
   title text,

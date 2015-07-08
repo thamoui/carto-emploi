@@ -35,7 +35,7 @@ end
 
 # --------------------- DEF URL FOR TEST - PARSE ONLY A FEW DATA ----------------------------
 def urls
-	job_list = CONN.exec("SELECT slug FROM job_list").to_a
+	job_list = CONN.exec("SELECT slug FROM job_lists").to_a
 	jobs = []
 	job_list.each do |job|
 		jobs << job["slug"]
@@ -111,6 +111,3 @@ if urls != nil
 		end
 	end
 end
-
-
-
