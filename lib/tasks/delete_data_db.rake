@@ -14,4 +14,17 @@ namespace :clean_db do
   task :delete_duplicate_parse => :dotenv do
     sh "psql -h '127.0.0.1' -p 5432 -d #{ENV["DATABASE_NAME"]} -U #{ENV["DATABASE_USER_NAME"]} -f ./db/delete_from_parse.sql"
   end
+
+  desc "Vider la base parse"
+  task :truncate_parse do
+    sh "psql -h '127.0.0.1' -p 5432 -d #{ENV["DATABASE_NAME"]} -U #{ENV["DATABASE_USER_NAME"]} -f ./db/truncate_parse.rb"
+  end
+
+  desc "Vider la base job_offers"
+  task :truncate_job_offers do
+    sh "psql -h '127.0.0.1' -p 5432 -d #{ENV["DATABASE_NAME"]} -U #{ENV["DATABASE_USER_NAME"]} -f ./db/truncate_job_offers.rb"
+  end
+
+
+
 end
