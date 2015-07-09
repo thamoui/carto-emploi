@@ -22,7 +22,6 @@ namespace :ango do
     ruby "./parser/pole_emploi_parser.rb 21 95"
   end
 
-
   desc 'parse les urls et insère le détail des offres dans la base de données'
   task :insert_offers  do
     ruby "./parser/insert_db.rb"
