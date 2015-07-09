@@ -1,11 +1,11 @@
 require 'sinatra/base'
 
 # ------------------------ For Developpement env :
-# set :sessions, key: 'N&wedhSDF',
-#   domain: "localhost",
-#   path: '/admin/',
-#   expire_after: 14400, #en secondes
-#   secret: ENV['SESSION_SECRET'] --> c'est déjà dans config.ru
+set :sessions, key: 'N&wedhSDF',
+  domain: "localhost",
+  path: '/admin/',
+  expire_after: 14400, #en secondes
+  secret: ENV['SESSION_SECRET'] #--> c'est déjà dans config.ru
 
 #set :sessions, true
 

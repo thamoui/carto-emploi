@@ -19,11 +19,11 @@ map '/sidekiq' do
 end
 
 
-use Rack::Session::Cookie, :key => 'rack.session',
-                           :domain => 'localhost',
-                           :path => '/',
+use Rack::Session::Cookie, :key => ENV['SESSION_KEY'],
+                           #:domain => 'localhost', en prod, on met quoi ?
+                           :path => '/admin',
                            :expire_after => 360, # In seconds
-                           :secret => 'a6GNWlrf50TH67Uty7h89Jfsr345'
+                           :secret => ENV['SESSION_SECRET']
 
 # >>>> il faut créer un compte d'abord https://github.com/mperham/sidekiq/wiki/Monitoring
 #https://github.com/settings/applications/new
