@@ -5,7 +5,6 @@ require 'dotenv'
 require 'active_support/all'
 require 'active_record'
 require 'sinatra/activerecord'
-require './admin'
 
 Dotenv.load
 

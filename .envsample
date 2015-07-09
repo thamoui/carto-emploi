@@ -6,3 +6,6 @@ RACK_ENV=development
 
 SIDEKIQ_PASSWORD=your_password
 SIDEKIQ_USER_NAME=your_username
+
+ADMIN_NAME=admin
+ADMIN_PASSWORD=admin

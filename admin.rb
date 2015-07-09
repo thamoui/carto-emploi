@@ -1,5 +1,15 @@
+require 'sinatra/base'
 
-# --------------- gestion des donn�es en mode objet gr�ce � active records
+# ------------------------ For Developpement env :
+set :sessions, key: 'N&wedhSDF',
+  domain: "localhost",
+  path: '/admin/',
+  expire_after: 14400, #en secondes
+  secret: '*&(^B234'
+
+set :sessions, true
+
+# --------------- gestion des donnees en mode objet grace a active records
 class Job_list < ActiveRecord::Base
 end
 
@@ -7,15 +17,46 @@ class Job_offer < ActiveRecord::Base
 end
 
 
+class LoginScreen < Sinatra::Base
+  get '/admin/login' do
+    erb :login
+  end
+
+  post '/admin/login' do
+    if params['name'] == ENV['ADMIN_NAME'] && params['password'] == ENV['ADMIN_PASSWORD']
+      session['user_name'] = params['name']
+      puts "POST ADMIN LOGIN : this is session value #{session['user_name']}"
+      erb :admin
+    else
+      redirect '/admin/login'
+    end
+  end
+end
+
+#middleware will run before filters
+use LoginScreen
+
+
+before '/admin/*' do
+  unless session['user_name']
+    puts "BEFORE DO session user name #{session['user_name']}"
+    halt "BEFORE DO message : Veuillez vous connecter <a href='/admin/login'>login</a>."
+  end
+end
+
+
 # --------------- /admin : interface d'administration de l'api
 get '/admin' do
-  @jobs_list = Job_list.all() #execute la requête SELECT "job_lists".* FROM "job_lists"
+  halt "Veuillez vous connecter <a href='/admin/login'>login</a>."
+end
 
-  erb :admin
+get '/admin/logout' do
+  session.clear
+  redirect "/"
 end
 
 get '/admin/metiers' do
-  @jobs_list = Job_list.all()
+  @jobs_list = Job_list.all()  #execute la requête SELECT "job_lists".* FROM "job_lists"
   #redirect "/admin/new_metier" if @jobs_list.empty?
   erb :metiers
 end
@@ -37,11 +78,6 @@ end
 
 get '/admin/new_metier' do
   erb :new_metier
-end
-
-get "/issue/:id" do
-  @job_list = Job_list.find_by_id(params[:id])
-  erb :metiers
 end
 
 
