@@ -1,13 +1,23 @@
 require 'sinatra/base'
 
 # ------------------------ For Developpement env :
+
+
+
 set :sessions, key: 'N&wedhSDF',
   domain: "localhost",
   path: '/admin/',
   expire_after: 14400, #en secondes
-  secret: '*&(^B234'
+  secret: ENV['SESSION_SECRET']
 
 set :sessions, true
+
+
+#refactorer ça, pistes :
+# configure do
+#   enable :sessions
+#   set :session_secret, ENV['SESSION_SECRET'] ||= 'super secret'
+# end
 
 # --------------- gestion des donnees en mode objet grace a active records
 class Job_list < ActiveRecord::Base

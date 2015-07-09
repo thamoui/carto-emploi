@@ -9,3 +9,5 @@ SIDEKIQ_USER_NAME=your_username
 
 ADMIN_NAME=admin
 ADMIN_PASSWORD=admin
+
+SESSION_SECRET=my_secret
