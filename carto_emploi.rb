@@ -22,8 +22,6 @@ end
 Time.zone = "UTC"
 ActiveRecord::Base.default_timezone = :utc
 
-
-
 #----------------------- DB CONFIG  ---------------------------
 if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
@@ -37,9 +35,22 @@ else
   end
 end
 
+def check_connection( conn )
+    begin
+        conn.exec( "SELECT 1" )
+    rescue PG::Error => err
+        $stderr.puts "%p while testing connection: %s" % [ err.class, err.message ]
+        conn.reset
+    end
+end
+
 before do
   @conn = settings.conn
 end
+
+
+puts ">>>>>>>>>>>> DB >>>>>>>>>>>>>>this is @conn.class: #{@conn.class} ----------------"
+
 
 set :public_folder, 'frontend' #this is necessary to be able to access to static files
 get '/' do
@@ -57,14 +68,17 @@ get '/metiers' do
   @data_job.to_json
 end
 
-
 #--------------   /geosearch/LAT,LNG : renvoie les emplois aux alentours
-
 get '/geosearch/:lat,:lng' do
-  #geosearch/48.86833,2.66833?p=42&limit=42&text=d�veloppeur LAGNY SUR MARNE
+  #geosearch/48.86833,2.66833?p=42&limit=42&text=developpeur LAGNY SUR MARNE
   #TESTER AVEC CES VALEURS POUR EVRY
   # @lat = 48.629828
   # @lng = 2.441782
+
+  puts ">>>>>>>>>>>> DB >>>>this is @conn dans get geosearch: #{@conn} ----------------"
+  puts ">>>>>>>>>>>> DB >>>>this is @conn.CLASS dans get geosearch: #{@conn.class} ----------------"
+
+  check_connection(@conn)
 
   content_type :json, 'charset' => 'utf-8'
 
