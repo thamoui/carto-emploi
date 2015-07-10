@@ -41,32 +41,32 @@ else
   end
 end
 
+# ------------- Methode qui checke avant une route si la connection est valide ------
 def check_connection( conn )
     begin
         @conn.exec("SELECT 1")
-        puts ">>>>>>>>>>>> DB >>>In CHECK CONNECTION ------ #{@conn.exec("SELECT 1")} ----------------"
-
-        #puts "-----------conn.exec('SELECT 1') ---------{@conn.exec('SELECT 1')}"
+        puts "------ DB CHECK CONNECTION ---- #{@conn.exec("SELECT 1")} ----------------"
     rescue PG::Error => err
         $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
         @conn.reset
+        puts "--------- PG CONNECTION RESETED -------------"
     end
 end
+# ------------ End
+
 
 before do
   @conn = settings.conn
 end
-
-
 
 set :public_folder, 'frontend' #this is necessary to be able to access to static files
 get '/' do
   redirect '/index.html' #The root of the project is /frontend so the absolute path to static files doesn't need /frontend in front
 end
 
-#----------------- /metiers : renvoie la liste des m�tiers
-
+#----------------- /metiers : renvoie la liste des metiers
 get '/metiers' do
+  check_connection(@conn)
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
   @conn.exec("SELECT * FROM job_lists").map do |result|
