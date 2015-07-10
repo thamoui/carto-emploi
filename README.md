@@ -118,12 +118,14 @@ Ce script enlève de la bdd les url dont :
 - offre déjà présente dans la bdd des offres d'emplois
 - offre indisponible sur le site de pôle emploi
 
-`rake clean_db:delete_duplicate_parse` Script rapide pour supprimer les doublons 
+`rake clean_db:delete_1_duplicate_parse` Script rapide pour supprimer les doublons
+
+`heroku pg:psql -a ango-jobs <db/delete_from_parse.sql`
 
 
 puis
 
-`rake clean_db:delete_urls` Script plus long qui nécessite l'analyse du contenu des offres.
+`rake clean_db:delete_2_urls_from_parse` Script plus long qui nécessite l'analyse du contenu des offres (supprime les codes romes et adresses invalides ainsi que les offres non disponibles).
 
 
 3. Insertion des données des offres d'emplois
@@ -150,7 +152,14 @@ Exemple :  `heroku run rake -T`
 
 Dans le terminal :
 
-`shotgun carto_emploi.rb`
+`shotgun`
+
+# Accès à la partie Admin
+
+`\admin`
+Les logins et mots de passe sont à modifier dans le fichier .env (voir le modèle .envsample)
+
+Il faut également renseigner la variable SESSION_SECRET avec un mot de passe
 
 
 Ex d'urls pour visualiser le fichier json généré :
