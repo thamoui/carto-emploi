@@ -13,6 +13,12 @@ Dotenv.load
 configure { set :server, :puma }
 set :public_folder, 'public'
 
+configure do
+  enable :sessions
+  set :session_secret, ENV['SESSION_SECRET'] ||= 'super secret'
+end
+
+
 #add new relic in addons for Software Analytics, Application Performance Mangement
 configure :production do
   require 'newrelic_rpm'
@@ -37,7 +43,9 @@ end
 
 def check_connection( conn )
     begin
-        @conn.exec( "SELECT 1" )
+        @conn.exec("SELECT 1")
+        puts ">>>>>>>>>>>> DB >>>In CHECK CONNECTION ------ #{@conn.exec("SELECT 1")} ----------------"
+
         #puts "-----------conn.exec('SELECT 1') ---------{@conn.exec('SELECT 1')}"
     rescue PG::Error => err
         $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
@@ -49,7 +57,6 @@ before do
   @conn = settings.conn
 end
 
-puts ">>>>>>>>>>>> DB >>>>>>>>>>>>>>this is @conn.class BEFORE ROUTES: #{@conn.class} ----------------"
 
 
 set :public_folder, 'frontend' #this is necessary to be able to access to static files
