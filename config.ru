@@ -22,8 +22,8 @@ end
 use Rack::Session::Cookie, :key => ENV['SESSION_KEY'],
                            #:domain => 'localhost', en prod, on met quoi ?
                            :path => '/admin',
-                           :expire_after => 360, # In seconds
-                           :secret => ENV['SESSION_SECRET']
+                           :expire_after => 3600, # In seconds
+                           :session_secret => ENV['SESSION_SECRET']
 
 # >>>> il faut créer un compte d'abord https://github.com/mperham/sidekiq/wiki/Monitoring
 #https://github.com/settings/applications/new

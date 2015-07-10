@@ -2,41 +2,40 @@
 <table class="table">
 
   <thead>
-
     <tr>
       <th>Id Key</th>
       <th>Ville</th>
       <th>Titre</th>
-      <th>Type de contrat<th>
+      <th>Type de contrat</th>
       <th>Code Rome</th>
       <th>Description de l'offre</th>
       <th>Entreprise</th>
-      <th>Url<th>
+      <th>Url</th>
       <th>Lat</th>
       <th>Long</th>
-      <th>Id</th>
-      <th>Date publication<th>
-      <th>Date insertion<th>
-      <th>-------<th>
+      <th>Offer Id </th>
+      <th>Date publication</th>
+      <th>Date insertion</th>
+      <th>Manager</th>
     </tr>
   </thead>
   <tbody>
     <% @job_offers.each do |offer| %>
     <tr>
-      <th><%= offer.id_key %></th>
-      <th><%= offer.region_adress %></th>
-      <th><%= offer.title %></th>
-      <th><%= offer.contrat_type %></th>
-      <th><%= offer.code_rome %></th>
-      <th><%= offer.offer_description %></th>
-      <th><%= offer.company_description %></th>
-      <th><%= offer.url %></th>
-      <th><%= offer.latitude %></th>
-      <th><%= offer.longitude %></th>
-      <th><%= offer.offer_id %></th>
-      <th><%= offer.publication_date %></th>
-      <th><%= offer.created_at %></th>
-      <th>mettre un comment et/ou bouton supprimer</th>
+      <td><%= offer.id_key %></td>
+      <td><%= offer.region_adress %></td>
+      <td><%= offer.title %></td>
+      <td><%= offer.contrat_type %></td>
+      <td><%= offer.code_rome %></td>
+      <td><%= offer.offer_description[0..60] %></td>
+      <td><%= offer.company_description %></td>
+      <td><a href="<%= offer.url %>">url</a> </td>
+      <td><%= offer.latitude %></td>
+      <td><%= offer.longitude %></td>
+      <td><%= offer.offer_id %></td>
+      <td><%= offer.publication_date %></td>
+      <td><%= offer.created_at %></td>
+      <td>Editer / Voir / Supprimer</td>
     </tr>
     <% end %>
   </tbody>

@@ -1,22 +1,7 @@
 require 'sinatra/base'
 
 # ------------------------ For Developpement env :
-set :sessions, key: 'N&wedhSDF',
-  domain: "localhost",
-  path: '/admin/',
-  expire_after: 14400, #en secondes
-  secret: ENV['SESSION_SECRET'] #--> c'est déjà dans config.ru
 
-#set :sessions, true
-
-enable :sessions
-
-
-#refactorer ça, pistes :
-# configure do
-#   enable :sessions
-#   set :session_secret, ENV['SESSION_SECRET'] ||= 'super secret'
-# end
 
 # --------------- gestion des donnees en mode objet grace a active records
 class Job_list < ActiveRecord::Base
@@ -84,14 +69,17 @@ get "admin/metier/:id" do
   erb :metiers
 end
 
-
 get '/admin/new_metier' do
   erb :new_metier
 end
 
-
 get '/admin/offres' do
-  @job_offers = Job_offer.last(10)
+  @job_offers = Job_offer.order('id_key DESC').limit(5)
   erb :offres
 end
 #j'ai bien la requête SELECT  "job_offers".* FROM "job_offers"  ORDER BY "job_offers"."id_key" DESC LIMIT 5
+
+
+get '/admin/stats' do
+  erb :stats
+end
