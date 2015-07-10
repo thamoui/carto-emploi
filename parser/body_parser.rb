@@ -62,7 +62,6 @@ class BodyParser
   def check_is_a_city(url)
     city = get_source(url).css('li[@itemprop="addressRegion"]').children.inner_text
     city == city.upcase
-
     #retourne true
   end
 
@@ -76,7 +75,6 @@ class BodyParser
       #ça bugge s'il n'y a pas de numéro de département avec un tiret
       city.gsub!(/'/, "''")
       city.sub! /^\w+\s-\s/, '' #renvoir Paris si adress est 75 - Paris
-
     else
       "Information non disponible"
     end
@@ -106,7 +104,7 @@ class BodyParser
   #--------- Type de contrat ---------
   def search_employment_type(url)
     employement_type = get_source(url).css('span[@itemprop="employmentType"]').children.inner_text
-    if   employement_type != nil || employement_type != "" || employement_type.string?
+    if employement_type != nil || employement_type != "" || employement_type.string?
       employement_type[/[^-]+/].strip
     else
       "Information non disponible"

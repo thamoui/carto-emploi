@@ -1,4 +1,4 @@
-<<<<require 'pg'
+require 'pg'
 require_relative 'body_parser'
 require 'dotenv'
 
