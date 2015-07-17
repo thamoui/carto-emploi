@@ -13,9 +13,6 @@ else
 	CONN = PGconn.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
 end
 
-puts "this is CONN ------ #{CONN}"
-
-
 def document_by_url(url)
 	begin
 		open(url).read
@@ -39,10 +36,7 @@ def urls
 	jobs = []
 	job_list.each do |job|
 		jobs << job["slug"]
-		puts "#{jobs}----- TEST ERREUR !!!!"
 	end
-
-
 
 
 	if ARGV[0] == nil or ARGV[0] == "20" or ARGV[0].to_i > 95
@@ -70,8 +64,6 @@ def urls
 				else
 					zipcode = "#{zipcode}"
 				end
-
-				puts "#{jobs}----- TEST ERREUR !!!!"
 
 				jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipcode}___P__________INDIFFERENT_________________"}
 			end.flatten

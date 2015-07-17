@@ -17,6 +17,7 @@ end
 def doc
   ::BodyParser.new
 end
+
 #---------------- GETTING AN ARRAY OF URLS FROM TABLE JOB OFFERS ---------------------------------
 @result = conn.exec( "SELECT url FROM job_offers").to_a
 puts @result[0]

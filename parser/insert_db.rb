@@ -107,6 +107,3 @@ offre_ajout = 0
     sleep(2)
   end
 end
-
-
-

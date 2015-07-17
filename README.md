@@ -130,7 +130,6 @@ On dispose de 3 tâches rake.
 Ce script enlève de la bdd les url dont :
 - code rome invalides
 - adresses invalides (Ex Ile-de-France, on ne garde que les villes)
-- offre déjà présente dans la bdd des offres d'emplois (voir script du haut?)
 - offre indisponible sur le site de pôle emploi
 
 
