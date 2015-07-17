@@ -41,18 +41,18 @@ else
   end
 end
 
-# ------------- Methode qui checke avant une route si la connection est valide ------
-def check_connection( conn )
-    begin
-        @conn.exec("SELECT 1")
-        puts "------ DB CHECK CONNECTION ---- #{@conn.exec("SELECT 1")} ----------------"
-    rescue PG::Error => err
-        $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
-        @conn.reset
-        puts "--------- PG CONNECTION RESETED -------------"
-    end
-end
-# ------------ End
+# # ------------- Methode qui checke avant une route si la connection est valide ------
+# def check_connection( conn )
+#     begin
+#         @conn.exec("SELECT 1")
+#         puts "------ DB CHECK CONNECTION ---- #{@conn.exec("SELECT 1")} ----------------"
+#     rescue PG::Error => err
+#         $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
+#         @conn.reset
+#         puts "--------- PG CONNECTION RESETED -------------"
+#     end
+# end
+# # ------------ End
 
 
 before do
@@ -66,7 +66,7 @@ end
 
 #----------------- /metiers : renvoie la liste des metiers
 get '/metiers' do
-  check_connection(@conn)
+  #check_connection(@conn)
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
   @conn.exec("SELECT * FROM job_lists").map do |result|
@@ -85,7 +85,7 @@ get '/geosearch/:lat,:lng' do
   puts ">>>>>>>>>>>> DB >>>>this is @conn dans get geosearch: #{@conn} ----------------"
   puts ">>>>>>>>>>>> DB >>>>this is @conn.CLASS dans get geosearch: #{@conn.class} ----------------"
 
-  check_connection(@conn)
+  # check_connection(@conn)
 
   content_type :json, 'charset' => 'utf-8'
 
