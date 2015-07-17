@@ -66,7 +66,7 @@ end
 
 #----------------- /metiers : renvoie la liste des metiers
 get '/metiers' do
-  #check_connection(@conn)
+  check_connection(@conn)
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
   @conn.exec("SELECT * FROM job_lists").map do |result|
