@@ -66,7 +66,7 @@ end
 
 #----------------- /metiers : renvoie la liste des metiers
 get '/metiers' do
-  check_connection(@conn)
+  #check_connection(@conn)
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
   @conn.exec("SELECT * FROM job_lists").map do |result|
@@ -102,8 +102,6 @@ get '/geosearch/:lat,:lng' do
   end
 
   #////////////////////////////// PAGINATION ///////////////////////
-
-
   #----------- Counting number of all offers in database -----------------------
   total_offers = @conn.exec("SELECT COUNT (*) FROM job_offers").map do |total_offers|
     @total = total_offers["count"].to_i
