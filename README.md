@@ -60,8 +60,6 @@ Pour sortir de la console PSQL et revenir à la ligne de commande du terminal Ct
 
 # créer les tables en local (partie à modifier après tests)
 
-
-
 ## Via active record
 Pb : les données de database.yml ne sont pas prises en compte car la base n'a pas l'utilisateur pole_emploi comme owner :
 
@@ -82,7 +80,7 @@ Lancer la tâche `rake ango:create_tables`
 Ce script crée les tables dans la base pole_emploi avec comme owner pole_emploi.
 Penser à modifier le fichier `database.yml` si vous souhaitez modifier les paramètres.
 
-# créer les tables sur heroku
+## créer les tables sur heroku
 
 Dans le terminal :
 
@@ -92,11 +90,11 @@ Dans le terminal :
 ( heroku pg:psql -a your-app-name <db/structure.sql )
 
 
-# Lancer le parser
+# :::::::::  Lancer le parser ::::::::::::::::
 
 Voir la liste des tâches disponibles ` rake -T`
 
- 1. Récupération des urls
+### 1. Récupération des urls
 
 Lancer le premier script qui récupère les urls et id correspondant aux offres d'emplois pour les jobs du numérique
 
@@ -110,25 +108,40 @@ ou
 
 `rake ango:a_l_abordage` # insère les urls des offres de tous les départements
 
-2. Nettoyage de la base d'url :
+
+# ::::::: Pour faire la même chose en production :::::::::::::::::::::
+
+Depuis votre terminal, ajouter `heroku run` avant la listes des tâches rake mentionnées au paragraphe précédant.
+Exemple :  `heroku run rake -T`
+
+### 2. Nettoyage de la base d'url :
+
+Une fois que l'on a rempli la base avec les urls, il faut nettoyer cette base.
+On dispose de 3 tâches rake.
+
+- On commence par supprimer les urls (parse) qui ont déja été ajoutées dans la base des offres (job_offers):
+
+`rake clean_db:delete_1_duplicate_parse` Script sql rapide pour supprimer les doublons
+
+- Ensuite on enlève les offres que l'on ne veut pas faire apparaître sur la carte et donc qu'on ne veut pas enregistrer dans la base de données. Script plus long qui nécessite l'analyse du contenu des offres (supprime les codes romes et adresses invalides ainsi que les offres non disponibles de la base de données d'url).
+
+`rake clean_db:delete_2_urls_from_parse`
 
 Ce script enlève de la bdd les url dont :
 - code rome invalides
-- adresse invalide
-- offre déjà présente dans la bdd des offres d'emplois
+- adresses invalides (Ex Ile-de-France, on ne garde que les villes)
+- offre déjà présente dans la bdd des offres d'emplois (voir script du haut?)
 - offre indisponible sur le site de pôle emploi
 
-`rake clean_db:delete_1_duplicate_parse` Script rapide pour supprimer les doublons
 
-`heroku pg:psql -a ango-jobs <db/delete_from_parse.sql`
+Attention, sur Heroku on ne peut pas executer indirectement des commandes psql, il faut taper directement dans le terminal : `heroku pg:psql -a ango-jobs <db/delete_from_parse.sql`
 
+- Enfin, il arrive que les offres ne soient plus disponibles passées un certains temps (l'offre a été pourvue par exemple), on peut enlever ces offres de la base de données job_offers :
 
-puis
-
-`rake clean_db:delete_2_urls_from_parse` Script plus long qui nécessite l'analyse du contenu des offres (supprime les codes romes et adresses invalides ainsi que les offres non disponibles).
+`rake clean_db:delete_offers`
 
 
-3. Insertion des données des offres d'emplois
+### 3. Insertion des données des offres d'emplois
 
 Une fois que la base d'url est propre on peut passer à l'étape suivant, l'insertion des données des offres d'emploi (titre du métier, code rome, etc.)
 
@@ -136,17 +149,9 @@ Une fois que la base d'url est propre on peut passer à l'étape suivant, l'inse
 
 Attention, c'est long quand la base est vide !!
 
-4. Nettoyage de la base de données
+### 4. Nettoyage de la base de données
 
-On peut revenir à l'étape 2 sinon pour pour supprimer de la base de données d'offres (job_offers), celles qui ne sont plus disponibles :
-
-`rake clean_db:delete_offers`
-
-# Pour faire la même chose en production
-
-Depuis votre terminal, ajouter `heroku run` avant la listes des tâches rake mentionnées au paragraphe précédant.
-Exemple :  `heroku run rake -T`
-
+Ces opérations de maintenance sont effectuées tous les jours afin de garantier une base d'offres pertinentes. Voir étape 2.
 
 # Lancer l'api sur un serveur
 
