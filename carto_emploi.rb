@@ -43,14 +43,13 @@ end
 
 # ------------- Methode qui checke avant une route si la connection est valide ------
 def check_connection( conn )
-    begin
-        @conn.exec("SELECT 1")
-        puts "------ DB CHECK CONNECTION ---- #{@conn.exec("SELECT 1")} ----------------"
-    rescue PG::Error => err
-        $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
-        @conn.reset
-        puts "--------- PG CONNECTION RESETED -------------"
-    end
+  begin
+    @conn.exec("SELECT 1")
+  rescue PG::Error => err
+    $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
+    @conn.reset
+    puts "--------- PG CONNECTION RESETED -------------"
+  end
 end
 # ------------ End
 
@@ -66,7 +65,12 @@ end
 
 #----------------- /metiers : renvoie la liste des metiers
 get '/metiers' do
-  check_connection(@conn)
+  #------------ Checking if there is a connection do database
+  if @conn.class == nil
+    check_connection(@conn)
+  end
+  #------------ end checking
+
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
   @conn.exec("SELECT * FROM job_lists").map do |result|
@@ -82,10 +86,9 @@ get '/geosearch/:lat,:lng' do
   # @lat = 48.629828
   # @lng = 2.441782
 
-  puts ">>>>>>>>>>>> DB >>>>this is @conn dans get geosearch: #{@conn} ----------------"
-  puts ">>>>>>>>>>>> DB >>>>this is @conn.CLASS dans get geosearch: #{@conn.class} ----------------"
-
-  check_connection(@conn)
+  if @conn.class == nil
+    check_connection(@conn)
+  end
 
   content_type :json, 'charset' => 'utf-8'
 
@@ -138,9 +141,6 @@ get '/geosearch/:lat,:lng' do
   end
 
   requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
-
-  puts "-----------------REQUETE SQL : #{requete_sql}"
-
   result = @conn.exec(requete_sql)
   result.map do |data|
     puts "---- #{data["publication_date"]}  // //  #{data["region_adress"]} //  #{data["id_key"]} // #{data["offer_id"]} : #{data["title"]}"
