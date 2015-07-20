@@ -12,8 +12,14 @@ namespace :clean_db do
 
   desc "Supprime les urls (parse) qui ont déja été ajoutées dans la base des offres (job_offers)"
   task :delete_1_duplicate_parse => :dotenv do
-    sh "psql -h '127.0.0.1' -p 5432 -d #{ENV["DATABASE_NAME"]} -U #{ENV["DATABASE_USER_NAME"]} -f ./db/delete_from_parse.sql"
+    if ENV["RACK_ENV"] == 'production'
+      sh "heroku pg:psql -a ango-jobs <db/delete_from_parse.sql"
+    else
+      sh "psql -h '127.0.0.1' -p 5432 -d #{ENV["DATABASE_NAME"]} -U #{ENV["DATABASE_USER_NAME"]} -f ./db/delete_from_parse.sql"
+    end
   end
+
+  #si env = production sh "heroku pg:psql -a ango-jobs <db/delete_from_parse.sql"
 
   desc "Vider la base parse"
   task :truncate_parse do
