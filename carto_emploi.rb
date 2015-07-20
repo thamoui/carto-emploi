@@ -86,6 +86,9 @@ get '/geosearch/:lat,:lng' do
   # @lat = 48.629828
   # @lng = 2.441782
 
+
+  puts "--------- GEOSEARCH CONN CLASS : #{@conn.class}"
+
   if @conn.class == nil
     check_connection(@conn)
   end
