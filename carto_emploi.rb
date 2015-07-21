@@ -53,7 +53,6 @@ def check_connection( conn )
 end
 # ------------ End
 
-
 before do
   @conn = settings.conn
 end
@@ -65,12 +64,6 @@ end
 
 #----------------- /metiers : renvoie la liste des metiers
 get '/metiers' do
-  #------------ Checking if there is a connection do database
-  if @conn.class == nil
-    check_connection(@conn)
-  end
-  #------------ end checking
-
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
   @conn.exec("SELECT * FROM job_lists").map do |result|
@@ -89,9 +82,9 @@ get '/geosearch/:lat,:lng' do
 
   puts "--------- GEOSEARCH CONN CLASS : #{@conn.class}"
 
-  if @conn.class == nil
-    check_connection(@conn)
-  end
+  #------------ Checking if there is a connection do database
+  check_connection(@conn)
+  #------------ end checking
 
   content_type :json, 'charset' => 'utf-8'
 
