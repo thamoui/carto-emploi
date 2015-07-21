@@ -2,7 +2,7 @@
 
 Projet de cartographie des emplois du numérique en France :  https://ango-jobs.herokuapp.com/
 
-# test sur gandi
+# test sur gandi2
 
 # pré-requis
 
