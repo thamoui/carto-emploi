@@ -19,8 +19,6 @@ namespace :clean_db do
     end
   end
 
-  #si env = production sh "heroku pg:psql -a ango-jobs <db/delete_from_parse.sql"
-
   desc "Vider la base parse"
   task :truncate_parse do
     sh "psql -h '127.0.0.1' -p 5432 -d #{ENV["DATABASE_NAME"]} -U #{ENV["DATABASE_USER_NAME"]} -f ./db/truncate_parse.rb"
