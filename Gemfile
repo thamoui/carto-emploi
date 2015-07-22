@@ -5,7 +5,6 @@ ruby '1.9.3'
 gem "rack"
 gem "sinatra"#, git: 'https://github.com/sinatra/sinatra.git'
 gem "activesupport"
-gem "puma"
 gem "rake"
 gem "sinatra-activerecord"
 gem "activerecord"
