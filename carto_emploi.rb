@@ -149,3 +149,10 @@ get '/geosearch/:lat,:lng' do
     @data_job.to_json
   end
 end
+
+
+# ------------- Message d'erreur personnalisé
+error do
+   @error = env['sinatra.error']
+   erb :err500, :locals => {:error => error}
+ end
