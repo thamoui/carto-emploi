@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.3'
+ruby '1.9.3'
 
 gem "rack"
 gem "sinatra"#, git: 'https://github.com/sinatra/sinatra.git'
@@ -19,6 +19,7 @@ gem "pg"
 gem "newrelic_rpm"
 gem "newrelic_plugin"
 gem "newrelic_postgres_plugin"
+gem "therubyracer"
 
 group :production do
 end
