@@ -21,6 +21,11 @@ Puis lancer l'installation des gem :
 
 `bundle install`
 
+# configurer la base de données
+
+
+Modifier le fichier `congig/database.yml` avec vos propres données.
+
 
 # configurer les variables d'environnement
 
