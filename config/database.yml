@@ -16,7 +16,7 @@ test:
 
 #config for dokku / digital ocean
 production:
+  adapter: postgresql
   url: <%= ENV['DATABASE_URL'] %>
-  username: <%= ENV['DATABASE_USER_NAME'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
-  database: <%= ENV['DATABASE_NAME'] %>
+  encoding: unicode
+  pool: 5
