@@ -13,10 +13,10 @@ require './lib/pg_db_config_parse'
 # #----------------------- HEROKU DB CONFIG  ------------------------
 # if ENV['RACK_ENV'] == "production"
 #   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
-#   conn = PGconn.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
+#   CONN = PGconn.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
 # else
 #   #----------------------- CONNECT DATABASE LOCALHOST ----------------------
-#   conn = PGconn.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
+#   CONN = PGconn.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
 #   require 'colorize'
 # end
 
@@ -27,7 +27,7 @@ end
 
 #---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
 # only select from parse if offer is not in job_offers db
-@result = conn.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
+@result = CONN.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
 
 puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
 
@@ -89,7 +89,7 @@ offre_ajout = 0
 
         values = data.map {|v| "\'#{v}\'"}.join(',').to_s
 
-        conn.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude, created_at) VALUES (#{values});")
+        CONN.exec("INSERT INTO job_offers (region_adress, offer_id, title, contrat_type, code_rome, publication_date, offer_description, url, company_description, latitude, longitude, created_at) VALUES (#{values});")
 
         offre_ajout = offre_ajout + 1
 
