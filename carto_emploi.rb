@@ -32,7 +32,7 @@ ActiveRecord::Base.default_timezone = :utc
 if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
   configure do
-    set :conn, PG.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
+    set :conn, PG.connect(host: db_parts[5], port: db_parts[6], dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
   end
 else
   require 'shotgun'
