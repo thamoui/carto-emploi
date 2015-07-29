@@ -14,5 +14,9 @@ test:
   host: localhost
   database: pole_emploi_test
 
+#config for dokku / digital ocean
 production:
   url: <%= ENV['DATABASE_URL'] %>
+  username: <%= ENV['DATABASE_USER_NAME'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  database: <%= ENV['DATABASE_NAME'] %>
