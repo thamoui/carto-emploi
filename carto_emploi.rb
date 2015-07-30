@@ -110,7 +110,7 @@ get '/geosearch/:lat,:lng' do
     sql = ""
   else
     #sql = "AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}')"
-    sql = "AND title LIKE '%#{job}%'"
+    sql = "AND title LIKE '%#{job}%' OR offer_description LIKE '%#{job}%'"
 
   end
 
