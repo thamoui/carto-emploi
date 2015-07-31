@@ -32,7 +32,7 @@ ActiveRecord::Base.default_timezone = :utc
 if ENV['RACK_ENV'] == "production"
   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
   configure do
-    set :conn, PG.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
+    set :conn, PG.connect(host: db_parts[5], port: db_parts[6], dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
   end
 else
   require 'shotgun'
@@ -95,6 +95,7 @@ get '/geosearch/:lat,:lng' do
   page = params['p'].to_i
   limit_given = params['limit'].to_i
   @data_job = []
+  bg_offers = 0
 
   if @distance == nil || @distance == ""
     @distance = 50
@@ -102,10 +103,9 @@ get '/geosearch/:lat,:lng' do
 
   #////////////////////////////// PAGINATION ///////////////////////
   #----------- Counting number of all offers in database -----------------------
-  total_offers = @conn.exec("SELECT COUNT (*) FROM job_offers").map do |total_offers|
-    @total = total_offers["count"].to_i
+  total_offers = @conn.exec("SELECT COUNT (id_key) FROM job_offers")
+    @total = total_offers[0]["count"].to_i
     puts "---------------> number of offers in db #{@total}"
-  end # cette partie peut ne pas �tre copi� ???
 
   if limit_given == 0 #afficher, 10, 20 ou 50 annonces, bouge suivant le nbre d'offers disponibles dans la BDD
     limit = 100 #afficher, 10, 20 ou 50 annonces, nombre fixe
@@ -121,11 +121,6 @@ get '/geosearch/:lat,:lng' do
     puts "------------------BG_OFFER #{bg_offers}"
     if page >= 1 && page <= all_pages
       bg_offers = limit_given * (page - 1)
-      puts "---------------> page: offers for page n :  #{page}"
-
-      puts "---------------> limit: nb of offers per pages, 10, 20, 50, 100 :  #{limit_given}"
-
-      puts "---------------> bg_offers : offers offsert startint at row n� :  #{bg_offers}"
     end
   end
   #///////////////////////////// ENF OF PAGINATION ////////////////////////
@@ -135,11 +130,12 @@ get '/geosearch/:lat,:lng' do
   else
     #sql = "AND to_tsvector('french', offer_description || ' ' || title) @@ plainto_tsquery('french', '#{job}')"
     sql = "AND title LIKE '%#{job}%'"
-
   end
-
   requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
   result = @conn.exec(requete_sql)
+
+  puts "------------- this is RESULT #{result.inspect}-----------"
+
   result.map do |data|
     puts "---- #{data["publication_date"]}  // //  #{data["region_adress"]} //  #{data["id_key"]} // #{data["offer_id"]} : #{data["title"]}"
     @data_job << data
