@@ -28,34 +28,43 @@ end
 Time.zone = "UTC"
 ActiveRecord::Base.default_timezone = :utc
 
-#----------------------- DB CONFIG  ---------------------------
-if ENV['RACK_ENV'] == "production"
-  db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
-  configure do
-    set :conn, PG.connect(host: db_parts[5], port: db_parts[6], dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
-  end
-else
-  require 'shotgun'
-  configure do
-    set :conn, PG.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
-  end
-end
+# ----------------------- DB CONFIG  ---------------------------
+# if ENV['RACK_ENV'] == "production"
+#   db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
+#   configure do
+#     set :conn, PG.connect(host: db_parts[5], port: db_parts[6], dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
+#   end
+# else
+#   require 'shotgun'
+#   configure do
+    CONN = PG::Connection.new({host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD']})
+#   end
+# end
+
+# CONN = PG.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
+#
+# puts "this is #{CONN.inspect}"
+
 
 # ------------- Methode qui checke avant une route si la connection est valide ------
 # def check_connection( conn )
 #   begin
-#     @conn.exec("SELECT 1")
+#     CONN.exec("SELECT 1")
 #   rescue PG::Error => err
 #     $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
-#     @conn.reset
+#     CONN.reset
 #     puts "--------- PG CONNECTION RESETED -------------"
 #   end
 # end
 # ------------ End
 
-before do
-  @conn = settings.conn
-end
+# before do
+# #   CONN = settings.conn
+#
+# CONN = PG.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
+#
+# puts "this is CONN in before do #{CONN.inspect}"
+# end
 
 set :public_folder, 'frontend' #this is necessary to be able to access to static files
 get '/' do
@@ -66,7 +75,7 @@ end
 get '/metiers' do
   content_type :json, 'charset' => 'utf-8'
   @data_job = []
-  @conn.exec("SELECT * FROM job_lists").map do |result|
+  CONN.exec("SELECT * FROM job_lists").map do |result|
     @data_job << result
   end
   @data_job.to_json
@@ -80,10 +89,10 @@ get '/geosearch/:lat,:lng' do
   # @lng = 2.441782
 
 
-  puts "--------- GEOSEARCH CONN CLASS : #{@conn.class}"
+  puts "--------- GEOSEARCH CONN CLASS : #{CONN.class}"
 
   #------------ Checking if there is a connection do database
-  # check_connection(@conn)
+  # check_connection(CONN)
   #------------ end checking
 
   content_type :json, 'charset' => 'utf-8'
@@ -103,7 +112,7 @@ get '/geosearch/:lat,:lng' do
 
   #////////////////////////////// PAGINATION ///////////////////////
   #----------- Counting number of all offers in database -----------------------
-  total_offers = @conn.exec("SELECT COUNT (id_key) FROM job_offers")
+  total_offers = CONN.exec("SELECT COUNT (id_key) FROM job_offers")
     @total = total_offers[0]["count"].to_i
     puts "---------------> number of offers in db #{@total}"
 
@@ -132,7 +141,7 @@ get '/geosearch/:lat,:lng' do
     sql = "AND title LIKE '%#{job}%'"
   end
   requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
-  result = @conn.exec(requete_sql)
+  result = CONN.exec(requete_sql)
 
   puts "------------- this is RESULT #{result.inspect}-----------"
 
