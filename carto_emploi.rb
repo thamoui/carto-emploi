@@ -46,17 +46,17 @@ if ENV['RACK_ENV'] == "production"
 # puts "this is #{CONN.inspect}"
 
 
-# ------------- Methode qui checke avant une route si la connection est valide ------
-# def check_connection( conn )
-#   begin
-#     CONN.exec("SELECT 1")
-#   rescue PG::Error => err
-#     $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
-#     CONN.reset
-#     puts "--------- PG CONNECTION RESETED -------------"
-#   end
-# end
-# ------------ End
+
+#------------- Methode qui checke avant une route si la connection est valide ------
+def check_connection( conn )
+  begin
+    CONN.exec("SELECT 1")
+  rescue PG::Error => err
+    $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
+    CONN.reset
+    puts "--------- PG CONNECTION RESETED -------------"
+  end
+end
 
 # before do
 # #   CONN = settings.conn
@@ -92,7 +92,7 @@ get '/geosearch/:lat,:lng' do
   puts "--------- GEOSEARCH CONN CLASS : #{CONN.class}"
 
   #------------ Checking if there is a connection do database
-  # check_connection(CONN)
+  check_connection(CONN)
   #------------ end checking
 
   content_type :json, 'charset' => 'utf-8'
