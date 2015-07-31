@@ -42,15 +42,15 @@ else
 end
 
 # ------------- Methode qui checke avant une route si la connection est valide ------
-def check_connection( conn )
-  begin
-    @conn.exec("SELECT 1")
-  rescue PG::Error => err
-    $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
-    @conn.reset
-    puts "--------- PG CONNECTION RESETED -------------"
-  end
-end
+# def check_connection( conn )
+#   begin
+#     @conn.exec("SELECT 1")
+#   rescue PG::Error => err
+#     $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
+#     @conn.reset
+#     puts "--------- PG CONNECTION RESETED -------------"
+#   end
+# end
 # ------------ End
 
 before do
@@ -83,7 +83,7 @@ get '/geosearch/:lat,:lng' do
   puts "--------- GEOSEARCH CONN CLASS : #{@conn.class}"
 
   #------------ Checking if there is a connection do database
-  check_connection(@conn)
+  # check_connection(@conn)
   #------------ end checking
 
   content_type :json, 'charset' => 'utf-8'
