@@ -114,11 +114,11 @@ document.onkeydown = checkKey;
 function checkKey(e) {
     e = e || window.event;
     
-    if (e.shiftKey && e.keyCode == '80') {
+    if (e.altKey && e.ctrlKey && e.keyCode == '80') {
         $("#style").append("<link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />");
         addLayer(L.mapbox.tileLayer('mapbox.pirates'));
     }
-    else if (e.shiftKey && e.keyCode == '69') {
+    else if (e.altKey && e.ctrlKey && e.keyCode == '69') {
         $("#style").append("<link rel='stylesheet' href='/css/style-normal.css' type='text/css' media='all' />");
         addLayer(L.mapbox.tileLayer('mapbox.streets'));
     }
