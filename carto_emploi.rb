@@ -20,9 +20,9 @@ end
 
 
 #add new relic in addons for Software Analytics, Application Performance Mangement
-# configure :production do
-#   require 'newrelic_rpm'
-# end
+configure :production do
+  require 'newrelic_rpm'
+end
 
 #------------------------ config.time_zone = 'Europe/Paris'-----
 Time.zone = "UTC"
