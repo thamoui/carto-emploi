@@ -158,8 +158,8 @@ get '/geosearch/:lat,:lng' do
 end
 
 
-# ------------- Message d'erreur personnalisé
-error do
-   @error = env['sinatra.error']
-   erb :err500, :locals => {:error => error}
- end
+# # ------------- Message d'erreur personnalisé
+# error do
+#    @error = env['sinatra.error']
+#    erb :err500, :locals => {:error => error}
+#  end
