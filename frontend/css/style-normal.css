@@ -299,6 +299,7 @@ select {
     background-image:url(/img/bouton-popup-normal-info.png);
     background-size:cover;
     z-index:1002;
+    cursor:pointer;
 }
 
 .popup_cordage{
