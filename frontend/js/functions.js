@@ -22,7 +22,7 @@ function getMarker(response) {
 
         //Création du marker
         var myIcon = L.icon({iconUrl: "/img/curseur-ango-1_360.png", "iconSize": [50, 50], "iconAnchor": [25, 25]});
-        
+
         var marker = L.marker(new L.LatLng(latitude, longitude), {
             icon: myIcon,
             title: title
@@ -61,14 +61,14 @@ function getMarkerCenter(distance, limit, page, searchtxt) {
 function getJobs() {
     $.ajax({
         type: 'GET',
-        url: '/metiers', 
+        url: '/metiers',
         crossDomain: true,
         dataType: 'json',
         contentType: "application/json",
         success: function(response) {
             $.each(response, function(i) {
                 var label = response[i].label;
-                $("#jobs").append("<option value='" + label + "'>" + label + "</option>");  
+                $("#jobs").append("<option value='" + label + "'>" + label + "</option>");
             });
         }
     });
@@ -108,30 +108,32 @@ function popupOut() {
     document.getElementById("popup").style.display='none';
 }
 
-//Switch mode pour le style css et le style de la map
-document.onkeydown = checkKey;
-
 function checkKey(e) {
     e = e || window.event;
-    
+
     if (e.altKey && e.ctrlKey && e.keyCode == '80') {
-        $("#style").append("<link rel='stylesheet' href='/css/style.css' type='text/css' media='all' />");
+        $("#main-sheet").attr('href', '/css/style.css');
         addLayer(L.mapbox.tileLayer('mapbox.pirates'));
     }
     else if (e.altKey && e.ctrlKey && e.keyCode == '69') {
-        $("#style").append("<link rel='stylesheet' href='/css/style-normal.css' type='text/css' media='all' />");
+        $("#main-sheet").attr('href', '/css/style-normal.css');
         addLayer(L.mapbox.tileLayer('mapbox.streets'));
     }
-    
-    if (map.hasLayer(layer)) {
-        map.removeLayer(layer);  
-    } 
+
+    /*if (map.hasLayer(layer)) {
+        map.removeLayer(layer);
+    }
     else {
         map.addLayer(layer);
-    }
+    }*/
 }
 
 //Ajout d'une carte
 function addLayer(layer) {
     layer.addTo(map);
 };
+
+function getRadius(){
+    var distance = (20 - map.getZoom()) * 10;
+    return distance;
+}

@@ -2,13 +2,14 @@
 <html>
     <head>
         <meta charset=utf-8 />
-        <title>Cartemploi</title>
+        <title>Ango: la carte interactive des emplois dans le numérique | SimplonProd</title>
         <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
         <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
         <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <link rel='stylesheet' id='open-sans-css'  href='//fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400italic%2C600italic%2C300%2C400%2C600&#038;subset=latin%2Clatin-ext&#038;ver=4.2.2' type='text/css' media='all' />
-        <div id="style"><link rel='stylesheet' href='/css/style-normal.css' type='text/css' media='all' /></div>
+
+        <link id="main-sheet" rel='stylesheet' href='/css/style-normal.css' type='text/css' media='all' />
 
         <!-- gestion des clusters -->
         <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
@@ -61,8 +62,6 @@
         <div id='map'></div>
         <!-- fin map -->
 
-
-
         <!-- bloc text -->
         <div class='block_text titre'>
             <div class="cordage-top"></div>
@@ -85,8 +84,6 @@
         </div>
         <!-- fin bloc text -->
 
-
-
         <script>
             //Init de la map
             L.mapbox.accessToken = 'pk.eyJ1IjoiYmxhY2t5IiwiYSI6IjA4NWJjZDNiNDQ0MTg3YjVmZTNkM2NkMWQ3MmM4ZjU4In0.SDQh56AZPCbIL2rVs4eAkQ';
@@ -104,7 +101,7 @@
 
             //Event : document.ready (chargement initial des markers)
             $(document).ready(function () {
-                getMarkerCenter(20, 50, 1, '');
+                getMarkerCenter(getRadius(), 50, 1, '');
 
                 $("#popupIn_button").on('click', function() {
                     popupIn();
@@ -141,7 +138,7 @@
             //Event : clic sur le bouton de recherche
             $("#button-search").on('click', function (event) {
                 event.preventDefault();
-                getMarkerCenter(20, 50, 1, document.getElementById('jobs').value);
+                getMarkerCenter(getRadius(), 50, 1, document.getElementById('jobs').value);
             });
 
             //Event : clic sur le bouton + pour zoomer
@@ -164,8 +161,11 @@
 
             //Event : moveend
             map.on('moveend', function (move) {
-                getMarkerCenter(20, 50, 1, document.getElementById('jobs').value);
+                getMarkerCenter(getRadius(), 50, 1, document.getElementById('jobs').value);
             });
+
+            //Event : switch
+            $(document).on("keydown", checkKey);
 
         </script>
 
