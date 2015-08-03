@@ -60,11 +60,9 @@ end
 #----------------- /metiers : renvoie la liste des metiers
 get '/metiers' do
   content_type :json, 'charset' => 'utf-8'
-  @data_job = []
-  CONN.exec("SELECT * FROM job_lists").map do |result|
-    @data_job << result
+  class Job_list < ActiveRecord::Base
   end
-  @data_job.to_json
+  @metiers = Job_list.all().to_json
 end
 
 #--------------   /geosearch/LAT,LNG : renvoie les emplois aux alentours
