@@ -137,3 +137,9 @@ function getRadius(){
     var distance = (20 - map.getZoom()) * 10;
     return distance;
 }
+
+function getNumToGet(){
+    var num = (20 - map.getZoom()) * 20;
+    //return num;
+    return 50;
+}

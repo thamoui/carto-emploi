@@ -101,7 +101,7 @@
 
             //Event : document.ready (chargement initial des markers)
             $(document).ready(function () {
-                getMarkerCenter(getRadius(), 50, 1, '');
+                getMarkerCenter(getRadius(), getNumToGet(), 1, '');
 
                 $("#popupIn_button").on('click', function() {
                     popupIn();
@@ -138,7 +138,7 @@
             //Event : clic sur le bouton de recherche
             $("#button-search").on('click', function (event) {
                 event.preventDefault();
-                getMarkerCenter(getRadius(), 50, 1, document.getElementById('jobs').value);
+                getMarkerCenter(getRadius(), getNumToGet(), 1, document.getElementById('jobs').value);
             });
 
             //Event : clic sur le bouton + pour zoomer
@@ -161,7 +161,7 @@
 
             //Event : moveend
             map.on('moveend', function (move) {
-                getMarkerCenter(getRadius(), 50, 1, document.getElementById('jobs').value);
+                getMarkerCenter(getRadius(), getNumToGet(), 1, document.getElementById('jobs').value);
             });
 
             //Event : switch
