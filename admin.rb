@@ -81,5 +81,6 @@ end
 
 
 get '/admin/stats' do
+  @jobs_list = Job_list.all()
   erb :stats
 end

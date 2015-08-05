@@ -1,19 +1,35 @@
-<h1> STATISTIQUES </h1>
+<h1> EXEMPLE DE STATISTIQUES </h1>
 
 <h2> ALIMENTATION BASE </h2>
 
-<h3>Date : 10 Juillet 2015</h3>
+<h3>Date : 10 Juillet 2015 <% Time.now %></h3>
 
 <ul>
   <li>Nombre d'url ajoutés : 456</li>
   <li>Nombre d'offres ajoutées : 65</li>
   <li>Nombre d'offres indisponibles enlevées :89</li>
-  <li></li>
-  <li></li>
 </ul>
+<h2> OFFRES</h2>
 
-
-  <h2> OFFRES</h2>
+<p>VRAIE VALEUR : Nombre d'offres dans la base de données : <%= Job_offer.count %></P>
 
   <p>Nombre d'offres par métier avec menu déroulant France/Région 1/Région 2</p>
   <p>Développeur : 65 - 67 %</p>
+
+  <h3> Nombre d'offres par code rome </h3>
+  <% @jobs_list.each do |job| %>
+  <ul>
+    <li>Code Rome   <%= @code_rome = job.code_rome %> </li>
+    <!-- La requête sql fonctionne bien mais ça renvoie un truc
+    que je ne sais pas utiliser..
+    http://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-load
+    -->
+      <li> WHERE <%= jobs_where = Job_offer.where("code_rome = '#{@code_rome}'").limit(2).to_a() %></li>
+      <li> CLASS <% jobs_where.count %> </li>
+
+
+   <% jobs_where.each do |jobs_by_code| %>
+    <li> Bla bla <% 'jobs_by_code.url' %> </li>
+    <% end %>
+  </ul>
+  <% end %>
