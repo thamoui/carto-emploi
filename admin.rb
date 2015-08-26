@@ -82,5 +82,6 @@ end
 
 get '/admin/stats' do
   @jobs_list = Job_list.all()
+  @last_offer = Job_list.order('created_at DESC').limit(5)
   erb :stats
 end

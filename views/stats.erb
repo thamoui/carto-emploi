@@ -4,6 +4,12 @@
 
 <h3>Date : 10 Juillet 2015 <% Time.now %></h3>
 
+<p>First : <%= first = Job_offer.first %>
+
+
+  <!-- Person.find_by(user_name: user_name, password: password) -->
+
+
 <ul>
   <li>Nombre d'url ajoutés : 456</li>
   <li>Nombre d'offres ajoutées : 65</li>
@@ -24,7 +30,7 @@
     que je ne sais pas utiliser..
     http://api.rubyonrails.org/classes/ActiveRecord/Relation.html#method-i-load
     -->
-      <li> WHERE <%= jobs_where = Job_offer.where("code_rome = '#{@code_rome}'").limit(2).to_a() %></li>
+      <li> WHERE <%= jobs_where = Job_offer.where("code_rome = '#{@code_rome}'").limit(1).to_a() %></li>
       <li> CLASS <% jobs_where.count %> </li>
 
 
