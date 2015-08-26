@@ -8,6 +8,8 @@ Projet de cartographie des emplois du numérique en France :  https://ango-jobs.
 - ruby '2.1.3' avec rbenv ou un autre gestionnaire de versions
 - postgresql http://www.postgresql.org/
 `sudo apt-get install postgresql`
+`sudo apt-get install postgresql-client-9.3`
+`sudo apt-get install postgresql postgresql-contrib`
 
 - bundler http://bundler.io/
 `gem install bundler`
