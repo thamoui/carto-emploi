@@ -21,6 +21,18 @@ def doc
   ::BodyParser.new
 end
 
+# -------------------------- DELETE DUPLICATE -------------------------
+
+puts "----------------Nombre de doublons #{CONN.exec("SELECT * FROM parse WHERE EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a.length}"
+
+
+puts "#{CONN.exec( "SELECT url FROM parse").to_a.length} - Offers in database BEFORE cleaning"
+
+CONN.exec( "DELETE FROM parse WHERE EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));")
+
+puts "#{CONN.exec( "SELECT url FROM parse").to_a.length} - Offers in database AFTER cleaning"
+
+
 #---------------- GETTING AN ARRAY OF URLS FROM TABLE PARSE ------------
 @result = CONN.exec( "SELECT url FROM parse").to_a
 puts @result[0]
@@ -41,6 +53,10 @@ deleted_urls = 0
 
     # doc.search_region(item["url"]) != doc.search_region(item["url"]).upcase
     puts 'Url effacée si code rome ou ville incorrecte ou offre non disponible sur pole emploi '
+    puts "----- offre indisponible : #{doc.offer_unavailable(item["url"])} ------ "
+    puts "----- code rome incorrect : #{doc.check_code_rome(item["url"])} ------ "
+    puts "----- est bien une ville : #{doc.check_is_a_city(item["url"])} ------ "
+
     CONN.exec("DELETE FROM parse WHERE url = '#{item["url"]}'")
     deleted_urls = deleted_urls + 1
     puts "-------- L'url #{item["url"]} a été supprimé de la bdd parse -------- "

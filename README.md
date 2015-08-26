@@ -124,23 +124,21 @@ Exemple :  `heroku run rake -T`
 ### 2. Nettoyage de la base d'url :
 
 Une fois que l'on a rempli la base avec les urls, il faut nettoyer cette base.
-On dispose de 3 tâches rake.
+On dispose de 2 tâches rake.
 
-- On commence par supprimer les urls (parse) qui ont déja été ajoutées dans la base des offres (job_offers):
 
-`rake clean_db:delete_1_duplicate_parse` Script sql rapide pour supprimer les doublons
+`rake clean_db:delete_urls_from_parse`
 
-- Ensuite on enlève les offres que l'on ne veut pas faire apparaître sur la carte et donc qu'on ne veut pas enregistrer dans la base de données. Script plus long qui nécessite l'analyse du contenu des offres (supprime les codes romes et adresses invalides ainsi que les offres non disponibles de la base de données d'url).
-
-`rake clean_db:delete_2_urls_from_parse`
+On enlève les offres que l'on ne veut pas faire apparaître sur la carte et donc qu'on ne veut pas enregistrer dans la base de données.
+C'est un script un peu long qui nécessite l'analyse du contenu des offres (supprime les codes romes et adresses invalides ainsi que les offres non disponibles de la base de données d'url).
 
 Ce script enlève de la bdd les url dont :
+- supprime les urls (parse) qui ont déja été ajoutées dans la base des offres (job_offers)
 - code rome invalides
 - adresses invalides (Ex Ile-de-France, on ne garde que les villes)
 - offre indisponible sur le site de pôle emploi
 
-
-Attention, sur Heroku on ne peut pas executer indirectement des commandes psql, il faut taper directement dans le terminal : `heroku pg:psql -a ango-jobs <db/delete_from_parse.sql`
+Alternative, sur Heroku on peut executer des script sql : `heroku pg:psql -a ango-jobs <db/delete_from_parse.sql`
 
 - Enfin, il arrive que les offres ne soient plus disponibles passées un certains temps (l'offre a été pourvue par exemple), on peut enlever ces offres de la base de données job_offers :
 
