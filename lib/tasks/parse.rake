@@ -17,9 +17,15 @@ namespace :ango do
 
   desc 'insère les urls des offres de tous les départements'
   task :a_l_abordage  do
+    t1 = Time.now
+    puts "-------------------------- DEBUT :  #{Time.now} ------------------------"
     ruby "./parser/pole_emploi_parser.rb 2A 2B"
     ruby "./parser/pole_emploi_parser.rb 1 19"
     ruby "./parser/pole_emploi_parser.rb 21 95"
+    t2 = Time.now
+    task = t2 - t1
+    puts "------------------------ DUREE :  #{task/60} minutes ------------------"
+
   end
 
   desc 'parse les urls et insère le détail des offres dans la base de données'
