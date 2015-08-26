@@ -9,19 +9,12 @@ require 'sinatra/activerecord'
 Dotenv.load
 
 # ----------------- CONFIGURATION DATAS ----------------------
-
 configure { set :server, :puma }
 set :public_folder, 'public'
 
 configure do
   enable :sessions
   set :session_secret, ENV['SESSION_SECRET'] ||= 'super secret'
-end
-
-
-#add new relic in addons for Software Analytics, Application Performance Mangement
-configure :production do
-  require 'newrelic_rpm'
 end
 
 #------------------------ config.time_zone = 'Europe/Paris'-----
@@ -40,17 +33,6 @@ else
   CONN = PG::Connection.new({host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD']})
   #   end
 end
-
-# #------------- Methode qui checke avant une route si la connection est valide ------
-# def check_connection( conn )
-#   begin
-#     CONN.exec("SELECT 1")
-#   rescue PG::Error => err
-#     $stderr.puts "%p while CHECKING TESTING connection: %s" % [ err.class, err.message ]
-#     CONN.reset
-#     puts "--------- PG CONNECTION RESETED -------------"
-#   end
-# end
 
 set :public_folder, 'frontend' #this is necessary to be able to access to static files
 get '/' do
@@ -71,13 +53,6 @@ get '/geosearch/:lat,:lng' do
   #TESTER AVEC CES VALEURS POUR EVRY
   # @lat = 48.629828
   # @lng = 2.441782
-
-
-  puts "--------- GEOSEARCH CONN CLASS : #{CONN.class}"
-
-  #------------ Checking if there is a connection do database
-  # check_connection(CONN)
-  #------------ end checking
 
   content_type :json, 'charset' => 'utf-8'
 
