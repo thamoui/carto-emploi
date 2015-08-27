@@ -19,6 +19,7 @@ gem "pg"
 gem "newrelic_rpm"
 gem "newrelic_plugin"
 gem "newrelic_postgres_plugin"
+gem "colorize"
 
 group :production do
 end

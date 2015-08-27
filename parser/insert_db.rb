@@ -2,6 +2,7 @@ require_relative 'body_parser'
 require 'geocoder'
 require 'geokit'
 require 'time'
+require 'colorize'
 require './lib/pg_db_config_parse'
 
 Geokit::default_units = :kms
@@ -11,11 +12,27 @@ def doc
   ::BodyParser.new
 end
 
+
+# --------------- FIRST STEP : DELETE URL DUPLICATE FROM PARSE TABLE -------
+
+puts "----------------Nombre de doublons #{CONN.exec("SELECT * FROM parse WHERE EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a.length}"
+puts "#{CONN.exec( "SELECT url FROM parse").to_a.length} - Offers in PARSE database BEFORE cleaning"
+
+CONN.exec( "DELETE FROM parse WHERE EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));")
+
+puts "#{CONN.exec( "SELECT url FROM parse").to_a.length} - Offers in PARSE database AFTER cleaning"
+
+
+# -------->>>>>> Du coup si on supprime les doublons on peut tout prendre ! la ligne 30 ne sert plus à rien
+
+
 #---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
 # only select from parse if offer is not in job_offers db
-@result = CONN.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
+#@result = CONN.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
 
-puts "------------------->>> THERE IS #{@result.length} URLS IN ARRAY <<<------------------------"
+@result = CONN.exec( "SELECT * FROM parse;").to_a
+
+puts "------------------->>> IL Y A #{@result.length} URL(S) A TRAITER <<<------------------------"
 
 nb_offres = @result.length #décompte de ce qu'il reste à insérer ^^
 offre_ajout = 0
@@ -26,25 +43,19 @@ offre_ajout = 0
   nb_offres = nb_offres - 1
   puts "_______________________________ STARTING ___________________________________"
   puts "-------------------- OFFER ID de l' offre : #{item["id"]} ------------------ "
-  puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} (true = indisponible) ---------"
+  puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} (true = indisponible) ---------".colorize(:purple)
+  puts "---- Code rome : #{doc.check_code_rome(item["url"])} (true = code rome informatique) ---------".colorize(:purple)
+  puts "---- Is a city : #{doc.check_is_a_city(item["url"])} (true = c'est bien une ville) ---------".colorize(:purple)
 
-  #-------- Message d'alerte pour vérifier que l'url n'est pas ajouté si le code rome n'est pas bon
-
-  if doc.check_code_rome(item["url"]) == false
-    puts "---------- Code Rome Invalide  ---------- "
-  end
-
-  if doc.offer_unavailable(item["url"]) == false && doc.check_code_rome(item["url"]) == true
+  if doc.offer_unavailable(item["url"]) == false && doc.check_code_rome(item["url"]) == true && doc.check_is_a_city(item["url"]) == true
     adress = doc.search_region(item["url"]).gsub(/''/, "'")
+    # le search_region fait déjà un gsub... A vérifier
 
     puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
 
-    if adress != adress.upcase
-      puts "------------------ #{adress} n'est pas une ville ------------------------- "
-    end
-
     # ------------------- GETTING LATITUDE & LONGITUDE // GEOKIT ------------------------
-    if adress != "" && adress == adress.upcase #si adress en majuscule c'est une ville
+    #if adress != "" && adress == adress.upcase
+    #déjà vérifié par check_is_a_city
 
       geodata = Geokit::Geocoders::GoogleGeocoder.geocode(adress, :bias => 'fr').to_hash
       @latitude, @longitude = geodata[:lat], geodata[:lng]
@@ -55,7 +66,7 @@ offre_ajout = 0
       @longitude += rand(0.0004..0.0019)
 
       puts "Latitude AFTER  --------- #{@latitude} // Longitude  ------------ #{@longitude}"
-      sleep(3)
+      sleep(1)
 
       # #------- Use Geocoder Gem --------
       # if latitude == nil
@@ -84,13 +95,15 @@ offre_ajout = 0
         puts "---------------------------- DEBUT DE L'INSERTION -------------------------- "
         puts "------------ ADRESS de l'offre : #{doc.search_region(item["url"])}---------- "
 
-        puts "--------------------------- OFFER INSERTED INTO DB :) ---------------------- "
+        puts "--------------------------- OFFER INSERTED INTO DB :) ---------------------- ".colorize(:green)
         puts "-- #{nb_offres} offre(s) encore à parser sur #{@result.length} au départ-----"
         puts "__________ Nb d'offres insérées : #{offre_ajout}_____________________________"
 
       end #fin du test latitude !=nil
 
-    end
-    sleep(2)
+    else
+      # delete urls
+      CONN.exec("DELETE FROM parse WHERE url = '#{item["url"]}'")
+      puts "-------- L'url #{item["url"]} a été supprimé de la bdd parse -------- ".colorize(:red)
   end
 end
