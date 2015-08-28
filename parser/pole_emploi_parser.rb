@@ -1,19 +1,12 @@
 require 'open-uri'
-# require 'pg'
-# require 'dotenv'
 require_relative 'body_parser'
-# Dotenv.load
-
-#----------------------- HEROKU DB CONFIG  ------------------------
-# if ENV['RACK_ENV'] == "production"
-# 	db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
-# 	CONN = PGconn.connect(host: db_parts[5], port: 5432, dbname: db_parts[7], user: db_parts[3], password: db_parts[4])
-# else
-# 	#----------------------- CONNECT DATABASE LOCALHOST ----------------------
-# 	CONN = PGconn.connect(host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD'])
-# end
-
 require './lib/pg_db_config_parse'
+require 'colorize'
+
+# -------------------- SOME COMMENTS AND DATA TO SEE PROCESS ---------------------------------
+@nb_urls_add = 0
+@urls_before = CONN.exec( "SELECT * FROM parse;").to_a
+puts "-------------- >>> IL Y A #{@urls_before.length} URL(S) AVANT INSERTION <<< ----------------"
 
 def document_by_url(url)
 	begin
@@ -73,11 +66,17 @@ def urls
 	end
 end
 
-
 def save_job(params)
+	puts "----------------- Method Save Job -------------".colorize(:yellow)
 	url = 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
-	puts "------this is url parsed from search result for dpt : #{url}"
+	#puts "------this is url parsed from search result for dpt : #{url}"
 	CONN.exec("INSERT INTO parse (url, id) SELECT '#{url}', '#{params[:id]}' WHERE NOT EXISTS (select id from parse WHERE id = '#{params[:id]}')")
+
+	# ----------------------------- COUNTING OFFERS ADDED NB ---------------------------
+	@urls_after = CONN.exec( "SELECT * FROM parse;").to_a
+	@nb_urls_add = @urls_after.length - @urls_before.length
+	puts "//////////// #{@nb_urls_add} URL(S) SAVED IN DB WITH THIS SCRIPT ///////////////".colorize(:green)
+	puts "--------- >>> IL Y A #{@urls_after.length} URL(S) DS LA BDD APRES INSERTION <<< ----------"
 end
 
 #----------------- Parse les urls métiers par départements pour récupérer l'id ----------
@@ -93,15 +92,13 @@ end
 # MAIN #
 
 if urls != nil
-
 	urls.each do |url|
-		puts "------------------------------ this is url #{url} -----------------------------------"
+		puts "-- this is url result for dpt and job title : #{url} --".colorize(:blue)
 		document = document_by_url(url)
 
 		if document && doc.search_region(url) == doc.search_region(url).upcase
 			ids = get_ids_by_document(document)
 			ids.each {|id| save_job({:id=>id})}
-			puts "//////////// URL SAVED IN DB ////////////////////"
 		end
 	end
 end

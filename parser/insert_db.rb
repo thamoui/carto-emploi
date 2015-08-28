@@ -12,7 +12,6 @@ def doc
   ::BodyParser.new
 end
 
-
 # --------------- FIRST STEP : DELETE URL DUPLICATE FROM PARSE TABLE -------
 
 puts "----------------Nombre de doublons #{CONN.exec("SELECT * FROM parse WHERE EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a.length}"
@@ -22,14 +21,7 @@ CONN.exec( "DELETE FROM parse WHERE EXISTS (SELECT offer_id FROM job_offers WHER
 
 puts "#{CONN.exec( "SELECT url FROM parse").to_a.length} - Offers in PARSE database AFTER cleaning"
 
-
-# -------->>>>>> Du coup si on supprime les doublons on peut tout prendre ! la ligne 30 ne sert plus à rien
-
-
 #---------------- GETTING AN ARRAY OF URLS & IDS FROM DB ------------
-# only select from parse if offer is not in job_offers db
-#@result = CONN.exec( "SELECT * FROM parse WHERE NOT EXISTS (SELECT offer_id FROM job_offers WHERE (parse.id = job_offers.offer_id));").to_a
-
 @result = CONN.exec( "SELECT * FROM parse;").to_a
 
 puts "------------------->>> IL Y A #{@result.length} URL(S) A TRAITER <<<------------------------"
@@ -46,6 +38,8 @@ offre_ajout = 0
   puts "---- Disponibilité de l'offre : #{doc.offer_unavailable(item["url"])} (true = indisponible) ---------".colorize(:purple)
   puts "---- Code rome : #{doc.check_code_rome(item["url"])} (true = code rome informatique) ---------".colorize(:purple)
   puts "---- Is a city : #{doc.check_is_a_city(item["url"])} (true = c'est bien une ville) ---------".colorize(:purple)
+
+  # if url is valid, it's inserted in job_offers table if not, it is deleted from parse table
 
   if doc.offer_unavailable(item["url"]) == false && doc.check_code_rome(item["url"]) == true && doc.check_is_a_city(item["url"]) == true
     adress = doc.search_region(item["url"]).gsub(/''/, "'")
@@ -77,9 +71,9 @@ offre_ajout = 0
       # @latitude += rand(0.0007..0.0019)
       # @longitude += rand(0.0004..0.0019)
 
-      if @latitude != nil
+      if @latitude != nil #sometimes geocoder does not work well cause it is a google free service and we have a limited nb of request per 24 hours
 
-        #  ------------------- USING BODY PARSER  ---------------------
+        #  ------------------- USING BODY PARSER TO GET OFFERS DATA  ---------------------
 
         time = Time.now
         data = [doc.search_region(item["url"]), item["id"], doc.search_title(item["url"]), doc.search_employment_type(item["url"]), doc.search_code_rome(item["url"]), doc.search_publication_date(item["url"]), doc.search_description_offer(item["url"]), item["url"], doc.search_company_description(item["url"]), @latitude, @longitude, time]
