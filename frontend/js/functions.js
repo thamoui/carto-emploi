@@ -141,5 +141,5 @@ function getRadius(){
 function getNumToGet(){
     var num = (20 - map.getZoom()) * 20;
     //return num;
-    return 50;
+    return 100;
 }
