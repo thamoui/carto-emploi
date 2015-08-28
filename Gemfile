@@ -27,7 +27,6 @@ end
 group :development do
   gem "sinatra-reloader"
   gem "shotgun"
-  gem "colorize" #ne fonctionne pas sur heroku mais bien utile pour mieux visualiser les logs sur sa machine
   gem "pry"
 end
 
