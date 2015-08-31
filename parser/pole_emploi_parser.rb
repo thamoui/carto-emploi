@@ -70,13 +70,17 @@ def save_job(params)
 	puts "----------------- Method Save Job -------------".colorize(:yellow)
 	url = 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
 	#puts "------this is url parsed from search result for dpt : #{url}"
-	CONN.exec("INSERT INTO parse (url, id) SELECT '#{url}', '#{params[:id]}' WHERE NOT EXISTS (select id from parse WHERE id = '#{params[:id]}')")
 
-	# ----------------------------- COUNTING OFFERS ADDED NB ---------------------------
-	@urls_after = CONN.exec( "SELECT * FROM parse;").to_a
-	@nb_urls_add = @urls_after.length - @urls_before.length
-	puts "//////////// #{@nb_urls_add} URL(S) SAVED IN DB WITH THIS SCRIPT ///////////////".colorize(:green)
-	puts "--------- >>> IL Y A #{@urls_after.length} URL(S) DS LA BDD APRES INSERTION <<< ----------"
+	if doc.offer_unavailable(url) == false && doc.check_code_rome(url) == true && doc.check_is_a_city(url) == true
+
+		CONN.exec("INSERT INTO parse (url, id) SELECT '#{url}', '#{params[:id]}' WHERE NOT EXISTS (select id from parse WHERE id = '#{params[:id]}')")
+
+		# ----------------- COUNTING OFFERS ADDED NB -----------------------
+		@urls_after = CONN.exec( "SELECT * FROM parse;").to_a
+		@nb_urls_add = @urls_after.length - @urls_before.length
+		puts "//////////// #{@nb_urls_add} URL(S) SAVED IN DB WITH THIS SCRIPT ///////////////".colorize(:green)
+		puts "  >>> IL Y A #{@urls_after.length} URL(S) DS LA BDD APRES INSERTION <<< "
+	end
 end
 
 #----------------- Parse les urls métiers par départements pour récupérer l'id ----------
@@ -96,9 +100,11 @@ if urls != nil
 		puts "-- this is url result for dpt and job title : #{url} --".colorize(:blue)
 		document = document_by_url(url)
 
-		if document && doc.search_region(url) == doc.search_region(url).upcase
+		if document #&& doc.search_region(url) == doc.search_region(url).upcase
+			#&& doc.offer_unavailable(url) == false && doc.check_code_rome(url) == true && doc.check_is_a_city(url) == true
 			ids = get_ids_by_document(document)
 			ids.each {|id| save_job({:id=>id})}
+
 		end
 	end
 end
