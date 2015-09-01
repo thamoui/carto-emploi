@@ -21,7 +21,7 @@ function getMarker(response) {
         var txtDescription = tabDescription.join("<br>");
 
         //Création du marker
-        var myIcon = L.icon({iconUrl: "/img/pointeur-ango-1.png", "iconSize": [50, 50], "iconAnchor": [25, 25]});
+        var myIcon = L.icon({iconUrl: "/img/curseur-ango-1_360.png", "iconSize": [30, 45], "iconAnchor": [25, 25]});
 
         var marker = L.marker(new L.LatLng(latitude, longitude), {
             icon: myIcon,
