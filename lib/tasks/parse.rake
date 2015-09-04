@@ -23,7 +23,8 @@ namespace :ango do
     ruby "./parser/pole_emploi_parser.rb 1 19"
     ruby "./parser/pole_emploi_parser.rb 21 95"
     t2 = Time.now
-    puts "------------------------ DUREE :  #{(t2-t1)/60} minutes ------------------"
+    puts "------------------------ DEBUT : #{t1} / FIN : #{t2} / DUREE :  #{(t2 - t1)/60} minutes ------------------"
+
   end
 
   desc 'parse les urls et insère le détail des offres dans la base de données'

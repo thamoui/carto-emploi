@@ -22,9 +22,8 @@ deleted_offer = 0
   puts "_________________ STARTING CLEANING JOB OFFERS BASE _____________________________"
   if doc.offer_unavailable(item["url"]) == true
     CONN.exec("DELETE FROM job_offers WHERE url = '#{item["url"]}'")
-    puts "-------- L'offre n'est plus disponible"
     deleted_offer = deleted_offer + 1
-    puts "-------- L'url #{item["url"]} a été supprimé de la bdd job_offers-------- ".colorize(:red)
+    puts "-------- L'url #{item["url"]} a été supprimé de la bdd job_offers car elle n'est plus disponible-------- ".colorize(:red)
   end
   puts "--- #{nb_offres} offre(s) encore à traiter sur #{@result.length} au départ----"
   puts "_____________________ Nombre d'offre(s) supprimée(s)#{deleted_offer} ___________________________"

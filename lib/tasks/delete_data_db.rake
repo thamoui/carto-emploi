@@ -7,7 +7,7 @@ namespace :clean_db do
     puts "-------------------------- DEBUT :  #{Time.now} ------------------------"
     ruby "./parser/clean_parse_table.rb"
     t2 = Time.now
-    puts "------------------------ DUREE :  #{(t2 - t1)/60} minutes ------------------"
+    puts "------------------------ DEBUT : #{t1} / FIN : #{t2} / DUREE :  #{(t2 - t1)/60} minutes ------------------"
   end
 
   desc 'supprime les offres d emploi qui ne sont plus disponibles de la table (job_offers)'

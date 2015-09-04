@@ -100,8 +100,7 @@ if urls != nil
 		puts "-- this is url result for dpt and job title : #{url} --".colorize(:blue)
 		document = document_by_url(url)
 
-		if document #&& doc.search_region(url) == doc.search_region(url).upcase
-			#&& doc.offer_unavailable(url) == false && doc.check_code_rome(url) == true && doc.check_is_a_city(url) == true
+		if document 
 			ids = get_ids_by_document(document)
 			ids.each {|id| save_job({:id=>id})}
 
