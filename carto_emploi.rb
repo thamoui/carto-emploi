@@ -1,13 +1,9 @@
 require 'sinatra'
 require 'json'
-require 'pg'
-require 'dotenv'
 require 'active_support/all'
 require 'active_record'
 require 'sinatra/activerecord'
 require './lib/pg_db_config_parse'
-
-Dotenv.load
 
 # ----------------- CONFIGURATION DATAS ----------------------
 configure { set :server, :puma }
@@ -22,18 +18,6 @@ end
 Time.zone = "UTC"
 ActiveRecord::Base.default_timezone = :utc
 
-# ----------------------- DB CONFIG  ---------------------------
-if ENV['RACK_ENV'] == "production"
-  db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
-  #configure do
-  CONN = PG::Connection.new({host: db_parts[5], port: db_parts[6], dbname: db_parts[7], user: db_parts[3], password: db_parts[4]})
-  #end
-else
-  require 'shotgun'
-  #configure do
-  CONN = PG::Connection.new({host: "127.0.0.1", port: 5432, dbname: ENV['DATABASE_NAME'], user: ENV['DATABASE_USER_NAME'], password: ENV['DATABASE_PASSWORD']})
-  #   end
-end
 
 set :public_folder, 'frontend' #this is necessary to be able to access to static files
 get '/' do
