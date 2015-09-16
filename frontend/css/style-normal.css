@@ -231,6 +231,10 @@ select {
     cursor:pointer;
 }
 
+#languages{
+    margin-left: 150px !important;
+}
+
 #popup {
     display:none;
 }
