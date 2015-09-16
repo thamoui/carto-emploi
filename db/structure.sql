@@ -35,6 +35,8 @@ CREATE TABLE job_offers (
   longitude numeric,
   offer_id text,
   publication_date text,
+  lang text,
+  lang_gr text,
   created_at timestamp with time zone
 );
 
