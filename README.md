@@ -121,7 +121,7 @@ ou
 Depuis votre terminal, ajouter `heroku run` avant la listes des tâches rake mentionnées au paragraphe précédant.
 Exemple :  `heroku run rake -T`
 
-### 2. Nettoyage de la base d'url :
+### 2. Nettoyage de la base d'url : (ATTENTION PARTIE A METTRE A JOUR PASSER AU NUMERO 3)
 
 Une fois que l'on a rempli la base avec les urls, il faut nettoyer cette base.
 On dispose de 2 tâches rake.
@@ -142,7 +142,11 @@ Alternative, sur Heroku on peut executer des script sql : `heroku pg:psql -a ang
 
 - Enfin, il arrive que les offres ne soient plus disponibles passées un certains temps (l'offre a été pourvue par exemple), on peut enlever ces offres de la base de données job_offers :
 
+
+
 `rake clean_db:delete_offers`
+
+
 
 
 ### 3. Insertion des données des offres d'emplois
@@ -152,6 +156,8 @@ Une fois que la base d'url est propre on peut passer à l'étape suivant, l'inse
 `rake parser:insert_offers`    # parse les urls et insère le détail des offres dans la base de données
 
 Attention, c'est long quand la base est vide !!
+
+
 
 ### 4. Nettoyage de la base de données
 
