@@ -21,6 +21,25 @@ class BodyParser
 
   #----------- PARSING METHODS ------------------------------
 
+  # ---------------- Récupération  des languages-----------
+
+  def search_language(url)
+    description_offer = get_source(url).css('p[@itemprop="description"]').inner_html
+    description_offer.strip 
+    # mettre en tout en minuscule
+    language = ''
+    if description_offer != nil || description_offer != ""
+      ['javascript', 'python', 'php', 'java', 'c++', 'c#'].each do |lang|
+        if description_offer.include? lang
+          language = language + ',' + 'lang'
+             else
+      description_offer =  "Information non disponible"
+    end
+        end
+      end
+ 
+  end
+
   # ----------------L'offre n'est plus disponible -----------
   def offer_unavailable(url)
     get_source(url).css('p[@class="first paragraph-embed"]').children.inner_text == "L'offre que vous souhaitez consulter n'est plus disponible."
