@@ -49,7 +49,7 @@ get '/geosearch/:lat,:lng' do
   limit_given = params['limit'].to_i
   @data_job = []
   bg_offers = 0
-  lang = params[:lg]
+  lang = params['lg']
 
   if @distance == nil || @distance == ""
     @distance = 50
@@ -87,7 +87,7 @@ get '/geosearch/:lat,:lng' do
     if lang == nil || lang == ""
     sql2 = ""
   else
-    sql2 = "AND title LIKE '%#{lang}%'"
+    sql2 = "AND offer_description LIKE '%#{lang}%'"
   end
 
   requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} #{sql2} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
