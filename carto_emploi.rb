@@ -32,6 +32,34 @@ get '/metiers' do
   @metiers = Job_list.all().to_json
 end
 
+#----------------- /dpt : renvoie la liste des offres par departements
+get '/dept/:dpt' do
+  content_type :json, 'charset' => 'utf-8'
+  @dpt = params[:dpt]
+  lang = params['lg']
+
+  if lang == nil || lang == ""
+    sql2 = ""
+  else
+    sql2 = "AND offer_description iLIKE '%#{lang}%'"
+  end
+
+
+  sql = "WHERE region_adress LIKE '%#{@dpt}%'"
+
+  requete_sql = "SELECT * FROM job_offers #{sql} #{sql2} ORDER BY publication_date DESC;"
+  @data_job = []
+  result = CONN.exec(requete_sql)
+
+  result.map do |data|
+  @data_job << data
+  end
+
+  @data_job.to_json
+end
+
+
+
 #--------------   /geosearch/LAT,LNG : renvoie les emplois aux alentours
 get '/geosearch/:lat,:lng' do
   #geosearch/48.86833,2.66833?p=42&limit=42&text=developpeur LAGNY SUR MARNE
@@ -49,6 +77,7 @@ get '/geosearch/:lat,:lng' do
   limit_given = params['limit'].to_i
   @data_job = []
   bg_offers = 0
+  lang = params['lg']
 
   if @distance == nil || @distance == ""
     @distance = 50
@@ -83,7 +112,13 @@ get '/geosearch/:lat,:lng' do
     sql = "AND title LIKE '%#{job}%'"
   end
 
-  requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
+  if lang == nil || lang == ""
+    sql2 = ""
+  else
+    sql2 = "AND offer_description LIKE '%#{lang}%'"
+  end
+
+  requete_sql = "SELECT *, distance FROM (SELECT *, ( 6371 * acos( cos( radians( #{@lat} ) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(#{@lng}) ) + sin( radians(#{@lat}) ) * sin( radians( latitude ) ) ) ) AS distance FROM job_offers ) AS dt WHERE distance < #{@distance} #{sql} #{sql2} ORDER BY publication_date DESC LIMIT #{limit} OFFSET #{bg_offers} ;"
   result = CONN.exec(requete_sql)
 
   result.map do |data|
