@@ -6,6 +6,7 @@ require 'colorize'
 # -------------------- SOME COMMENTS AND DATA TO SEE PROCESS ---------------------------------
 @nb_urls_add = 0
 @urls_before = CONN.exec( "SELECT * FROM parse;").to_a
+
 puts "-------------- >>> IL Y A #{@urls_before.length} URL(S) AVANT INSERTION <<< ----------------"
 
 def document_by_url(url)
@@ -31,7 +32,7 @@ def urls
 	jobs = []
 	job_list.each do |job|
 		jobs << job["slug"]
-	end
+end
 
 
 	if ARGV[0] == nil or ARGV[0] == "20" or ARGV[0].to_i > 95
@@ -45,8 +46,13 @@ def urls
 			corse = [ARGV[0], ARGV[1]]
 			corse.map do |zipcode|
 				puts zipcode
-				jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipcode}___P__________INDIFFERENT_________________"}
-			end.flatten
+				#jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipcode}___P__________INDIFFERENT_________________"}
+				jobs.map {|job| job.gsub!(/\s/,'$0020'); "https://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/_#{job}_DEPARTEMENT_#{zipcode}___P_________________________________"}
+
+
+			# La modification des nom de métiers devraient être faite au moment de la création et modification de la base de données
+			# Là ça crée une dépendance
+		end.flatten
 
 		else
 			if ARGV[1] == nil
@@ -60,7 +66,7 @@ def urls
 					zipcode = "#{zipcode}"
 				end
 
-				jobs.map {|job| job.gsub!(/\s/,'$0020'); "http://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/A_#{job}_DEPARTEMENT_#{zipcode}___P__________INDIFFERENT_________________"}
+				jobs.map {|job| job.gsub!(/\s/,'$0020'); "https://candidat.pole-emploi.fr/candidat/rechercheoffres/resultats/_#{job}_DEPARTEMENT_#{zipcode}___P_________________________________"}
 			end.flatten
 		end
 	end
@@ -69,6 +75,7 @@ end
 def save_job(params)
 	puts "----------------- Method Save Job -------------".colorize(:yellow)
 	url = 'http://candidat.pole-emploi.fr/candidat/rechercheoffres/detail/' + "#{params[:id]}"
+	
 	#puts "------this is url parsed from search result for dpt : #{url}"
 
 	if doc.offer_unavailable(url) == false && doc.check_code_rome(url) == true && doc.check_is_a_city(url) == true
