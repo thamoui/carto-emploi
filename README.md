@@ -97,6 +97,7 @@ Dans le terminal :
 ( heroku pg:psql -a your-app-name <db/structure.sql )
 
 
+
 # :::::::::  Lancer le parser ::::::::::::::::
 
 Voir la liste des tâches disponibles ` rake -T`
@@ -153,7 +154,7 @@ Alternative, sur Heroku on peut executer des script sql : `heroku pg:psql -a ang
 
 Une fois que la base d'url est propre on peut passer à l'étape suivant, l'insertion des données des offres d'emploi (titre du métier, code rome, etc.)
 
-`rake parser:insert_offers`    # parse les urls et insère le détail des offres dans la base de données
+`rake ango:insert_offers`    # parse les urls et insère le détail des offres dans la base de données
 
 Attention, c'est long quand la base est vide !!
 
@@ -187,3 +188,11 @@ Ex d'urls pour visualiser le fichier json généré :
 # Documentation utile
 
 - Gem Geokit pour la géolocalisation d'une adresse : http://www.rubydoc.info/gems/geokit/1.9.0
+
+
+# Tester la partie parser
+
+Les pages de détail d'offres disponibles pole emploi étant mouvantes, j'ai créé des copies mais il faudrait les mettre à jour
+
+- se mettre à la racine du site et lancer un serveur `ruby -run -e httpd . -p 8000`
+- lancer les tests `ruby body_parser_test.rb `
