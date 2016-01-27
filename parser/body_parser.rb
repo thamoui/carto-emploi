@@ -23,21 +23,28 @@ class BodyParser
 
   # ---------------- Récupération  des languages-----------
 
+
+# pour irb
+# description_offer = Nokogiri::HTML(open(url)).css('p[@itemprop="description"]').inner_html
+#"foobar" =~ /zzz/  # returns nil
+#stringObj.match(/regex/)
+
   def search_language(url)
     description_offer = get_source(url).css('p[@itemprop="description"]').inner_html
     description_offer.strip 
     # mettre en tout en minuscule
     language = ''
     if description_offer != nil || description_offer != ""
-      ['javascript', 'python', 'php', 'java', 'c++', 'c#'].each do |lang|
+      description_offer.downcase
+      ['javascript', 'python', 'php', 'java', 'c++', 'c#', 'html', 'css', 'objective-C', 'shell', 'cms'].each do |lang|
         if description_offer.include? lang
-          language = language + ',' + 'lang'
-             else
-      description_offer =  "Information non disponible"
-    end
+          language = language + ',' + lang
+        else
+          description_offer =  "Information non disponible"
         end
+
       end
- 
+    end
   end
 
   # ----------------L'offre n'est plus disponible -----------
